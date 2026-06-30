@@ -1,0 +1,2701 @@
+date,item,category,price,unit_cost,units_sold,day_of_week
+2025-01-01,Drip Coffee,Coffee,3.25,0.55,84,Wednesday
+2025-01-01,Latte,Coffee,4.75,1.1,69,Wednesday
+2025-01-01,Cappuccino,Coffee,4.5,1.05,39,Wednesday
+2025-01-01,Cold Brew,Coffee,4.95,1.2,60,Wednesday
+2025-01-01,Espresso Shot,Coffee,2.75,0.45,25,Wednesday
+2025-01-01,Matcha Latte,Tea,5.25,1.6,25,Wednesday
+2025-01-01,Chai Latte,Tea,4.95,1.15,29,Wednesday
+2025-01-01,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-01-01,Croissant,Pastry,3.75,1.1,34,Wednesday
+2025-01-01,Blueberry Muffin,Pastry,3.95,1.0,30,Wednesday
+2025-01-01,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-01-01,Breakfast Sandwich,Food,7.25,2.4,43,Wednesday
+2025-01-01,Bagel & Cream Cheese,Food,4.5,1.3,28,Wednesday
+2025-01-01,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-01-01,Bottled Water,Other,2.25,0.35,16,Wednesday
+2025-01-02,Drip Coffee,Coffee,3.25,0.55,78,Thursday
+2025-01-02,Latte,Coffee,4.75,1.1,76,Thursday
+2025-01-02,Cappuccino,Coffee,4.5,1.05,49,Thursday
+2025-01-02,Cold Brew,Coffee,4.95,1.2,58,Thursday
+2025-01-02,Espresso Shot,Coffee,2.75,0.45,26,Thursday
+2025-01-02,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-01-02,Chai Latte,Tea,4.95,1.15,24,Thursday
+2025-01-02,Iced Tea,Tea,3.5,0.5,20,Thursday
+2025-01-02,Croissant,Pastry,3.75,1.1,39,Thursday
+2025-01-02,Blueberry Muffin,Pastry,3.95,1.0,35,Thursday
+2025-01-02,Avocado Toast,Food,8.5,2.6,22,Thursday
+2025-01-02,Breakfast Sandwich,Food,7.25,2.4,42,Thursday
+2025-01-02,Bagel & Cream Cheese,Food,4.5,1.3,28,Thursday
+2025-01-02,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-01-02,Bottled Water,Other,2.25,0.35,16,Thursday
+2025-01-03,Drip Coffee,Coffee,3.25,0.55,104,Friday
+2025-01-03,Latte,Coffee,4.75,1.1,66,Friday
+2025-01-03,Cappuccino,Coffee,4.5,1.05,32,Friday
+2025-01-03,Cold Brew,Coffee,4.95,1.2,59,Friday
+2025-01-03,Espresso Shot,Coffee,2.75,0.45,26,Friday
+2025-01-03,Matcha Latte,Tea,5.25,1.6,38,Friday
+2025-01-03,Chai Latte,Tea,4.95,1.15,35,Friday
+2025-01-03,Iced Tea,Tea,3.5,0.5,20,Friday
+2025-01-03,Croissant,Pastry,3.75,1.1,44,Friday
+2025-01-03,Blueberry Muffin,Pastry,3.95,1.0,30,Friday
+2025-01-03,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-01-03,Breakfast Sandwich,Food,7.25,2.4,42,Friday
+2025-01-03,Bagel & Cream Cheese,Food,4.5,1.3,30,Friday
+2025-01-03,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-01-03,Bottled Water,Other,2.25,0.35,22,Friday
+2025-01-04,Drip Coffee,Coffee,3.25,0.55,115,Saturday
+2025-01-04,Latte,Coffee,4.75,1.1,98,Saturday
+2025-01-04,Cappuccino,Coffee,4.5,1.05,55,Saturday
+2025-01-04,Cold Brew,Coffee,4.95,1.2,66,Saturday
+2025-01-04,Espresso Shot,Coffee,2.75,0.45,30,Saturday
+2025-01-04,Matcha Latte,Tea,5.25,1.6,37,Saturday
+2025-01-04,Chai Latte,Tea,4.95,1.15,39,Saturday
+2025-01-04,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-01-04,Croissant,Pastry,3.75,1.1,58,Saturday
+2025-01-04,Blueberry Muffin,Pastry,3.95,1.0,35,Saturday
+2025-01-04,Avocado Toast,Food,8.5,2.6,25,Saturday
+2025-01-04,Breakfast Sandwich,Food,7.25,2.4,54,Saturday
+2025-01-04,Bagel & Cream Cheese,Food,4.5,1.3,40,Saturday
+2025-01-04,Granola Bowl,Food,6.75,1.9,19,Saturday
+2025-01-04,Bottled Water,Other,2.25,0.35,26,Saturday
+2025-01-05,Drip Coffee,Coffee,3.25,0.55,110,Sunday
+2025-01-05,Latte,Coffee,4.75,1.1,76,Sunday
+2025-01-05,Cappuccino,Coffee,4.5,1.05,36,Sunday
+2025-01-05,Cold Brew,Coffee,4.95,1.2,57,Sunday
+2025-01-05,Espresso Shot,Coffee,2.75,0.45,31,Sunday
+2025-01-05,Matcha Latte,Tea,5.25,1.6,27,Sunday
+2025-01-05,Chai Latte,Tea,4.95,1.15,31,Sunday
+2025-01-05,Iced Tea,Tea,3.5,0.5,23,Sunday
+2025-01-05,Croissant,Pastry,3.75,1.1,37,Sunday
+2025-01-05,Blueberry Muffin,Pastry,3.95,1.0,36,Sunday
+2025-01-05,Avocado Toast,Food,8.5,2.6,26,Sunday
+2025-01-05,Breakfast Sandwich,Food,7.25,2.4,53,Sunday
+2025-01-05,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-01-05,Granola Bowl,Food,6.75,1.9,14,Sunday
+2025-01-05,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-01-06,Drip Coffee,Coffee,3.25,0.55,73,Monday
+2025-01-06,Latte,Coffee,4.75,1.1,74,Monday
+2025-01-06,Cappuccino,Coffee,4.5,1.05,35,Monday
+2025-01-06,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-01-06,Espresso Shot,Coffee,2.75,0.45,26,Monday
+2025-01-06,Matcha Latte,Tea,5.25,1.6,26,Monday
+2025-01-06,Chai Latte,Tea,4.95,1.15,26,Monday
+2025-01-06,Iced Tea,Tea,3.5,0.5,15,Monday
+2025-01-06,Croissant,Pastry,3.75,1.1,29,Monday
+2025-01-06,Blueberry Muffin,Pastry,3.95,1.0,27,Monday
+2025-01-06,Avocado Toast,Food,8.5,2.6,22,Monday
+2025-01-06,Breakfast Sandwich,Food,7.25,2.4,41,Monday
+2025-01-06,Bagel & Cream Cheese,Food,4.5,1.3,25,Monday
+2025-01-06,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-01-06,Bottled Water,Other,2.25,0.35,17,Monday
+2025-01-07,Drip Coffee,Coffee,3.25,0.55,91,Tuesday
+2025-01-07,Latte,Coffee,4.75,1.1,74,Tuesday
+2025-01-07,Cappuccino,Coffee,4.5,1.05,39,Tuesday
+2025-01-07,Cold Brew,Coffee,4.95,1.2,46,Tuesday
+2025-01-07,Espresso Shot,Coffee,2.75,0.45,26,Tuesday
+2025-01-07,Matcha Latte,Tea,5.25,1.6,30,Tuesday
+2025-01-07,Chai Latte,Tea,4.95,1.15,31,Tuesday
+2025-01-07,Iced Tea,Tea,3.5,0.5,19,Tuesday
+2025-01-07,Croissant,Pastry,3.75,1.1,41,Tuesday
+2025-01-07,Blueberry Muffin,Pastry,3.95,1.0,27,Tuesday
+2025-01-07,Avocado Toast,Food,8.5,2.6,25,Tuesday
+2025-01-07,Breakfast Sandwich,Food,7.25,2.4,37,Tuesday
+2025-01-07,Bagel & Cream Cheese,Food,4.5,1.3,23,Tuesday
+2025-01-07,Granola Bowl,Food,6.75,1.9,11,Tuesday
+2025-01-07,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-01-08,Drip Coffee,Coffee,3.25,0.55,100,Wednesday
+2025-01-08,Latte,Coffee,4.75,1.1,77,Wednesday
+2025-01-08,Cappuccino,Coffee,4.5,1.05,43,Wednesday
+2025-01-08,Cold Brew,Coffee,4.95,1.2,39,Wednesday
+2025-01-08,Espresso Shot,Coffee,2.75,0.45,27,Wednesday
+2025-01-08,Matcha Latte,Tea,5.25,1.6,32,Wednesday
+2025-01-08,Chai Latte,Tea,4.95,1.15,26,Wednesday
+2025-01-08,Iced Tea,Tea,3.5,0.5,18,Wednesday
+2025-01-08,Croissant,Pastry,3.75,1.1,35,Wednesday
+2025-01-08,Blueberry Muffin,Pastry,3.95,1.0,36,Wednesday
+2025-01-08,Avocado Toast,Food,8.5,2.6,19,Wednesday
+2025-01-08,Breakfast Sandwich,Food,7.25,2.4,36,Wednesday
+2025-01-08,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-01-08,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-01-08,Bottled Water,Other,2.25,0.35,17,Wednesday
+2025-01-09,Drip Coffee,Coffee,3.25,0.55,90,Thursday
+2025-01-09,Latte,Coffee,4.75,1.1,63,Thursday
+2025-01-09,Cappuccino,Coffee,4.5,1.05,43,Thursday
+2025-01-09,Cold Brew,Coffee,4.95,1.2,49,Thursday
+2025-01-09,Espresso Shot,Coffee,2.75,0.45,29,Thursday
+2025-01-09,Matcha Latte,Tea,5.25,1.6,32,Thursday
+2025-01-09,Chai Latte,Tea,4.95,1.15,37,Thursday
+2025-01-09,Iced Tea,Tea,3.5,0.5,22,Thursday
+2025-01-09,Croissant,Pastry,3.75,1.1,43,Thursday
+2025-01-09,Blueberry Muffin,Pastry,3.95,1.0,27,Thursday
+2025-01-09,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-01-09,Breakfast Sandwich,Food,7.25,2.4,41,Thursday
+2025-01-09,Bagel & Cream Cheese,Food,4.5,1.3,33,Thursday
+2025-01-09,Granola Bowl,Food,6.75,1.9,12,Thursday
+2025-01-09,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-01-10,Drip Coffee,Coffee,3.25,0.55,105,Friday
+2025-01-10,Latte,Coffee,4.75,1.1,95,Friday
+2025-01-10,Cappuccino,Coffee,4.5,1.05,50,Friday
+2025-01-10,Cold Brew,Coffee,4.95,1.2,64,Friday
+2025-01-10,Espresso Shot,Coffee,2.75,0.45,27,Friday
+2025-01-10,Matcha Latte,Tea,5.25,1.6,29,Friday
+2025-01-10,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-01-10,Iced Tea,Tea,3.5,0.5,22,Friday
+2025-01-10,Croissant,Pastry,3.75,1.1,50,Friday
+2025-01-10,Blueberry Muffin,Pastry,3.95,1.0,32,Friday
+2025-01-10,Avocado Toast,Food,8.5,2.6,26,Friday
+2025-01-10,Breakfast Sandwich,Food,7.25,2.4,35,Friday
+2025-01-10,Bagel & Cream Cheese,Food,4.5,1.3,28,Friday
+2025-01-10,Granola Bowl,Food,6.75,1.9,17,Friday
+2025-01-10,Bottled Water,Other,2.25,0.35,23,Friday
+2025-01-11,Drip Coffee,Coffee,3.25,0.55,130,Saturday
+2025-01-11,Latte,Coffee,4.75,1.1,91,Saturday
+2025-01-11,Cappuccino,Coffee,4.5,1.05,45,Saturday
+2025-01-11,Cold Brew,Coffee,4.95,1.2,75,Saturday
+2025-01-11,Espresso Shot,Coffee,2.75,0.45,35,Saturday
+2025-01-11,Matcha Latte,Tea,5.25,1.6,41,Saturday
+2025-01-11,Chai Latte,Tea,4.95,1.15,33,Saturday
+2025-01-11,Iced Tea,Tea,3.5,0.5,30,Saturday
+2025-01-11,Croissant,Pastry,3.75,1.1,46,Saturday
+2025-01-11,Blueberry Muffin,Pastry,3.95,1.0,42,Saturday
+2025-01-11,Avocado Toast,Food,8.5,2.6,33,Saturday
+2025-01-11,Breakfast Sandwich,Food,7.25,2.4,53,Saturday
+2025-01-11,Bagel & Cream Cheese,Food,4.5,1.3,35,Saturday
+2025-01-11,Granola Bowl,Food,6.75,1.9,23,Saturday
+2025-01-11,Bottled Water,Other,2.25,0.35,24,Saturday
+2025-01-12,Drip Coffee,Coffee,3.25,0.55,90,Sunday
+2025-01-12,Latte,Coffee,4.75,1.1,78,Sunday
+2025-01-12,Cappuccino,Coffee,4.5,1.05,52,Sunday
+2025-01-12,Cold Brew,Coffee,4.95,1.2,61,Sunday
+2025-01-12,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-01-12,Matcha Latte,Tea,5.25,1.6,38,Sunday
+2025-01-12,Chai Latte,Tea,4.95,1.15,29,Sunday
+2025-01-12,Iced Tea,Tea,3.5,0.5,17,Sunday
+2025-01-12,Croissant,Pastry,3.75,1.1,40,Sunday
+2025-01-12,Blueberry Muffin,Pastry,3.95,1.0,34,Sunday
+2025-01-12,Avocado Toast,Food,8.5,2.6,22,Sunday
+2025-01-12,Breakfast Sandwich,Food,7.25,2.4,46,Sunday
+2025-01-12,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-01-12,Granola Bowl,Food,6.75,1.9,14,Sunday
+2025-01-12,Bottled Water,Other,2.25,0.35,21,Sunday
+2025-01-13,Drip Coffee,Coffee,3.25,0.55,79,Monday
+2025-01-13,Latte,Coffee,4.75,1.1,55,Monday
+2025-01-13,Cappuccino,Coffee,4.5,1.05,40,Monday
+2025-01-13,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-01-13,Espresso Shot,Coffee,2.75,0.45,22,Monday
+2025-01-13,Matcha Latte,Tea,5.25,1.6,30,Monday
+2025-01-13,Chai Latte,Tea,4.95,1.15,28,Monday
+2025-01-13,Iced Tea,Tea,3.5,0.5,18,Monday
+2025-01-13,Croissant,Pastry,3.75,1.1,35,Monday
+2025-01-13,Blueberry Muffin,Pastry,3.95,1.0,32,Monday
+2025-01-13,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-01-13,Breakfast Sandwich,Food,7.25,2.4,38,Monday
+2025-01-13,Bagel & Cream Cheese,Food,4.5,1.3,25,Monday
+2025-01-13,Granola Bowl,Food,6.75,1.9,17,Monday
+2025-01-13,Bottled Water,Other,2.25,0.35,13,Monday
+2025-01-14,Drip Coffee,Coffee,3.25,0.55,87,Tuesday
+2025-01-14,Latte,Coffee,4.75,1.1,64,Tuesday
+2025-01-14,Cappuccino,Coffee,4.5,1.05,38,Tuesday
+2025-01-14,Cold Brew,Coffee,4.95,1.2,64,Tuesday
+2025-01-14,Espresso Shot,Coffee,2.75,0.45,24,Tuesday
+2025-01-14,Matcha Latte,Tea,5.25,1.6,36,Tuesday
+2025-01-14,Chai Latte,Tea,4.95,1.15,25,Tuesday
+2025-01-14,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-01-14,Croissant,Pastry,3.75,1.1,31,Tuesday
+2025-01-14,Blueberry Muffin,Pastry,3.95,1.0,26,Tuesday
+2025-01-14,Avocado Toast,Food,8.5,2.6,21,Tuesday
+2025-01-14,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-01-14,Bagel & Cream Cheese,Food,4.5,1.3,25,Tuesday
+2025-01-14,Granola Bowl,Food,6.75,1.9,10,Tuesday
+2025-01-14,Bottled Water,Other,2.25,0.35,21,Tuesday
+2025-01-15,Drip Coffee,Coffee,3.25,0.55,83,Wednesday
+2025-01-15,Latte,Coffee,4.75,1.1,85,Wednesday
+2025-01-15,Cappuccino,Coffee,4.5,1.05,35,Wednesday
+2025-01-15,Cold Brew,Coffee,4.95,1.2,57,Wednesday
+2025-01-15,Espresso Shot,Coffee,2.75,0.45,34,Wednesday
+2025-01-15,Matcha Latte,Tea,5.25,1.6,27,Wednesday
+2025-01-15,Chai Latte,Tea,4.95,1.15,23,Wednesday
+2025-01-15,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-01-15,Croissant,Pastry,3.75,1.1,37,Wednesday
+2025-01-15,Blueberry Muffin,Pastry,3.95,1.0,32,Wednesday
+2025-01-15,Avocado Toast,Food,8.5,2.6,25,Wednesday
+2025-01-15,Breakfast Sandwich,Food,7.25,2.4,37,Wednesday
+2025-01-15,Bagel & Cream Cheese,Food,4.5,1.3,21,Wednesday
+2025-01-15,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-01-15,Bottled Water,Other,2.25,0.35,21,Wednesday
+2025-01-16,Drip Coffee,Coffee,3.25,0.55,94,Thursday
+2025-01-16,Latte,Coffee,4.75,1.1,56,Thursday
+2025-01-16,Cappuccino,Coffee,4.5,1.05,42,Thursday
+2025-01-16,Cold Brew,Coffee,4.95,1.2,67,Thursday
+2025-01-16,Espresso Shot,Coffee,2.75,0.45,33,Thursday
+2025-01-16,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-01-16,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-01-16,Iced Tea,Tea,3.5,0.5,18,Thursday
+2025-01-16,Croissant,Pastry,3.75,1.1,33,Thursday
+2025-01-16,Blueberry Muffin,Pastry,3.95,1.0,32,Thursday
+2025-01-16,Avocado Toast,Food,8.5,2.6,24,Thursday
+2025-01-16,Breakfast Sandwich,Food,7.25,2.4,43,Thursday
+2025-01-16,Bagel & Cream Cheese,Food,4.5,1.3,26,Thursday
+2025-01-16,Granola Bowl,Food,6.75,1.9,13,Thursday
+2025-01-16,Bottled Water,Other,2.25,0.35,17,Thursday
+2025-01-17,Drip Coffee,Coffee,3.25,0.55,84,Friday
+2025-01-17,Latte,Coffee,4.75,1.1,87,Friday
+2025-01-17,Cappuccino,Coffee,4.5,1.05,33,Friday
+2025-01-17,Cold Brew,Coffee,4.95,1.2,61,Friday
+2025-01-17,Espresso Shot,Coffee,2.75,0.45,30,Friday
+2025-01-17,Matcha Latte,Tea,5.25,1.6,41,Friday
+2025-01-17,Chai Latte,Tea,4.95,1.15,32,Friday
+2025-01-17,Iced Tea,Tea,3.5,0.5,26,Friday
+2025-01-17,Croissant,Pastry,3.75,1.1,38,Friday
+2025-01-17,Blueberry Muffin,Pastry,3.95,1.0,31,Friday
+2025-01-17,Avocado Toast,Food,8.5,2.6,23,Friday
+2025-01-17,Breakfast Sandwich,Food,7.25,2.4,52,Friday
+2025-01-17,Bagel & Cream Cheese,Food,4.5,1.3,33,Friday
+2025-01-17,Granola Bowl,Food,6.75,1.9,17,Friday
+2025-01-17,Bottled Water,Other,2.25,0.35,29,Friday
+2025-01-18,Drip Coffee,Coffee,3.25,0.55,110,Saturday
+2025-01-18,Latte,Coffee,4.75,1.1,98,Saturday
+2025-01-18,Cappuccino,Coffee,4.5,1.05,54,Saturday
+2025-01-18,Cold Brew,Coffee,4.95,1.2,70,Saturday
+2025-01-18,Espresso Shot,Coffee,2.75,0.45,42,Saturday
+2025-01-18,Matcha Latte,Tea,5.25,1.6,46,Saturday
+2025-01-18,Chai Latte,Tea,4.95,1.15,30,Saturday
+2025-01-18,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-01-18,Croissant,Pastry,3.75,1.1,48,Saturday
+2025-01-18,Blueberry Muffin,Pastry,3.95,1.0,43,Saturday
+2025-01-18,Avocado Toast,Food,8.5,2.6,24,Saturday
+2025-01-18,Breakfast Sandwich,Food,7.25,2.4,36,Saturday
+2025-01-18,Bagel & Cream Cheese,Food,4.5,1.3,26,Saturday
+2025-01-18,Granola Bowl,Food,6.75,1.9,18,Saturday
+2025-01-18,Bottled Water,Other,2.25,0.35,23,Saturday
+2025-01-19,Drip Coffee,Coffee,3.25,0.55,97,Sunday
+2025-01-19,Latte,Coffee,4.75,1.1,70,Sunday
+2025-01-19,Cappuccino,Coffee,4.5,1.05,38,Sunday
+2025-01-19,Cold Brew,Coffee,4.95,1.2,46,Sunday
+2025-01-19,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-01-19,Matcha Latte,Tea,5.25,1.6,34,Sunday
+2025-01-19,Chai Latte,Tea,4.95,1.15,34,Sunday
+2025-01-19,Iced Tea,Tea,3.5,0.5,24,Sunday
+2025-01-19,Croissant,Pastry,3.75,1.1,38,Sunday
+2025-01-19,Blueberry Muffin,Pastry,3.95,1.0,38,Sunday
+2025-01-19,Avocado Toast,Food,8.5,2.6,24,Sunday
+2025-01-19,Breakfast Sandwich,Food,7.25,2.4,38,Sunday
+2025-01-19,Bagel & Cream Cheese,Food,4.5,1.3,27,Sunday
+2025-01-19,Granola Bowl,Food,6.75,1.9,14,Sunday
+2025-01-19,Bottled Water,Other,2.25,0.35,15,Sunday
+2025-01-20,Drip Coffee,Coffee,3.25,0.55,82,Monday
+2025-01-20,Latte,Coffee,4.75,1.1,68,Monday
+2025-01-20,Cappuccino,Coffee,4.5,1.05,36,Monday
+2025-01-20,Cold Brew,Coffee,4.95,1.2,48,Monday
+2025-01-20,Espresso Shot,Coffee,2.75,0.45,25,Monday
+2025-01-20,Matcha Latte,Tea,5.25,1.6,34,Monday
+2025-01-20,Chai Latte,Tea,4.95,1.15,27,Monday
+2025-01-20,Iced Tea,Tea,3.5,0.5,18,Monday
+2025-01-20,Croissant,Pastry,3.75,1.1,31,Monday
+2025-01-20,Blueberry Muffin,Pastry,3.95,1.0,28,Monday
+2025-01-20,Avocado Toast,Food,8.5,2.6,18,Monday
+2025-01-20,Breakfast Sandwich,Food,7.25,2.4,36,Monday
+2025-01-20,Bagel & Cream Cheese,Food,4.5,1.3,25,Monday
+2025-01-20,Granola Bowl,Food,6.75,1.9,16,Monday
+2025-01-20,Bottled Water,Other,2.25,0.35,19,Monday
+2025-01-21,Drip Coffee,Coffee,3.25,0.55,91,Tuesday
+2025-01-21,Latte,Coffee,4.75,1.1,61,Tuesday
+2025-01-21,Cappuccino,Coffee,4.5,1.05,41,Tuesday
+2025-01-21,Cold Brew,Coffee,4.95,1.2,45,Tuesday
+2025-01-21,Espresso Shot,Coffee,2.75,0.45,25,Tuesday
+2025-01-21,Matcha Latte,Tea,5.25,1.6,30,Tuesday
+2025-01-21,Chai Latte,Tea,4.95,1.15,24,Tuesday
+2025-01-21,Iced Tea,Tea,3.5,0.5,24,Tuesday
+2025-01-21,Croissant,Pastry,3.75,1.1,36,Tuesday
+2025-01-21,Blueberry Muffin,Pastry,3.95,1.0,22,Tuesday
+2025-01-21,Avocado Toast,Food,8.5,2.6,22,Tuesday
+2025-01-21,Breakfast Sandwich,Food,7.25,2.4,34,Tuesday
+2025-01-21,Bagel & Cream Cheese,Food,4.5,1.3,25,Tuesday
+2025-01-21,Granola Bowl,Food,6.75,1.9,14,Tuesday
+2025-01-21,Bottled Water,Other,2.25,0.35,18,Tuesday
+2025-01-22,Drip Coffee,Coffee,3.25,0.55,64,Wednesday
+2025-01-22,Latte,Coffee,4.75,1.1,60,Wednesday
+2025-01-22,Cappuccino,Coffee,4.5,1.05,44,Wednesday
+2025-01-22,Cold Brew,Coffee,4.95,1.2,64,Wednesday
+2025-01-22,Espresso Shot,Coffee,2.75,0.45,31,Wednesday
+2025-01-22,Matcha Latte,Tea,5.25,1.6,36,Wednesday
+2025-01-22,Chai Latte,Tea,4.95,1.15,21,Wednesday
+2025-01-22,Iced Tea,Tea,3.5,0.5,22,Wednesday
+2025-01-22,Croissant,Pastry,3.75,1.1,27,Wednesday
+2025-01-22,Blueberry Muffin,Pastry,3.95,1.0,36,Wednesday
+2025-01-22,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-01-22,Breakfast Sandwich,Food,7.25,2.4,33,Wednesday
+2025-01-22,Bagel & Cream Cheese,Food,4.5,1.3,32,Wednesday
+2025-01-22,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-01-22,Bottled Water,Other,2.25,0.35,14,Wednesday
+2025-01-23,Drip Coffee,Coffee,3.25,0.55,92,Thursday
+2025-01-23,Latte,Coffee,4.75,1.1,67,Thursday
+2025-01-23,Cappuccino,Coffee,4.5,1.05,43,Thursday
+2025-01-23,Cold Brew,Coffee,4.95,1.2,55,Thursday
+2025-01-23,Espresso Shot,Coffee,2.75,0.45,31,Thursday
+2025-01-23,Matcha Latte,Tea,5.25,1.6,26,Thursday
+2025-01-23,Chai Latte,Tea,4.95,1.15,31,Thursday
+2025-01-23,Iced Tea,Tea,3.5,0.5,26,Thursday
+2025-01-23,Croissant,Pastry,3.75,1.1,33,Thursday
+2025-01-23,Blueberry Muffin,Pastry,3.95,1.0,32,Thursday
+2025-01-23,Avocado Toast,Food,8.5,2.6,24,Thursday
+2025-01-23,Breakfast Sandwich,Food,7.25,2.4,37,Thursday
+2025-01-23,Bagel & Cream Cheese,Food,4.5,1.3,29,Thursday
+2025-01-23,Granola Bowl,Food,6.75,1.9,15,Thursday
+2025-01-23,Bottled Water,Other,2.25,0.35,17,Thursday
+2025-01-24,Drip Coffee,Coffee,3.25,0.55,118,Friday
+2025-01-24,Latte,Coffee,4.75,1.1,88,Friday
+2025-01-24,Cappuccino,Coffee,4.5,1.05,45,Friday
+2025-01-24,Cold Brew,Coffee,4.95,1.2,58,Friday
+2025-01-24,Espresso Shot,Coffee,2.75,0.45,26,Friday
+2025-01-24,Matcha Latte,Tea,5.25,1.6,40,Friday
+2025-01-24,Chai Latte,Tea,4.95,1.15,32,Friday
+2025-01-24,Iced Tea,Tea,3.5,0.5,24,Friday
+2025-01-24,Croissant,Pastry,3.75,1.1,39,Friday
+2025-01-24,Blueberry Muffin,Pastry,3.95,1.0,37,Friday
+2025-01-24,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-01-24,Breakfast Sandwich,Food,7.25,2.4,48,Friday
+2025-01-24,Bagel & Cream Cheese,Food,4.5,1.3,29,Friday
+2025-01-24,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-01-24,Bottled Water,Other,2.25,0.35,22,Friday
+2025-01-25,Drip Coffee,Coffee,3.25,0.55,109,Saturday
+2025-01-25,Latte,Coffee,4.75,1.1,82,Saturday
+2025-01-25,Cappuccino,Coffee,4.5,1.05,46,Saturday
+2025-01-25,Cold Brew,Coffee,4.95,1.2,65,Saturday
+2025-01-25,Espresso Shot,Coffee,2.75,0.45,29,Saturday
+2025-01-25,Matcha Latte,Tea,5.25,1.6,43,Saturday
+2025-01-25,Chai Latte,Tea,4.95,1.15,36,Saturday
+2025-01-25,Iced Tea,Tea,3.5,0.5,31,Saturday
+2025-01-25,Croissant,Pastry,3.75,1.1,58,Saturday
+2025-01-25,Blueberry Muffin,Pastry,3.95,1.0,39,Saturday
+2025-01-25,Avocado Toast,Food,8.5,2.6,23,Saturday
+2025-01-25,Breakfast Sandwich,Food,7.25,2.4,47,Saturday
+2025-01-25,Bagel & Cream Cheese,Food,4.5,1.3,33,Saturday
+2025-01-25,Granola Bowl,Food,6.75,1.9,15,Saturday
+2025-01-25,Bottled Water,Other,2.25,0.35,23,Saturday
+2025-01-26,Drip Coffee,Coffee,3.25,0.55,97,Sunday
+2025-01-26,Latte,Coffee,4.75,1.1,73,Sunday
+2025-01-26,Cappuccino,Coffee,4.5,1.05,40,Sunday
+2025-01-26,Cold Brew,Coffee,4.95,1.2,55,Sunday
+2025-01-26,Espresso Shot,Coffee,2.75,0.45,33,Sunday
+2025-01-26,Matcha Latte,Tea,5.25,1.6,32,Sunday
+2025-01-26,Chai Latte,Tea,4.95,1.15,28,Sunday
+2025-01-26,Iced Tea,Tea,3.5,0.5,21,Sunday
+2025-01-26,Croissant,Pastry,3.75,1.1,43,Sunday
+2025-01-26,Blueberry Muffin,Pastry,3.95,1.0,30,Sunday
+2025-01-26,Avocado Toast,Food,8.5,2.6,26,Sunday
+2025-01-26,Breakfast Sandwich,Food,7.25,2.4,45,Sunday
+2025-01-26,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-01-26,Granola Bowl,Food,6.75,1.9,18,Sunday
+2025-01-26,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-01-27,Drip Coffee,Coffee,3.25,0.55,92,Monday
+2025-01-27,Latte,Coffee,4.75,1.1,60,Monday
+2025-01-27,Cappuccino,Coffee,4.5,1.05,36,Monday
+2025-01-27,Cold Brew,Coffee,4.95,1.2,60,Monday
+2025-01-27,Espresso Shot,Coffee,2.75,0.45,26,Monday
+2025-01-27,Matcha Latte,Tea,5.25,1.6,29,Monday
+2025-01-27,Chai Latte,Tea,4.95,1.15,23,Monday
+2025-01-27,Iced Tea,Tea,3.5,0.5,20,Monday
+2025-01-27,Croissant,Pastry,3.75,1.1,31,Monday
+2025-01-27,Blueberry Muffin,Pastry,3.95,1.0,25,Monday
+2025-01-27,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-01-27,Breakfast Sandwich,Food,7.25,2.4,37,Monday
+2025-01-27,Bagel & Cream Cheese,Food,4.5,1.3,18,Monday
+2025-01-27,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-01-27,Bottled Water,Other,2.25,0.35,17,Monday
+2025-01-28,Drip Coffee,Coffee,3.25,0.55,75,Tuesday
+2025-01-28,Latte,Coffee,4.75,1.1,75,Tuesday
+2025-01-28,Cappuccino,Coffee,4.5,1.05,41,Tuesday
+2025-01-28,Cold Brew,Coffee,4.95,1.2,48,Tuesday
+2025-01-28,Espresso Shot,Coffee,2.75,0.45,22,Tuesday
+2025-01-28,Matcha Latte,Tea,5.25,1.6,31,Tuesday
+2025-01-28,Chai Latte,Tea,4.95,1.15,22,Tuesday
+2025-01-28,Iced Tea,Tea,3.5,0.5,18,Tuesday
+2025-01-28,Croissant,Pastry,3.75,1.1,31,Tuesday
+2025-01-28,Blueberry Muffin,Pastry,3.95,1.0,29,Tuesday
+2025-01-28,Avocado Toast,Food,8.5,2.6,21,Tuesday
+2025-01-28,Breakfast Sandwich,Food,7.25,2.4,36,Tuesday
+2025-01-28,Bagel & Cream Cheese,Food,4.5,1.3,28,Tuesday
+2025-01-28,Granola Bowl,Food,6.75,1.9,14,Tuesday
+2025-01-28,Bottled Water,Other,2.25,0.35,16,Tuesday
+2025-01-29,Drip Coffee,Coffee,3.25,0.55,73,Wednesday
+2025-01-29,Latte,Coffee,4.75,1.1,76,Wednesday
+2025-01-29,Cappuccino,Coffee,4.5,1.05,43,Wednesday
+2025-01-29,Cold Brew,Coffee,4.95,1.2,65,Wednesday
+2025-01-29,Espresso Shot,Coffee,2.75,0.45,23,Wednesday
+2025-01-29,Matcha Latte,Tea,5.25,1.6,30,Wednesday
+2025-01-29,Chai Latte,Tea,4.95,1.15,28,Wednesday
+2025-01-29,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-01-29,Croissant,Pastry,3.75,1.1,35,Wednesday
+2025-01-29,Blueberry Muffin,Pastry,3.95,1.0,24,Wednesday
+2025-01-29,Avocado Toast,Food,8.5,2.6,24,Wednesday
+2025-01-29,Breakfast Sandwich,Food,7.25,2.4,41,Wednesday
+2025-01-29,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-01-29,Granola Bowl,Food,6.75,1.9,18,Wednesday
+2025-01-29,Bottled Water,Other,2.25,0.35,17,Wednesday
+2025-01-30,Drip Coffee,Coffee,3.25,0.55,89,Thursday
+2025-01-30,Latte,Coffee,4.75,1.1,74,Thursday
+2025-01-30,Cappuccino,Coffee,4.5,1.05,52,Thursday
+2025-01-30,Cold Brew,Coffee,4.95,1.2,46,Thursday
+2025-01-30,Espresso Shot,Coffee,2.75,0.45,28,Thursday
+2025-01-30,Matcha Latte,Tea,5.25,1.6,26,Thursday
+2025-01-30,Chai Latte,Tea,4.95,1.15,20,Thursday
+2025-01-30,Iced Tea,Tea,3.5,0.5,16,Thursday
+2025-01-30,Croissant,Pastry,3.75,1.1,31,Thursday
+2025-01-30,Blueberry Muffin,Pastry,3.95,1.0,36,Thursday
+2025-01-30,Avocado Toast,Food,8.5,2.6,21,Thursday
+2025-01-30,Breakfast Sandwich,Food,7.25,2.4,39,Thursday
+2025-01-30,Bagel & Cream Cheese,Food,4.5,1.3,23,Thursday
+2025-01-30,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-01-30,Bottled Water,Other,2.25,0.35,16,Thursday
+2025-01-31,Drip Coffee,Coffee,3.25,0.55,113,Friday
+2025-01-31,Latte,Coffee,4.75,1.1,71,Friday
+2025-01-31,Cappuccino,Coffee,4.5,1.05,42,Friday
+2025-01-31,Cold Brew,Coffee,4.95,1.2,64,Friday
+2025-01-31,Espresso Shot,Coffee,2.75,0.45,29,Friday
+2025-01-31,Matcha Latte,Tea,5.25,1.6,40,Friday
+2025-01-31,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-01-31,Iced Tea,Tea,3.5,0.5,20,Friday
+2025-01-31,Croissant,Pastry,3.75,1.1,38,Friday
+2025-01-31,Blueberry Muffin,Pastry,3.95,1.0,32,Friday
+2025-01-31,Avocado Toast,Food,8.5,2.6,28,Friday
+2025-01-31,Breakfast Sandwich,Food,7.25,2.4,46,Friday
+2025-01-31,Bagel & Cream Cheese,Food,4.5,1.3,29,Friday
+2025-01-31,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-01-31,Bottled Water,Other,2.25,0.35,19,Friday
+2025-02-01,Drip Coffee,Coffee,3.25,0.55,109,Saturday
+2025-02-01,Latte,Coffee,4.75,1.1,93,Saturday
+2025-02-01,Cappuccino,Coffee,4.5,1.05,62,Saturday
+2025-02-01,Cold Brew,Coffee,4.95,1.2,71,Saturday
+2025-02-01,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-02-01,Matcha Latte,Tea,5.25,1.6,34,Saturday
+2025-02-01,Chai Latte,Tea,4.95,1.15,39,Saturday
+2025-02-01,Iced Tea,Tea,3.5,0.5,24,Saturday
+2025-02-01,Croissant,Pastry,3.75,1.1,47,Saturday
+2025-02-01,Blueberry Muffin,Pastry,3.95,1.0,30,Saturday
+2025-02-01,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-02-01,Breakfast Sandwich,Food,7.25,2.4,42,Saturday
+2025-02-01,Bagel & Cream Cheese,Food,4.5,1.3,31,Saturday
+2025-02-01,Granola Bowl,Food,6.75,1.9,21,Saturday
+2025-02-01,Bottled Water,Other,2.25,0.35,20,Saturday
+2025-02-02,Drip Coffee,Coffee,3.25,0.55,93,Sunday
+2025-02-02,Latte,Coffee,4.75,1.1,78,Sunday
+2025-02-02,Cappuccino,Coffee,4.5,1.05,39,Sunday
+2025-02-02,Cold Brew,Coffee,4.95,1.2,70,Sunday
+2025-02-02,Espresso Shot,Coffee,2.75,0.45,32,Sunday
+2025-02-02,Matcha Latte,Tea,5.25,1.6,25,Sunday
+2025-02-02,Chai Latte,Tea,4.95,1.15,25,Sunday
+2025-02-02,Iced Tea,Tea,3.5,0.5,24,Sunday
+2025-02-02,Croissant,Pastry,3.75,1.1,32,Sunday
+2025-02-02,Blueberry Muffin,Pastry,3.95,1.0,31,Sunday
+2025-02-02,Avocado Toast,Food,8.5,2.6,25,Sunday
+2025-02-02,Breakfast Sandwich,Food,7.25,2.4,45,Sunday
+2025-02-02,Bagel & Cream Cheese,Food,4.5,1.3,28,Sunday
+2025-02-02,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-02-02,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-02-03,Drip Coffee,Coffee,3.25,0.55,93,Monday
+2025-02-03,Latte,Coffee,4.75,1.1,63,Monday
+2025-02-03,Cappuccino,Coffee,4.5,1.05,40,Monday
+2025-02-03,Cold Brew,Coffee,4.95,1.2,49,Monday
+2025-02-03,Espresso Shot,Coffee,2.75,0.45,24,Monday
+2025-02-03,Matcha Latte,Tea,5.25,1.6,28,Monday
+2025-02-03,Chai Latte,Tea,4.95,1.15,26,Monday
+2025-02-03,Iced Tea,Tea,3.5,0.5,17,Monday
+2025-02-03,Croissant,Pastry,3.75,1.1,36,Monday
+2025-02-03,Blueberry Muffin,Pastry,3.95,1.0,33,Monday
+2025-02-03,Avocado Toast,Food,8.5,2.6,22,Monday
+2025-02-03,Breakfast Sandwich,Food,7.25,2.4,39,Monday
+2025-02-03,Bagel & Cream Cheese,Food,4.5,1.3,27,Monday
+2025-02-03,Granola Bowl,Food,6.75,1.9,15,Monday
+2025-02-03,Bottled Water,Other,2.25,0.35,18,Monday
+2025-02-04,Drip Coffee,Coffee,3.25,0.55,83,Tuesday
+2025-02-04,Latte,Coffee,4.75,1.1,73,Tuesday
+2025-02-04,Cappuccino,Coffee,4.5,1.05,38,Tuesday
+2025-02-04,Cold Brew,Coffee,4.95,1.2,46,Tuesday
+2025-02-04,Espresso Shot,Coffee,2.75,0.45,24,Tuesday
+2025-02-04,Matcha Latte,Tea,5.25,1.6,22,Tuesday
+2025-02-04,Chai Latte,Tea,4.95,1.15,27,Tuesday
+2025-02-04,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-02-04,Croissant,Pastry,3.75,1.1,38,Tuesday
+2025-02-04,Blueberry Muffin,Pastry,3.95,1.0,29,Tuesday
+2025-02-04,Avocado Toast,Food,8.5,2.6,23,Tuesday
+2025-02-04,Breakfast Sandwich,Food,7.25,2.4,36,Tuesday
+2025-02-04,Bagel & Cream Cheese,Food,4.5,1.3,22,Tuesday
+2025-02-04,Granola Bowl,Food,6.75,1.9,11,Tuesday
+2025-02-04,Bottled Water,Other,2.25,0.35,15,Tuesday
+2025-02-05,Drip Coffee,Coffee,3.25,0.55,71,Wednesday
+2025-02-05,Latte,Coffee,4.75,1.1,75,Wednesday
+2025-02-05,Cappuccino,Coffee,4.5,1.05,39,Wednesday
+2025-02-05,Cold Brew,Coffee,4.95,1.2,59,Wednesday
+2025-02-05,Espresso Shot,Coffee,2.75,0.45,25,Wednesday
+2025-02-05,Matcha Latte,Tea,5.25,1.6,34,Wednesday
+2025-02-05,Chai Latte,Tea,4.95,1.15,32,Wednesday
+2025-02-05,Iced Tea,Tea,3.5,0.5,18,Wednesday
+2025-02-05,Croissant,Pastry,3.75,1.1,34,Wednesday
+2025-02-05,Blueberry Muffin,Pastry,3.95,1.0,28,Wednesday
+2025-02-05,Avocado Toast,Food,8.5,2.6,18,Wednesday
+2025-02-05,Breakfast Sandwich,Food,7.25,2.4,41,Wednesday
+2025-02-05,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-02-05,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-02-05,Bottled Water,Other,2.25,0.35,17,Wednesday
+2025-02-06,Drip Coffee,Coffee,3.25,0.55,101,Thursday
+2025-02-06,Latte,Coffee,4.75,1.1,53,Thursday
+2025-02-06,Cappuccino,Coffee,4.5,1.05,43,Thursday
+2025-02-06,Cold Brew,Coffee,4.95,1.2,59,Thursday
+2025-02-06,Espresso Shot,Coffee,2.75,0.45,24,Thursday
+2025-02-06,Matcha Latte,Tea,5.25,1.6,37,Thursday
+2025-02-06,Chai Latte,Tea,4.95,1.15,33,Thursday
+2025-02-06,Iced Tea,Tea,3.5,0.5,20,Thursday
+2025-02-06,Croissant,Pastry,3.75,1.1,36,Thursday
+2025-02-06,Blueberry Muffin,Pastry,3.95,1.0,30,Thursday
+2025-02-06,Avocado Toast,Food,8.5,2.6,22,Thursday
+2025-02-06,Breakfast Sandwich,Food,7.25,2.4,34,Thursday
+2025-02-06,Bagel & Cream Cheese,Food,4.5,1.3,32,Thursday
+2025-02-06,Granola Bowl,Food,6.75,1.9,17,Thursday
+2025-02-06,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-02-07,Drip Coffee,Coffee,3.25,0.55,85,Friday
+2025-02-07,Latte,Coffee,4.75,1.1,101,Friday
+2025-02-07,Cappuccino,Coffee,4.5,1.05,57,Friday
+2025-02-07,Cold Brew,Coffee,4.95,1.2,65,Friday
+2025-02-07,Espresso Shot,Coffee,2.75,0.45,26,Friday
+2025-02-07,Matcha Latte,Tea,5.25,1.6,31,Friday
+2025-02-07,Chai Latte,Tea,4.95,1.15,34,Friday
+2025-02-07,Iced Tea,Tea,3.5,0.5,20,Friday
+2025-02-07,Croissant,Pastry,3.75,1.1,40,Friday
+2025-02-07,Blueberry Muffin,Pastry,3.95,1.0,39,Friday
+2025-02-07,Avocado Toast,Food,8.5,2.6,21,Friday
+2025-02-07,Breakfast Sandwich,Food,7.25,2.4,54,Friday
+2025-02-07,Bagel & Cream Cheese,Food,4.5,1.3,36,Friday
+2025-02-07,Granola Bowl,Food,6.75,1.9,14,Friday
+2025-02-07,Bottled Water,Other,2.25,0.35,17,Friday
+2025-02-08,Drip Coffee,Coffee,3.25,0.55,107,Saturday
+2025-02-08,Latte,Coffee,4.75,1.1,80,Saturday
+2025-02-08,Cappuccino,Coffee,4.5,1.05,50,Saturday
+2025-02-08,Cold Brew,Coffee,4.95,1.2,49,Saturday
+2025-02-08,Espresso Shot,Coffee,2.75,0.45,32,Saturday
+2025-02-08,Matcha Latte,Tea,5.25,1.6,47,Saturday
+2025-02-08,Chai Latte,Tea,4.95,1.15,32,Saturday
+2025-02-08,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-02-08,Croissant,Pastry,3.75,1.1,37,Saturday
+2025-02-08,Blueberry Muffin,Pastry,3.95,1.0,42,Saturday
+2025-02-08,Avocado Toast,Food,8.5,2.6,28,Saturday
+2025-02-08,Breakfast Sandwich,Food,7.25,2.4,61,Saturday
+2025-02-08,Bagel & Cream Cheese,Food,4.5,1.3,35,Saturday
+2025-02-08,Granola Bowl,Food,6.75,1.9,17,Saturday
+2025-02-08,Bottled Water,Other,2.25,0.35,25,Saturday
+2025-02-09,Drip Coffee,Coffee,3.25,0.55,88,Sunday
+2025-02-09,Latte,Coffee,4.75,1.1,65,Sunday
+2025-02-09,Cappuccino,Coffee,4.5,1.05,46,Sunday
+2025-02-09,Cold Brew,Coffee,4.95,1.2,59,Sunday
+2025-02-09,Espresso Shot,Coffee,2.75,0.45,28,Sunday
+2025-02-09,Matcha Latte,Tea,5.25,1.6,34,Sunday
+2025-02-09,Chai Latte,Tea,4.95,1.15,29,Sunday
+2025-02-09,Iced Tea,Tea,3.5,0.5,23,Sunday
+2025-02-09,Croissant,Pastry,3.75,1.1,47,Sunday
+2025-02-09,Blueberry Muffin,Pastry,3.95,1.0,29,Sunday
+2025-02-09,Avocado Toast,Food,8.5,2.6,29,Sunday
+2025-02-09,Breakfast Sandwich,Food,7.25,2.4,41,Sunday
+2025-02-09,Bagel & Cream Cheese,Food,4.5,1.3,26,Sunday
+2025-02-09,Granola Bowl,Food,6.75,1.9,20,Sunday
+2025-02-09,Bottled Water,Other,2.25,0.35,20,Sunday
+2025-02-10,Drip Coffee,Coffee,3.25,0.55,94,Monday
+2025-02-10,Latte,Coffee,4.75,1.1,73,Monday
+2025-02-10,Cappuccino,Coffee,4.5,1.05,30,Monday
+2025-02-10,Cold Brew,Coffee,4.95,1.2,53,Monday
+2025-02-10,Espresso Shot,Coffee,2.75,0.45,22,Monday
+2025-02-10,Matcha Latte,Tea,5.25,1.6,24,Monday
+2025-02-10,Chai Latte,Tea,4.95,1.15,21,Monday
+2025-02-10,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-02-10,Croissant,Pastry,3.75,1.1,36,Monday
+2025-02-10,Blueberry Muffin,Pastry,3.95,1.0,30,Monday
+2025-02-10,Avocado Toast,Food,8.5,2.6,20,Monday
+2025-02-10,Breakfast Sandwich,Food,7.25,2.4,33,Monday
+2025-02-10,Bagel & Cream Cheese,Food,4.5,1.3,22,Monday
+2025-02-10,Granola Bowl,Food,6.75,1.9,12,Monday
+2025-02-10,Bottled Water,Other,2.25,0.35,15,Monday
+2025-02-11,Drip Coffee,Coffee,3.25,0.55,79,Tuesday
+2025-02-11,Latte,Coffee,4.75,1.1,66,Tuesday
+2025-02-11,Cappuccino,Coffee,4.5,1.05,34,Tuesday
+2025-02-11,Cold Brew,Coffee,4.95,1.2,51,Tuesday
+2025-02-11,Espresso Shot,Coffee,2.75,0.45,22,Tuesday
+2025-02-11,Matcha Latte,Tea,5.25,1.6,28,Tuesday
+2025-02-11,Chai Latte,Tea,4.95,1.15,28,Tuesday
+2025-02-11,Iced Tea,Tea,3.5,0.5,19,Tuesday
+2025-02-11,Croissant,Pastry,3.75,1.1,35,Tuesday
+2025-02-11,Blueberry Muffin,Pastry,3.95,1.0,23,Tuesday
+2025-02-11,Avocado Toast,Food,8.5,2.6,20,Tuesday
+2025-02-11,Breakfast Sandwich,Food,7.25,2.4,37,Tuesday
+2025-02-11,Bagel & Cream Cheese,Food,4.5,1.3,27,Tuesday
+2025-02-11,Granola Bowl,Food,6.75,1.9,11,Tuesday
+2025-02-11,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-02-12,Drip Coffee,Coffee,3.25,0.55,97,Wednesday
+2025-02-12,Latte,Coffee,4.75,1.1,68,Wednesday
+2025-02-12,Cappuccino,Coffee,4.5,1.05,40,Wednesday
+2025-02-12,Cold Brew,Coffee,4.95,1.2,58,Wednesday
+2025-02-12,Espresso Shot,Coffee,2.75,0.45,26,Wednesday
+2025-02-12,Matcha Latte,Tea,5.25,1.6,32,Wednesday
+2025-02-12,Chai Latte,Tea,4.95,1.15,28,Wednesday
+2025-02-12,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-02-12,Croissant,Pastry,3.75,1.1,32,Wednesday
+2025-02-12,Blueberry Muffin,Pastry,3.95,1.0,29,Wednesday
+2025-02-12,Avocado Toast,Food,8.5,2.6,25,Wednesday
+2025-02-12,Breakfast Sandwich,Food,7.25,2.4,37,Wednesday
+2025-02-12,Bagel & Cream Cheese,Food,4.5,1.3,25,Wednesday
+2025-02-12,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-02-12,Bottled Water,Other,2.25,0.35,20,Wednesday
+2025-02-13,Drip Coffee,Coffee,3.25,0.55,80,Thursday
+2025-02-13,Latte,Coffee,4.75,1.1,82,Thursday
+2025-02-13,Cappuccino,Coffee,4.5,1.05,37,Thursday
+2025-02-13,Cold Brew,Coffee,4.95,1.2,50,Thursday
+2025-02-13,Espresso Shot,Coffee,2.75,0.45,27,Thursday
+2025-02-13,Matcha Latte,Tea,5.25,1.6,32,Thursday
+2025-02-13,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-02-13,Iced Tea,Tea,3.5,0.5,24,Thursday
+2025-02-13,Croissant,Pastry,3.75,1.1,35,Thursday
+2025-02-13,Blueberry Muffin,Pastry,3.95,1.0,33,Thursday
+2025-02-13,Avocado Toast,Food,8.5,2.6,21,Thursday
+2025-02-13,Breakfast Sandwich,Food,7.25,2.4,46,Thursday
+2025-02-13,Bagel & Cream Cheese,Food,4.5,1.3,29,Thursday
+2025-02-13,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-02-13,Bottled Water,Other,2.25,0.35,19,Thursday
+2025-02-14,Drip Coffee,Coffee,3.25,0.55,89,Friday
+2025-02-14,Latte,Coffee,4.75,1.1,77,Friday
+2025-02-14,Cappuccino,Coffee,4.5,1.05,49,Friday
+2025-02-14,Cold Brew,Coffee,4.95,1.2,63,Friday
+2025-02-14,Espresso Shot,Coffee,2.75,0.45,29,Friday
+2025-02-14,Matcha Latte,Tea,5.25,1.6,29,Friday
+2025-02-14,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-02-14,Iced Tea,Tea,3.5,0.5,21,Friday
+2025-02-14,Croissant,Pastry,3.75,1.1,35,Friday
+2025-02-14,Blueberry Muffin,Pastry,3.95,1.0,34,Friday
+2025-02-14,Avocado Toast,Food,8.5,2.6,20,Friday
+2025-02-14,Breakfast Sandwich,Food,7.25,2.4,47,Friday
+2025-02-14,Bagel & Cream Cheese,Food,4.5,1.3,33,Friday
+2025-02-14,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-02-14,Bottled Water,Other,2.25,0.35,18,Friday
+2025-02-15,Drip Coffee,Coffee,3.25,0.55,98,Saturday
+2025-02-15,Latte,Coffee,4.75,1.1,89,Saturday
+2025-02-15,Cappuccino,Coffee,4.5,1.05,37,Saturday
+2025-02-15,Cold Brew,Coffee,4.95,1.2,73,Saturday
+2025-02-15,Espresso Shot,Coffee,2.75,0.45,35,Saturday
+2025-02-15,Matcha Latte,Tea,5.25,1.6,38,Saturday
+2025-02-15,Chai Latte,Tea,4.95,1.15,34,Saturday
+2025-02-15,Iced Tea,Tea,3.5,0.5,27,Saturday
+2025-02-15,Croissant,Pastry,3.75,1.1,47,Saturday
+2025-02-15,Blueberry Muffin,Pastry,3.95,1.0,44,Saturday
+2025-02-15,Avocado Toast,Food,8.5,2.6,29,Saturday
+2025-02-15,Breakfast Sandwich,Food,7.25,2.4,45,Saturday
+2025-02-15,Bagel & Cream Cheese,Food,4.5,1.3,32,Saturday
+2025-02-15,Granola Bowl,Food,6.75,1.9,19,Saturday
+2025-02-15,Bottled Water,Other,2.25,0.35,28,Saturday
+2025-02-16,Drip Coffee,Coffee,3.25,0.55,90,Sunday
+2025-02-16,Latte,Coffee,4.75,1.1,67,Sunday
+2025-02-16,Cappuccino,Coffee,4.5,1.05,39,Sunday
+2025-02-16,Cold Brew,Coffee,4.95,1.2,45,Sunday
+2025-02-16,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-02-16,Matcha Latte,Tea,5.25,1.6,28,Sunday
+2025-02-16,Chai Latte,Tea,4.95,1.15,26,Sunday
+2025-02-16,Iced Tea,Tea,3.5,0.5,17,Sunday
+2025-02-16,Croissant,Pastry,3.75,1.1,33,Sunday
+2025-02-16,Blueberry Muffin,Pastry,3.95,1.0,35,Sunday
+2025-02-16,Avocado Toast,Food,8.5,2.6,20,Sunday
+2025-02-16,Breakfast Sandwich,Food,7.25,2.4,33,Sunday
+2025-02-16,Bagel & Cream Cheese,Food,4.5,1.3,29,Sunday
+2025-02-16,Granola Bowl,Food,6.75,1.9,15,Sunday
+2025-02-16,Bottled Water,Other,2.25,0.35,21,Sunday
+2025-02-17,Drip Coffee,Coffee,3.25,0.55,88,Monday
+2025-02-17,Latte,Coffee,4.75,1.1,66,Monday
+2025-02-17,Cappuccino,Coffee,4.5,1.05,32,Monday
+2025-02-17,Cold Brew,Coffee,4.95,1.2,51,Monday
+2025-02-17,Espresso Shot,Coffee,2.75,0.45,25,Monday
+2025-02-17,Matcha Latte,Tea,5.25,1.6,27,Monday
+2025-02-17,Chai Latte,Tea,4.95,1.15,22,Monday
+2025-02-17,Iced Tea,Tea,3.5,0.5,22,Monday
+2025-02-17,Croissant,Pastry,3.75,1.1,32,Monday
+2025-02-17,Blueberry Muffin,Pastry,3.95,1.0,27,Monday
+2025-02-17,Avocado Toast,Food,8.5,2.6,21,Monday
+2025-02-17,Breakfast Sandwich,Food,7.25,2.4,41,Monday
+2025-02-17,Bagel & Cream Cheese,Food,4.5,1.3,25,Monday
+2025-02-17,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-02-17,Bottled Water,Other,2.25,0.35,18,Monday
+2025-02-18,Drip Coffee,Coffee,3.25,0.55,102,Tuesday
+2025-02-18,Latte,Coffee,4.75,1.1,78,Tuesday
+2025-02-18,Cappuccino,Coffee,4.5,1.05,41,Tuesday
+2025-02-18,Cold Brew,Coffee,4.95,1.2,45,Tuesday
+2025-02-18,Espresso Shot,Coffee,2.75,0.45,34,Tuesday
+2025-02-18,Matcha Latte,Tea,5.25,1.6,24,Tuesday
+2025-02-18,Chai Latte,Tea,4.95,1.15,25,Tuesday
+2025-02-18,Iced Tea,Tea,3.5,0.5,17,Tuesday
+2025-02-18,Croissant,Pastry,3.75,1.1,40,Tuesday
+2025-02-18,Blueberry Muffin,Pastry,3.95,1.0,30,Tuesday
+2025-02-18,Avocado Toast,Food,8.5,2.6,17,Tuesday
+2025-02-18,Breakfast Sandwich,Food,7.25,2.4,37,Tuesday
+2025-02-18,Bagel & Cream Cheese,Food,4.5,1.3,26,Tuesday
+2025-02-18,Granola Bowl,Food,6.75,1.9,13,Tuesday
+2025-02-18,Bottled Water,Other,2.25,0.35,15,Tuesday
+2025-02-19,Drip Coffee,Coffee,3.25,0.55,78,Wednesday
+2025-02-19,Latte,Coffee,4.75,1.1,66,Wednesday
+2025-02-19,Cappuccino,Coffee,4.5,1.05,40,Wednesday
+2025-02-19,Cold Brew,Coffee,4.95,1.2,52,Wednesday
+2025-02-19,Espresso Shot,Coffee,2.75,0.45,27,Wednesday
+2025-02-19,Matcha Latte,Tea,5.25,1.6,27,Wednesday
+2025-02-19,Chai Latte,Tea,4.95,1.15,22,Wednesday
+2025-02-19,Iced Tea,Tea,3.5,0.5,18,Wednesday
+2025-02-19,Croissant,Pastry,3.75,1.1,41,Wednesday
+2025-02-19,Blueberry Muffin,Pastry,3.95,1.0,28,Wednesday
+2025-02-19,Avocado Toast,Food,8.5,2.6,28,Wednesday
+2025-02-19,Breakfast Sandwich,Food,7.25,2.4,40,Wednesday
+2025-02-19,Bagel & Cream Cheese,Food,4.5,1.3,22,Wednesday
+2025-02-19,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-02-19,Bottled Water,Other,2.25,0.35,19,Wednesday
+2025-02-20,Drip Coffee,Coffee,3.25,0.55,77,Thursday
+2025-02-20,Latte,Coffee,4.75,1.1,94,Thursday
+2025-02-20,Cappuccino,Coffee,4.5,1.05,37,Thursday
+2025-02-20,Cold Brew,Coffee,4.95,1.2,62,Thursday
+2025-02-20,Espresso Shot,Coffee,2.75,0.45,31,Thursday
+2025-02-20,Matcha Latte,Tea,5.25,1.6,31,Thursday
+2025-02-20,Chai Latte,Tea,4.95,1.15,26,Thursday
+2025-02-20,Iced Tea,Tea,3.5,0.5,20,Thursday
+2025-02-20,Croissant,Pastry,3.75,1.1,38,Thursday
+2025-02-20,Blueberry Muffin,Pastry,3.95,1.0,35,Thursday
+2025-02-20,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-02-20,Breakfast Sandwich,Food,7.25,2.4,33,Thursday
+2025-02-20,Bagel & Cream Cheese,Food,4.5,1.3,27,Thursday
+2025-02-20,Granola Bowl,Food,6.75,1.9,14,Thursday
+2025-02-20,Bottled Water,Other,2.25,0.35,14,Thursday
+2025-02-21,Drip Coffee,Coffee,3.25,0.55,90,Friday
+2025-02-21,Latte,Coffee,4.75,1.1,67,Friday
+2025-02-21,Cappuccino,Coffee,4.5,1.05,49,Friday
+2025-02-21,Cold Brew,Coffee,4.95,1.2,78,Friday
+2025-02-21,Espresso Shot,Coffee,2.75,0.45,35,Friday
+2025-02-21,Matcha Latte,Tea,5.25,1.6,32,Friday
+2025-02-21,Chai Latte,Tea,4.95,1.15,30,Friday
+2025-02-21,Iced Tea,Tea,3.5,0.5,25,Friday
+2025-02-21,Croissant,Pastry,3.75,1.1,45,Friday
+2025-02-21,Blueberry Muffin,Pastry,3.95,1.0,33,Friday
+2025-02-21,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-02-21,Breakfast Sandwich,Food,7.25,2.4,55,Friday
+2025-02-21,Bagel & Cream Cheese,Food,4.5,1.3,30,Friday
+2025-02-21,Granola Bowl,Food,6.75,1.9,15,Friday
+2025-02-21,Bottled Water,Other,2.25,0.35,21,Friday
+2025-02-22,Drip Coffee,Coffee,3.25,0.55,118,Saturday
+2025-02-22,Latte,Coffee,4.75,1.1,80,Saturday
+2025-02-22,Cappuccino,Coffee,4.5,1.05,50,Saturday
+2025-02-22,Cold Brew,Coffee,4.95,1.2,61,Saturday
+2025-02-22,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-02-22,Matcha Latte,Tea,5.25,1.6,48,Saturday
+2025-02-22,Chai Latte,Tea,4.95,1.15,40,Saturday
+2025-02-22,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-02-22,Croissant,Pastry,3.75,1.1,40,Saturday
+2025-02-22,Blueberry Muffin,Pastry,3.95,1.0,38,Saturday
+2025-02-22,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-02-22,Breakfast Sandwich,Food,7.25,2.4,46,Saturday
+2025-02-22,Bagel & Cream Cheese,Food,4.5,1.3,40,Saturday
+2025-02-22,Granola Bowl,Food,6.75,1.9,15,Saturday
+2025-02-22,Bottled Water,Other,2.25,0.35,23,Saturday
+2025-02-23,Drip Coffee,Coffee,3.25,0.55,113,Sunday
+2025-02-23,Latte,Coffee,4.75,1.1,58,Sunday
+2025-02-23,Cappuccino,Coffee,4.5,1.05,50,Sunday
+2025-02-23,Cold Brew,Coffee,4.95,1.2,47,Sunday
+2025-02-23,Espresso Shot,Coffee,2.75,0.45,27,Sunday
+2025-02-23,Matcha Latte,Tea,5.25,1.6,32,Sunday
+2025-02-23,Chai Latte,Tea,4.95,1.15,34,Sunday
+2025-02-23,Iced Tea,Tea,3.5,0.5,14,Sunday
+2025-02-23,Croissant,Pastry,3.75,1.1,30,Sunday
+2025-02-23,Blueberry Muffin,Pastry,3.95,1.0,31,Sunday
+2025-02-23,Avocado Toast,Food,8.5,2.6,24,Sunday
+2025-02-23,Breakfast Sandwich,Food,7.25,2.4,37,Sunday
+2025-02-23,Bagel & Cream Cheese,Food,4.5,1.3,28,Sunday
+2025-02-23,Granola Bowl,Food,6.75,1.9,13,Sunday
+2025-02-23,Bottled Water,Other,2.25,0.35,19,Sunday
+2025-02-24,Drip Coffee,Coffee,3.25,0.55,73,Monday
+2025-02-24,Latte,Coffee,4.75,1.1,68,Monday
+2025-02-24,Cappuccino,Coffee,4.5,1.05,41,Monday
+2025-02-24,Cold Brew,Coffee,4.95,1.2,61,Monday
+2025-02-24,Espresso Shot,Coffee,2.75,0.45,22,Monday
+2025-02-24,Matcha Latte,Tea,5.25,1.6,27,Monday
+2025-02-24,Chai Latte,Tea,4.95,1.15,27,Monday
+2025-02-24,Iced Tea,Tea,3.5,0.5,18,Monday
+2025-02-24,Croissant,Pastry,3.75,1.1,33,Monday
+2025-02-24,Blueberry Muffin,Pastry,3.95,1.0,23,Monday
+2025-02-24,Avocado Toast,Food,8.5,2.6,22,Monday
+2025-02-24,Breakfast Sandwich,Food,7.25,2.4,32,Monday
+2025-02-24,Bagel & Cream Cheese,Food,4.5,1.3,22,Monday
+2025-02-24,Granola Bowl,Food,6.75,1.9,11,Monday
+2025-02-24,Bottled Water,Other,2.25,0.35,19,Monday
+2025-02-25,Drip Coffee,Coffee,3.25,0.55,79,Tuesday
+2025-02-25,Latte,Coffee,4.75,1.1,76,Tuesday
+2025-02-25,Cappuccino,Coffee,4.5,1.05,39,Tuesday
+2025-02-25,Cold Brew,Coffee,4.95,1.2,42,Tuesday
+2025-02-25,Espresso Shot,Coffee,2.75,0.45,21,Tuesday
+2025-02-25,Matcha Latte,Tea,5.25,1.6,31,Tuesday
+2025-02-25,Chai Latte,Tea,4.95,1.15,24,Tuesday
+2025-02-25,Iced Tea,Tea,3.5,0.5,17,Tuesday
+2025-02-25,Croissant,Pastry,3.75,1.1,33,Tuesday
+2025-02-25,Blueberry Muffin,Pastry,3.95,1.0,28,Tuesday
+2025-02-25,Avocado Toast,Food,8.5,2.6,18,Tuesday
+2025-02-25,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-02-25,Bagel & Cream Cheese,Food,4.5,1.3,23,Tuesday
+2025-02-25,Granola Bowl,Food,6.75,1.9,9,Tuesday
+2025-02-25,Bottled Water,Other,2.25,0.35,18,Tuesday
+2025-02-26,Drip Coffee,Coffee,3.25,0.55,77,Wednesday
+2025-02-26,Latte,Coffee,4.75,1.1,81,Wednesday
+2025-02-26,Cappuccino,Coffee,4.5,1.05,34,Wednesday
+2025-02-26,Cold Brew,Coffee,4.95,1.2,45,Wednesday
+2025-02-26,Espresso Shot,Coffee,2.75,0.45,29,Wednesday
+2025-02-26,Matcha Latte,Tea,5.25,1.6,24,Wednesday
+2025-02-26,Chai Latte,Tea,4.95,1.15,26,Wednesday
+2025-02-26,Iced Tea,Tea,3.5,0.5,21,Wednesday
+2025-02-26,Croissant,Pastry,3.75,1.1,34,Wednesday
+2025-02-26,Blueberry Muffin,Pastry,3.95,1.0,24,Wednesday
+2025-02-26,Avocado Toast,Food,8.5,2.6,22,Wednesday
+2025-02-26,Breakfast Sandwich,Food,7.25,2.4,37,Wednesday
+2025-02-26,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-02-26,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-02-26,Bottled Water,Other,2.25,0.35,25,Wednesday
+2025-02-27,Drip Coffee,Coffee,3.25,0.55,72,Thursday
+2025-02-27,Latte,Coffee,4.75,1.1,73,Thursday
+2025-02-27,Cappuccino,Coffee,4.5,1.05,37,Thursday
+2025-02-27,Cold Brew,Coffee,4.95,1.2,66,Thursday
+2025-02-27,Espresso Shot,Coffee,2.75,0.45,29,Thursday
+2025-02-27,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-02-27,Chai Latte,Tea,4.95,1.15,27,Thursday
+2025-02-27,Iced Tea,Tea,3.5,0.5,19,Thursday
+2025-02-27,Croissant,Pastry,3.75,1.1,28,Thursday
+2025-02-27,Blueberry Muffin,Pastry,3.95,1.0,38,Thursday
+2025-02-27,Avocado Toast,Food,8.5,2.6,25,Thursday
+2025-02-27,Breakfast Sandwich,Food,7.25,2.4,39,Thursday
+2025-02-27,Bagel & Cream Cheese,Food,4.5,1.3,30,Thursday
+2025-02-27,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-02-27,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-02-28,Drip Coffee,Coffee,3.25,0.55,79,Friday
+2025-02-28,Latte,Coffee,4.75,1.1,74,Friday
+2025-02-28,Cappuccino,Coffee,4.5,1.05,47,Friday
+2025-02-28,Cold Brew,Coffee,4.95,1.2,66,Friday
+2025-02-28,Espresso Shot,Coffee,2.75,0.45,32,Friday
+2025-02-28,Matcha Latte,Tea,5.25,1.6,30,Friday
+2025-02-28,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-02-28,Iced Tea,Tea,3.5,0.5,29,Friday
+2025-02-28,Croissant,Pastry,3.75,1.1,44,Friday
+2025-02-28,Blueberry Muffin,Pastry,3.95,1.0,38,Friday
+2025-02-28,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-02-28,Breakfast Sandwich,Food,7.25,2.4,48,Friday
+2025-02-28,Bagel & Cream Cheese,Food,4.5,1.3,36,Friday
+2025-02-28,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-02-28,Bottled Water,Other,2.25,0.35,24,Friday
+2025-03-01,Drip Coffee,Coffee,3.25,0.55,99,Saturday
+2025-03-01,Latte,Coffee,4.75,1.1,97,Saturday
+2025-03-01,Cappuccino,Coffee,4.5,1.05,58,Saturday
+2025-03-01,Cold Brew,Coffee,4.95,1.2,65,Saturday
+2025-03-01,Espresso Shot,Coffee,2.75,0.45,37,Saturday
+2025-03-01,Matcha Latte,Tea,5.25,1.6,36,Saturday
+2025-03-01,Chai Latte,Tea,4.95,1.15,33,Saturday
+2025-03-01,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-03-01,Croissant,Pastry,3.75,1.1,56,Saturday
+2025-03-01,Blueberry Muffin,Pastry,3.95,1.0,40,Saturday
+2025-03-01,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-03-01,Breakfast Sandwich,Food,7.25,2.4,45,Saturday
+2025-03-01,Bagel & Cream Cheese,Food,4.5,1.3,34,Saturday
+2025-03-01,Granola Bowl,Food,6.75,1.9,16,Saturday
+2025-03-01,Bottled Water,Other,2.25,0.35,22,Saturday
+2025-03-02,Drip Coffee,Coffee,3.25,0.55,103,Sunday
+2025-03-02,Latte,Coffee,4.75,1.1,77,Sunday
+2025-03-02,Cappuccino,Coffee,4.5,1.05,52,Sunday
+2025-03-02,Cold Brew,Coffee,4.95,1.2,59,Sunday
+2025-03-02,Espresso Shot,Coffee,2.75,0.45,27,Sunday
+2025-03-02,Matcha Latte,Tea,5.25,1.6,38,Sunday
+2025-03-02,Chai Latte,Tea,4.95,1.15,28,Sunday
+2025-03-02,Iced Tea,Tea,3.5,0.5,18,Sunday
+2025-03-02,Croissant,Pastry,3.75,1.1,45,Sunday
+2025-03-02,Blueberry Muffin,Pastry,3.95,1.0,35,Sunday
+2025-03-02,Avocado Toast,Food,8.5,2.6,18,Sunday
+2025-03-02,Breakfast Sandwich,Food,7.25,2.4,42,Sunday
+2025-03-02,Bagel & Cream Cheese,Food,4.5,1.3,27,Sunday
+2025-03-02,Granola Bowl,Food,6.75,1.9,19,Sunday
+2025-03-02,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-03-03,Drip Coffee,Coffee,3.25,0.55,75,Monday
+2025-03-03,Latte,Coffee,4.75,1.1,59,Monday
+2025-03-03,Cappuccino,Coffee,4.5,1.05,33,Monday
+2025-03-03,Cold Brew,Coffee,4.95,1.2,48,Monday
+2025-03-03,Espresso Shot,Coffee,2.75,0.45,20,Monday
+2025-03-03,Matcha Latte,Tea,5.25,1.6,25,Monday
+2025-03-03,Chai Latte,Tea,4.95,1.15,21,Monday
+2025-03-03,Iced Tea,Tea,3.5,0.5,16,Monday
+2025-03-03,Croissant,Pastry,3.75,1.1,27,Monday
+2025-03-03,Blueberry Muffin,Pastry,3.95,1.0,27,Monday
+2025-03-03,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-03-03,Breakfast Sandwich,Food,7.25,2.4,31,Monday
+2025-03-03,Bagel & Cream Cheese,Food,4.5,1.3,26,Monday
+2025-03-03,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-03-03,Bottled Water,Other,2.25,0.35,16,Monday
+2025-03-04,Drip Coffee,Coffee,3.25,0.55,76,Tuesday
+2025-03-04,Latte,Coffee,4.75,1.1,79,Tuesday
+2025-03-04,Cappuccino,Coffee,4.5,1.05,39,Tuesday
+2025-03-04,Cold Brew,Coffee,4.95,1.2,55,Tuesday
+2025-03-04,Espresso Shot,Coffee,2.75,0.45,16,Tuesday
+2025-03-04,Matcha Latte,Tea,5.25,1.6,26,Tuesday
+2025-03-04,Chai Latte,Tea,4.95,1.15,20,Tuesday
+2025-03-04,Iced Tea,Tea,3.5,0.5,18,Tuesday
+2025-03-04,Croissant,Pastry,3.75,1.1,35,Tuesday
+2025-03-04,Blueberry Muffin,Pastry,3.95,1.0,26,Tuesday
+2025-03-04,Avocado Toast,Food,8.5,2.6,22,Tuesday
+2025-03-04,Breakfast Sandwich,Food,7.25,2.4,32,Tuesday
+2025-03-04,Bagel & Cream Cheese,Food,4.5,1.3,26,Tuesday
+2025-03-04,Granola Bowl,Food,6.75,1.9,11,Tuesday
+2025-03-04,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-03-05,Drip Coffee,Coffee,3.25,0.55,89,Wednesday
+2025-03-05,Latte,Coffee,4.75,1.1,75,Wednesday
+2025-03-05,Cappuccino,Coffee,4.5,1.05,39,Wednesday
+2025-03-05,Cold Brew,Coffee,4.95,1.2,68,Wednesday
+2025-03-05,Espresso Shot,Coffee,2.75,0.45,24,Wednesday
+2025-03-05,Matcha Latte,Tea,5.25,1.6,28,Wednesday
+2025-03-05,Chai Latte,Tea,4.95,1.15,19,Wednesday
+2025-03-05,Iced Tea,Tea,3.5,0.5,24,Wednesday
+2025-03-05,Croissant,Pastry,3.75,1.1,33,Wednesday
+2025-03-05,Blueberry Muffin,Pastry,3.95,1.0,26,Wednesday
+2025-03-05,Avocado Toast,Food,8.5,2.6,25,Wednesday
+2025-03-05,Breakfast Sandwich,Food,7.25,2.4,44,Wednesday
+2025-03-05,Bagel & Cream Cheese,Food,4.5,1.3,26,Wednesday
+2025-03-05,Granola Bowl,Food,6.75,1.9,12,Wednesday
+2025-03-05,Bottled Water,Other,2.25,0.35,19,Wednesday
+2025-03-06,Drip Coffee,Coffee,3.25,0.55,83,Thursday
+2025-03-06,Latte,Coffee,4.75,1.1,63,Thursday
+2025-03-06,Cappuccino,Coffee,4.5,1.05,47,Thursday
+2025-03-06,Cold Brew,Coffee,4.95,1.2,43,Thursday
+2025-03-06,Espresso Shot,Coffee,2.75,0.45,28,Thursday
+2025-03-06,Matcha Latte,Tea,5.25,1.6,33,Thursday
+2025-03-06,Chai Latte,Tea,4.95,1.15,37,Thursday
+2025-03-06,Iced Tea,Tea,3.5,0.5,22,Thursday
+2025-03-06,Croissant,Pastry,3.75,1.1,28,Thursday
+2025-03-06,Blueberry Muffin,Pastry,3.95,1.0,28,Thursday
+2025-03-06,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-03-06,Breakfast Sandwich,Food,7.25,2.4,42,Thursday
+2025-03-06,Bagel & Cream Cheese,Food,4.5,1.3,31,Thursday
+2025-03-06,Granola Bowl,Food,6.75,1.9,11,Thursday
+2025-03-06,Bottled Water,Other,2.25,0.35,18,Thursday
+2025-03-07,Drip Coffee,Coffee,3.25,0.55,109,Friday
+2025-03-07,Latte,Coffee,4.75,1.1,95,Friday
+2025-03-07,Cappuccino,Coffee,4.5,1.05,56,Friday
+2025-03-07,Cold Brew,Coffee,4.95,1.2,60,Friday
+2025-03-07,Espresso Shot,Coffee,2.75,0.45,33,Friday
+2025-03-07,Matcha Latte,Tea,5.25,1.6,42,Friday
+2025-03-07,Chai Latte,Tea,4.95,1.15,37,Friday
+2025-03-07,Iced Tea,Tea,3.5,0.5,25,Friday
+2025-03-07,Croissant,Pastry,3.75,1.1,44,Friday
+2025-03-07,Blueberry Muffin,Pastry,3.95,1.0,31,Friday
+2025-03-07,Avocado Toast,Food,8.5,2.6,21,Friday
+2025-03-07,Breakfast Sandwich,Food,7.25,2.4,49,Friday
+2025-03-07,Bagel & Cream Cheese,Food,4.5,1.3,29,Friday
+2025-03-07,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-03-07,Bottled Water,Other,2.25,0.35,19,Friday
+2025-03-08,Drip Coffee,Coffee,3.25,0.55,105,Saturday
+2025-03-08,Latte,Coffee,4.75,1.1,94,Saturday
+2025-03-08,Cappuccino,Coffee,4.5,1.05,46,Saturday
+2025-03-08,Cold Brew,Coffee,4.95,1.2,72,Saturday
+2025-03-08,Espresso Shot,Coffee,2.75,0.45,33,Saturday
+2025-03-08,Matcha Latte,Tea,5.25,1.6,39,Saturday
+2025-03-08,Chai Latte,Tea,4.95,1.15,33,Saturday
+2025-03-08,Iced Tea,Tea,3.5,0.5,28,Saturday
+2025-03-08,Croissant,Pastry,3.75,1.1,56,Saturday
+2025-03-08,Blueberry Muffin,Pastry,3.95,1.0,36,Saturday
+2025-03-08,Avocado Toast,Food,8.5,2.6,33,Saturday
+2025-03-08,Breakfast Sandwich,Food,7.25,2.4,55,Saturday
+2025-03-08,Bagel & Cream Cheese,Food,4.5,1.3,23,Saturday
+2025-03-08,Granola Bowl,Food,6.75,1.9,17,Saturday
+2025-03-08,Bottled Water,Other,2.25,0.35,22,Saturday
+2025-03-09,Drip Coffee,Coffee,3.25,0.55,102,Sunday
+2025-03-09,Latte,Coffee,4.75,1.1,79,Sunday
+2025-03-09,Cappuccino,Coffee,4.5,1.05,47,Sunday
+2025-03-09,Cold Brew,Coffee,4.95,1.2,65,Sunday
+2025-03-09,Espresso Shot,Coffee,2.75,0.45,25,Sunday
+2025-03-09,Matcha Latte,Tea,5.25,1.6,30,Sunday
+2025-03-09,Chai Latte,Tea,4.95,1.15,26,Sunday
+2025-03-09,Iced Tea,Tea,3.5,0.5,22,Sunday
+2025-03-09,Croissant,Pastry,3.75,1.1,38,Sunday
+2025-03-09,Blueberry Muffin,Pastry,3.95,1.0,34,Sunday
+2025-03-09,Avocado Toast,Food,8.5,2.6,22,Sunday
+2025-03-09,Breakfast Sandwich,Food,7.25,2.4,46,Sunday
+2025-03-09,Bagel & Cream Cheese,Food,4.5,1.3,32,Sunday
+2025-03-09,Granola Bowl,Food,6.75,1.9,18,Sunday
+2025-03-09,Bottled Water,Other,2.25,0.35,21,Sunday
+2025-03-10,Drip Coffee,Coffee,3.25,0.55,83,Monday
+2025-03-10,Latte,Coffee,4.75,1.1,72,Monday
+2025-03-10,Cappuccino,Coffee,4.5,1.05,41,Monday
+2025-03-10,Cold Brew,Coffee,4.95,1.2,48,Monday
+2025-03-10,Espresso Shot,Coffee,2.75,0.45,27,Monday
+2025-03-10,Matcha Latte,Tea,5.25,1.6,34,Monday
+2025-03-10,Chai Latte,Tea,4.95,1.15,33,Monday
+2025-03-10,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-03-10,Croissant,Pastry,3.75,1.1,35,Monday
+2025-03-10,Blueberry Muffin,Pastry,3.95,1.0,30,Monday
+2025-03-10,Avocado Toast,Food,8.5,2.6,21,Monday
+2025-03-10,Breakfast Sandwich,Food,7.25,2.4,39,Monday
+2025-03-10,Bagel & Cream Cheese,Food,4.5,1.3,24,Monday
+2025-03-10,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-03-10,Bottled Water,Other,2.25,0.35,21,Monday
+2025-03-11,Drip Coffee,Coffee,3.25,0.55,82,Tuesday
+2025-03-11,Latte,Coffee,4.75,1.1,67,Tuesday
+2025-03-11,Cappuccino,Coffee,4.5,1.05,42,Tuesday
+2025-03-11,Cold Brew,Coffee,4.95,1.2,53,Tuesday
+2025-03-11,Espresso Shot,Coffee,2.75,0.45,25,Tuesday
+2025-03-11,Matcha Latte,Tea,5.25,1.6,28,Tuesday
+2025-03-11,Chai Latte,Tea,4.95,1.15,23,Tuesday
+2025-03-11,Iced Tea,Tea,3.5,0.5,19,Tuesday
+2025-03-11,Croissant,Pastry,3.75,1.1,29,Tuesday
+2025-03-11,Blueberry Muffin,Pastry,3.95,1.0,29,Tuesday
+2025-03-11,Avocado Toast,Food,8.5,2.6,18,Tuesday
+2025-03-11,Breakfast Sandwich,Food,7.25,2.4,40,Tuesday
+2025-03-11,Bagel & Cream Cheese,Food,4.5,1.3,27,Tuesday
+2025-03-11,Granola Bowl,Food,6.75,1.9,14,Tuesday
+2025-03-11,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-03-12,Drip Coffee,Coffee,3.25,0.55,89,Wednesday
+2025-03-12,Latte,Coffee,4.75,1.1,53,Wednesday
+2025-03-12,Cappuccino,Coffee,4.5,1.05,35,Wednesday
+2025-03-12,Cold Brew,Coffee,4.95,1.2,54,Wednesday
+2025-03-12,Espresso Shot,Coffee,2.75,0.45,26,Wednesday
+2025-03-12,Matcha Latte,Tea,5.25,1.6,30,Wednesday
+2025-03-12,Chai Latte,Tea,4.95,1.15,25,Wednesday
+2025-03-12,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-03-12,Croissant,Pastry,3.75,1.1,33,Wednesday
+2025-03-12,Blueberry Muffin,Pastry,3.95,1.0,26,Wednesday
+2025-03-12,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-03-12,Breakfast Sandwich,Food,7.25,2.4,37,Wednesday
+2025-03-12,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-03-12,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-03-12,Bottled Water,Other,2.25,0.35,20,Wednesday
+2025-03-13,Drip Coffee,Coffee,3.25,0.55,93,Thursday
+2025-03-13,Latte,Coffee,4.75,1.1,66,Thursday
+2025-03-13,Cappuccino,Coffee,4.5,1.05,37,Thursday
+2025-03-13,Cold Brew,Coffee,4.95,1.2,48,Thursday
+2025-03-13,Espresso Shot,Coffee,2.75,0.45,35,Thursday
+2025-03-13,Matcha Latte,Tea,5.25,1.6,27,Thursday
+2025-03-13,Chai Latte,Tea,4.95,1.15,29,Thursday
+2025-03-13,Iced Tea,Tea,3.5,0.5,20,Thursday
+2025-03-13,Croissant,Pastry,3.75,1.1,36,Thursday
+2025-03-13,Blueberry Muffin,Pastry,3.95,1.0,29,Thursday
+2025-03-13,Avocado Toast,Food,8.5,2.6,18,Thursday
+2025-03-13,Breakfast Sandwich,Food,7.25,2.4,35,Thursday
+2025-03-13,Bagel & Cream Cheese,Food,4.5,1.3,23,Thursday
+2025-03-13,Granola Bowl,Food,6.75,1.9,14,Thursday
+2025-03-13,Bottled Water,Other,2.25,0.35,17,Thursday
+2025-03-14,Drip Coffee,Coffee,3.25,0.55,90,Friday
+2025-03-14,Latte,Coffee,4.75,1.1,83,Friday
+2025-03-14,Cappuccino,Coffee,4.5,1.05,43,Friday
+2025-03-14,Cold Brew,Coffee,4.95,1.2,70,Friday
+2025-03-14,Espresso Shot,Coffee,2.75,0.45,27,Friday
+2025-03-14,Matcha Latte,Tea,5.25,1.6,35,Friday
+2025-03-14,Chai Latte,Tea,4.95,1.15,27,Friday
+2025-03-14,Iced Tea,Tea,3.5,0.5,25,Friday
+2025-03-14,Croissant,Pastry,3.75,1.1,38,Friday
+2025-03-14,Blueberry Muffin,Pastry,3.95,1.0,36,Friday
+2025-03-14,Avocado Toast,Food,8.5,2.6,26,Friday
+2025-03-14,Breakfast Sandwich,Food,7.25,2.4,43,Friday
+2025-03-14,Bagel & Cream Cheese,Food,4.5,1.3,31,Friday
+2025-03-14,Granola Bowl,Food,6.75,1.9,15,Friday
+2025-03-14,Bottled Water,Other,2.25,0.35,24,Friday
+2025-03-15,Drip Coffee,Coffee,3.25,0.55,123,Saturday
+2025-03-15,Latte,Coffee,4.75,1.1,96,Saturday
+2025-03-15,Cappuccino,Coffee,4.5,1.05,45,Saturday
+2025-03-15,Cold Brew,Coffee,4.95,1.2,62,Saturday
+2025-03-15,Espresso Shot,Coffee,2.75,0.45,30,Saturday
+2025-03-15,Matcha Latte,Tea,5.25,1.6,38,Saturday
+2025-03-15,Chai Latte,Tea,4.95,1.15,38,Saturday
+2025-03-15,Iced Tea,Tea,3.5,0.5,23,Saturday
+2025-03-15,Croissant,Pastry,3.75,1.1,52,Saturday
+2025-03-15,Blueberry Muffin,Pastry,3.95,1.0,39,Saturday
+2025-03-15,Avocado Toast,Food,8.5,2.6,22,Saturday
+2025-03-15,Breakfast Sandwich,Food,7.25,2.4,47,Saturday
+2025-03-15,Bagel & Cream Cheese,Food,4.5,1.3,23,Saturday
+2025-03-15,Granola Bowl,Food,6.75,1.9,17,Saturday
+2025-03-15,Bottled Water,Other,2.25,0.35,22,Saturday
+2025-03-16,Drip Coffee,Coffee,3.25,0.55,87,Sunday
+2025-03-16,Latte,Coffee,4.75,1.1,74,Sunday
+2025-03-16,Cappuccino,Coffee,4.5,1.05,42,Sunday
+2025-03-16,Cold Brew,Coffee,4.95,1.2,56,Sunday
+2025-03-16,Espresso Shot,Coffee,2.75,0.45,32,Sunday
+2025-03-16,Matcha Latte,Tea,5.25,1.6,38,Sunday
+2025-03-16,Chai Latte,Tea,4.95,1.15,27,Sunday
+2025-03-16,Iced Tea,Tea,3.5,0.5,25,Sunday
+2025-03-16,Croissant,Pastry,3.75,1.1,31,Sunday
+2025-03-16,Blueberry Muffin,Pastry,3.95,1.0,30,Sunday
+2025-03-16,Avocado Toast,Food,8.5,2.6,29,Sunday
+2025-03-16,Breakfast Sandwich,Food,7.25,2.4,31,Sunday
+2025-03-16,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-03-16,Granola Bowl,Food,6.75,1.9,13,Sunday
+2025-03-16,Bottled Water,Other,2.25,0.35,19,Sunday
+2025-03-17,Drip Coffee,Coffee,3.25,0.55,79,Monday
+2025-03-17,Latte,Coffee,4.75,1.1,80,Monday
+2025-03-17,Cappuccino,Coffee,4.5,1.05,34,Monday
+2025-03-17,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-03-17,Espresso Shot,Coffee,2.75,0.45,26,Monday
+2025-03-17,Matcha Latte,Tea,5.25,1.6,28,Monday
+2025-03-17,Chai Latte,Tea,4.95,1.15,24,Monday
+2025-03-17,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-03-17,Croissant,Pastry,3.75,1.1,34,Monday
+2025-03-17,Blueberry Muffin,Pastry,3.95,1.0,32,Monday
+2025-03-17,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-03-17,Breakfast Sandwich,Food,7.25,2.4,34,Monday
+2025-03-17,Bagel & Cream Cheese,Food,4.5,1.3,26,Monday
+2025-03-17,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-03-17,Bottled Water,Other,2.25,0.35,17,Monday
+2025-03-18,Drip Coffee,Coffee,3.25,0.55,81,Tuesday
+2025-03-18,Latte,Coffee,4.75,1.1,61,Tuesday
+2025-03-18,Cappuccino,Coffee,4.5,1.05,34,Tuesday
+2025-03-18,Cold Brew,Coffee,4.95,1.2,55,Tuesday
+2025-03-18,Espresso Shot,Coffee,2.75,0.45,21,Tuesday
+2025-03-18,Matcha Latte,Tea,5.25,1.6,32,Tuesday
+2025-03-18,Chai Latte,Tea,4.95,1.15,27,Tuesday
+2025-03-18,Iced Tea,Tea,3.5,0.5,16,Tuesday
+2025-03-18,Croissant,Pastry,3.75,1.1,34,Tuesday
+2025-03-18,Blueberry Muffin,Pastry,3.95,1.0,29,Tuesday
+2025-03-18,Avocado Toast,Food,8.5,2.6,23,Tuesday
+2025-03-18,Breakfast Sandwich,Food,7.25,2.4,41,Tuesday
+2025-03-18,Bagel & Cream Cheese,Food,4.5,1.3,24,Tuesday
+2025-03-18,Granola Bowl,Food,6.75,1.9,12,Tuesday
+2025-03-18,Bottled Water,Other,2.25,0.35,16,Tuesday
+2025-03-19,Drip Coffee,Coffee,3.25,0.55,75,Wednesday
+2025-03-19,Latte,Coffee,4.75,1.1,64,Wednesday
+2025-03-19,Cappuccino,Coffee,4.5,1.05,41,Wednesday
+2025-03-19,Cold Brew,Coffee,4.95,1.2,55,Wednesday
+2025-03-19,Espresso Shot,Coffee,2.75,0.45,24,Wednesday
+2025-03-19,Matcha Latte,Tea,5.25,1.6,27,Wednesday
+2025-03-19,Chai Latte,Tea,4.95,1.15,29,Wednesday
+2025-03-19,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-03-19,Croissant,Pastry,3.75,1.1,31,Wednesday
+2025-03-19,Blueberry Muffin,Pastry,3.95,1.0,29,Wednesday
+2025-03-19,Avocado Toast,Food,8.5,2.6,21,Wednesday
+2025-03-19,Breakfast Sandwich,Food,7.25,2.4,33,Wednesday
+2025-03-19,Bagel & Cream Cheese,Food,4.5,1.3,29,Wednesday
+2025-03-19,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-03-19,Bottled Water,Other,2.25,0.35,18,Wednesday
+2025-03-20,Drip Coffee,Coffee,3.25,0.55,91,Thursday
+2025-03-20,Latte,Coffee,4.75,1.1,78,Thursday
+2025-03-20,Cappuccino,Coffee,4.5,1.05,42,Thursday
+2025-03-20,Cold Brew,Coffee,4.95,1.2,64,Thursday
+2025-03-20,Espresso Shot,Coffee,2.75,0.45,31,Thursday
+2025-03-20,Matcha Latte,Tea,5.25,1.6,32,Thursday
+2025-03-20,Chai Latte,Tea,4.95,1.15,31,Thursday
+2025-03-20,Iced Tea,Tea,3.5,0.5,23,Thursday
+2025-03-20,Croissant,Pastry,3.75,1.1,35,Thursday
+2025-03-20,Blueberry Muffin,Pastry,3.95,1.0,27,Thursday
+2025-03-20,Avocado Toast,Food,8.5,2.6,26,Thursday
+2025-03-20,Breakfast Sandwich,Food,7.25,2.4,32,Thursday
+2025-03-20,Bagel & Cream Cheese,Food,4.5,1.3,33,Thursday
+2025-03-20,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-03-20,Bottled Water,Other,2.25,0.35,19,Thursday
+2025-03-21,Drip Coffee,Coffee,3.25,0.55,98,Friday
+2025-03-21,Latte,Coffee,4.75,1.1,97,Friday
+2025-03-21,Cappuccino,Coffee,4.5,1.05,41,Friday
+2025-03-21,Cold Brew,Coffee,4.95,1.2,54,Friday
+2025-03-21,Espresso Shot,Coffee,2.75,0.45,27,Friday
+2025-03-21,Matcha Latte,Tea,5.25,1.6,33,Friday
+2025-03-21,Chai Latte,Tea,4.95,1.15,28,Friday
+2025-03-21,Iced Tea,Tea,3.5,0.5,23,Friday
+2025-03-21,Croissant,Pastry,3.75,1.1,41,Friday
+2025-03-21,Blueberry Muffin,Pastry,3.95,1.0,31,Friday
+2025-03-21,Avocado Toast,Food,8.5,2.6,30,Friday
+2025-03-21,Breakfast Sandwich,Food,7.25,2.4,36,Friday
+2025-03-21,Bagel & Cream Cheese,Food,4.5,1.3,25,Friday
+2025-03-21,Granola Bowl,Food,6.75,1.9,17,Friday
+2025-03-21,Bottled Water,Other,2.25,0.35,20,Friday
+2025-03-22,Drip Coffee,Coffee,3.25,0.55,116,Saturday
+2025-03-22,Latte,Coffee,4.75,1.1,84,Saturday
+2025-03-22,Cappuccino,Coffee,4.5,1.05,46,Saturday
+2025-03-22,Cold Brew,Coffee,4.95,1.2,66,Saturday
+2025-03-22,Espresso Shot,Coffee,2.75,0.45,30,Saturday
+2025-03-22,Matcha Latte,Tea,5.25,1.6,41,Saturday
+2025-03-22,Chai Latte,Tea,4.95,1.15,34,Saturday
+2025-03-22,Iced Tea,Tea,3.5,0.5,28,Saturday
+2025-03-22,Croissant,Pastry,3.75,1.1,49,Saturday
+2025-03-22,Blueberry Muffin,Pastry,3.95,1.0,44,Saturday
+2025-03-22,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-03-22,Breakfast Sandwich,Food,7.25,2.4,54,Saturday
+2025-03-22,Bagel & Cream Cheese,Food,4.5,1.3,37,Saturday
+2025-03-22,Granola Bowl,Food,6.75,1.9,17,Saturday
+2025-03-22,Bottled Water,Other,2.25,0.35,23,Saturday
+2025-03-23,Drip Coffee,Coffee,3.25,0.55,73,Sunday
+2025-03-23,Latte,Coffee,4.75,1.1,80,Sunday
+2025-03-23,Cappuccino,Coffee,4.5,1.05,40,Sunday
+2025-03-23,Cold Brew,Coffee,4.95,1.2,63,Sunday
+2025-03-23,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-03-23,Matcha Latte,Tea,5.25,1.6,28,Sunday
+2025-03-23,Chai Latte,Tea,4.95,1.15,27,Sunday
+2025-03-23,Iced Tea,Tea,3.5,0.5,21,Sunday
+2025-03-23,Croissant,Pastry,3.75,1.1,36,Sunday
+2025-03-23,Blueberry Muffin,Pastry,3.95,1.0,34,Sunday
+2025-03-23,Avocado Toast,Food,8.5,2.6,21,Sunday
+2025-03-23,Breakfast Sandwich,Food,7.25,2.4,42,Sunday
+2025-03-23,Bagel & Cream Cheese,Food,4.5,1.3,23,Sunday
+2025-03-23,Granola Bowl,Food,6.75,1.9,11,Sunday
+2025-03-23,Bottled Water,Other,2.25,0.35,22,Sunday
+2025-03-24,Drip Coffee,Coffee,3.25,0.55,68,Monday
+2025-03-24,Latte,Coffee,4.75,1.1,62,Monday
+2025-03-24,Cappuccino,Coffee,4.5,1.05,32,Monday
+2025-03-24,Cold Brew,Coffee,4.95,1.2,43,Monday
+2025-03-24,Espresso Shot,Coffee,2.75,0.45,23,Monday
+2025-03-24,Matcha Latte,Tea,5.25,1.6,27,Monday
+2025-03-24,Chai Latte,Tea,4.95,1.15,30,Monday
+2025-03-24,Iced Tea,Tea,3.5,0.5,20,Monday
+2025-03-24,Croissant,Pastry,3.75,1.1,32,Monday
+2025-03-24,Blueberry Muffin,Pastry,3.95,1.0,31,Monday
+2025-03-24,Avocado Toast,Food,8.5,2.6,24,Monday
+2025-03-24,Breakfast Sandwich,Food,7.25,2.4,38,Monday
+2025-03-24,Bagel & Cream Cheese,Food,4.5,1.3,23,Monday
+2025-03-24,Granola Bowl,Food,6.75,1.9,15,Monday
+2025-03-24,Bottled Water,Other,2.25,0.35,21,Monday
+2025-03-25,Drip Coffee,Coffee,3.25,0.55,87,Tuesday
+2025-03-25,Latte,Coffee,4.75,1.1,81,Tuesday
+2025-03-25,Cappuccino,Coffee,4.5,1.05,42,Tuesday
+2025-03-25,Cold Brew,Coffee,4.95,1.2,58,Tuesday
+2025-03-25,Espresso Shot,Coffee,2.75,0.45,21,Tuesday
+2025-03-25,Matcha Latte,Tea,5.25,1.6,25,Tuesday
+2025-03-25,Chai Latte,Tea,4.95,1.15,26,Tuesday
+2025-03-25,Iced Tea,Tea,3.5,0.5,15,Tuesday
+2025-03-25,Croissant,Pastry,3.75,1.1,31,Tuesday
+2025-03-25,Blueberry Muffin,Pastry,3.95,1.0,31,Tuesday
+2025-03-25,Avocado Toast,Food,8.5,2.6,19,Tuesday
+2025-03-25,Breakfast Sandwich,Food,7.25,2.4,38,Tuesday
+2025-03-25,Bagel & Cream Cheese,Food,4.5,1.3,21,Tuesday
+2025-03-25,Granola Bowl,Food,6.75,1.9,13,Tuesday
+2025-03-25,Bottled Water,Other,2.25,0.35,19,Tuesday
+2025-03-26,Drip Coffee,Coffee,3.25,0.55,87,Wednesday
+2025-03-26,Latte,Coffee,4.75,1.1,72,Wednesday
+2025-03-26,Cappuccino,Coffee,4.5,1.05,48,Wednesday
+2025-03-26,Cold Brew,Coffee,4.95,1.2,64,Wednesday
+2025-03-26,Espresso Shot,Coffee,2.75,0.45,22,Wednesday
+2025-03-26,Matcha Latte,Tea,5.25,1.6,35,Wednesday
+2025-03-26,Chai Latte,Tea,4.95,1.15,26,Wednesday
+2025-03-26,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-03-26,Croissant,Pastry,3.75,1.1,35,Wednesday
+2025-03-26,Blueberry Muffin,Pastry,3.95,1.0,34,Wednesday
+2025-03-26,Avocado Toast,Food,8.5,2.6,19,Wednesday
+2025-03-26,Breakfast Sandwich,Food,7.25,2.4,40,Wednesday
+2025-03-26,Bagel & Cream Cheese,Food,4.5,1.3,28,Wednesday
+2025-03-26,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-03-26,Bottled Water,Other,2.25,0.35,18,Wednesday
+2025-03-27,Drip Coffee,Coffee,3.25,0.55,100,Thursday
+2025-03-27,Latte,Coffee,4.75,1.1,67,Thursday
+2025-03-27,Cappuccino,Coffee,4.5,1.05,48,Thursday
+2025-03-27,Cold Brew,Coffee,4.95,1.2,60,Thursday
+2025-03-27,Espresso Shot,Coffee,2.75,0.45,22,Thursday
+2025-03-27,Matcha Latte,Tea,5.25,1.6,33,Thursday
+2025-03-27,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-03-27,Iced Tea,Tea,3.5,0.5,20,Thursday
+2025-03-27,Croissant,Pastry,3.75,1.1,34,Thursday
+2025-03-27,Blueberry Muffin,Pastry,3.95,1.0,31,Thursday
+2025-03-27,Avocado Toast,Food,8.5,2.6,19,Thursday
+2025-03-27,Breakfast Sandwich,Food,7.25,2.4,48,Thursday
+2025-03-27,Bagel & Cream Cheese,Food,4.5,1.3,24,Thursday
+2025-03-27,Granola Bowl,Food,6.75,1.9,14,Thursday
+2025-03-27,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-03-28,Drip Coffee,Coffee,3.25,0.55,105,Friday
+2025-03-28,Latte,Coffee,4.75,1.1,87,Friday
+2025-03-28,Cappuccino,Coffee,4.5,1.05,54,Friday
+2025-03-28,Cold Brew,Coffee,4.95,1.2,61,Friday
+2025-03-28,Espresso Shot,Coffee,2.75,0.45,25,Friday
+2025-03-28,Matcha Latte,Tea,5.25,1.6,38,Friday
+2025-03-28,Chai Latte,Tea,4.95,1.15,35,Friday
+2025-03-28,Iced Tea,Tea,3.5,0.5,22,Friday
+2025-03-28,Croissant,Pastry,3.75,1.1,34,Friday
+2025-03-28,Blueberry Muffin,Pastry,3.95,1.0,40,Friday
+2025-03-28,Avocado Toast,Food,8.5,2.6,27,Friday
+2025-03-28,Breakfast Sandwich,Food,7.25,2.4,36,Friday
+2025-03-28,Bagel & Cream Cheese,Food,4.5,1.3,33,Friday
+2025-03-28,Granola Bowl,Food,6.75,1.9,13,Friday
+2025-03-28,Bottled Water,Other,2.25,0.35,20,Friday
+2025-03-29,Drip Coffee,Coffee,3.25,0.55,96,Saturday
+2025-03-29,Latte,Coffee,4.75,1.1,84,Saturday
+2025-03-29,Cappuccino,Coffee,4.5,1.05,47,Saturday
+2025-03-29,Cold Brew,Coffee,4.95,1.2,66,Saturday
+2025-03-29,Espresso Shot,Coffee,2.75,0.45,35,Saturday
+2025-03-29,Matcha Latte,Tea,5.25,1.6,40,Saturday
+2025-03-29,Chai Latte,Tea,4.95,1.15,39,Saturday
+2025-03-29,Iced Tea,Tea,3.5,0.5,29,Saturday
+2025-03-29,Croissant,Pastry,3.75,1.1,43,Saturday
+2025-03-29,Blueberry Muffin,Pastry,3.95,1.0,39,Saturday
+2025-03-29,Avocado Toast,Food,8.5,2.6,30,Saturday
+2025-03-29,Breakfast Sandwich,Food,7.25,2.4,60,Saturday
+2025-03-29,Bagel & Cream Cheese,Food,4.5,1.3,37,Saturday
+2025-03-29,Granola Bowl,Food,6.75,1.9,21,Saturday
+2025-03-29,Bottled Water,Other,2.25,0.35,26,Saturday
+2025-03-30,Drip Coffee,Coffee,3.25,0.55,105,Sunday
+2025-03-30,Latte,Coffee,4.75,1.1,61,Sunday
+2025-03-30,Cappuccino,Coffee,4.5,1.05,49,Sunday
+2025-03-30,Cold Brew,Coffee,4.95,1.2,62,Sunday
+2025-03-30,Espresso Shot,Coffee,2.75,0.45,28,Sunday
+2025-03-30,Matcha Latte,Tea,5.25,1.6,31,Sunday
+2025-03-30,Chai Latte,Tea,4.95,1.15,29,Sunday
+2025-03-30,Iced Tea,Tea,3.5,0.5,23,Sunday
+2025-03-30,Croissant,Pastry,3.75,1.1,42,Sunday
+2025-03-30,Blueberry Muffin,Pastry,3.95,1.0,27,Sunday
+2025-03-30,Avocado Toast,Food,8.5,2.6,25,Sunday
+2025-03-30,Breakfast Sandwich,Food,7.25,2.4,39,Sunday
+2025-03-30,Bagel & Cream Cheese,Food,4.5,1.3,25,Sunday
+2025-03-30,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-03-30,Bottled Water,Other,2.25,0.35,19,Sunday
+2025-03-31,Drip Coffee,Coffee,3.25,0.55,74,Monday
+2025-03-31,Latte,Coffee,4.75,1.1,60,Monday
+2025-03-31,Cappuccino,Coffee,4.5,1.05,39,Monday
+2025-03-31,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-03-31,Espresso Shot,Coffee,2.75,0.45,21,Monday
+2025-03-31,Matcha Latte,Tea,5.25,1.6,26,Monday
+2025-03-31,Chai Latte,Tea,4.95,1.15,26,Monday
+2025-03-31,Iced Tea,Tea,3.5,0.5,20,Monday
+2025-03-31,Croissant,Pastry,3.75,1.1,29,Monday
+2025-03-31,Blueberry Muffin,Pastry,3.95,1.0,30,Monday
+2025-03-31,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-03-31,Breakfast Sandwich,Food,7.25,2.4,48,Monday
+2025-03-31,Bagel & Cream Cheese,Food,4.5,1.3,22,Monday
+2025-03-31,Granola Bowl,Food,6.75,1.9,12,Monday
+2025-03-31,Bottled Water,Other,2.25,0.35,17,Monday
+2025-04-01,Drip Coffee,Coffee,3.25,0.55,72,Tuesday
+2025-04-01,Latte,Coffee,4.75,1.1,73,Tuesday
+2025-04-01,Cappuccino,Coffee,4.5,1.05,46,Tuesday
+2025-04-01,Cold Brew,Coffee,4.95,1.2,50,Tuesday
+2025-04-01,Espresso Shot,Coffee,2.75,0.45,24,Tuesday
+2025-04-01,Matcha Latte,Tea,5.25,1.6,27,Tuesday
+2025-04-01,Chai Latte,Tea,4.95,1.15,27,Tuesday
+2025-04-01,Iced Tea,Tea,3.5,0.5,22,Tuesday
+2025-04-01,Croissant,Pastry,3.75,1.1,37,Tuesday
+2025-04-01,Blueberry Muffin,Pastry,3.95,1.0,25,Tuesday
+2025-04-01,Avocado Toast,Food,8.5,2.6,25,Tuesday
+2025-04-01,Breakfast Sandwich,Food,7.25,2.4,41,Tuesday
+2025-04-01,Bagel & Cream Cheese,Food,4.5,1.3,26,Tuesday
+2025-04-01,Granola Bowl,Food,6.75,1.9,12,Tuesday
+2025-04-01,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-04-02,Drip Coffee,Coffee,3.25,0.55,77,Wednesday
+2025-04-02,Latte,Coffee,4.75,1.1,74,Wednesday
+2025-04-02,Cappuccino,Coffee,4.5,1.05,38,Wednesday
+2025-04-02,Cold Brew,Coffee,4.95,1.2,40,Wednesday
+2025-04-02,Espresso Shot,Coffee,2.75,0.45,28,Wednesday
+2025-04-02,Matcha Latte,Tea,5.25,1.6,31,Wednesday
+2025-04-02,Chai Latte,Tea,4.95,1.15,32,Wednesday
+2025-04-02,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-04-02,Croissant,Pastry,3.75,1.1,36,Wednesday
+2025-04-02,Blueberry Muffin,Pastry,3.95,1.0,34,Wednesday
+2025-04-02,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-04-02,Breakfast Sandwich,Food,7.25,2.4,39,Wednesday
+2025-04-02,Bagel & Cream Cheese,Food,4.5,1.3,36,Wednesday
+2025-04-02,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-04-02,Bottled Water,Other,2.25,0.35,18,Wednesday
+2025-04-03,Drip Coffee,Coffee,3.25,0.55,108,Thursday
+2025-04-03,Latte,Coffee,4.75,1.1,66,Thursday
+2025-04-03,Cappuccino,Coffee,4.5,1.05,37,Thursday
+2025-04-03,Cold Brew,Coffee,4.95,1.2,48,Thursday
+2025-04-03,Espresso Shot,Coffee,2.75,0.45,28,Thursday
+2025-04-03,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-04-03,Chai Latte,Tea,4.95,1.15,32,Thursday
+2025-04-03,Iced Tea,Tea,3.5,0.5,18,Thursday
+2025-04-03,Croissant,Pastry,3.75,1.1,41,Thursday
+2025-04-03,Blueberry Muffin,Pastry,3.95,1.0,36,Thursday
+2025-04-03,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-04-03,Breakfast Sandwich,Food,7.25,2.4,40,Thursday
+2025-04-03,Bagel & Cream Cheese,Food,4.5,1.3,30,Thursday
+2025-04-03,Granola Bowl,Food,6.75,1.9,15,Thursday
+2025-04-03,Bottled Water,Other,2.25,0.35,20,Thursday
+2025-04-04,Drip Coffee,Coffee,3.25,0.55,85,Friday
+2025-04-04,Latte,Coffee,4.75,1.1,79,Friday
+2025-04-04,Cappuccino,Coffee,4.5,1.05,39,Friday
+2025-04-04,Cold Brew,Coffee,4.95,1.2,68,Friday
+2025-04-04,Espresso Shot,Coffee,2.75,0.45,31,Friday
+2025-04-04,Matcha Latte,Tea,5.25,1.6,34,Friday
+2025-04-04,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-04-04,Iced Tea,Tea,3.5,0.5,19,Friday
+2025-04-04,Croissant,Pastry,3.75,1.1,44,Friday
+2025-04-04,Blueberry Muffin,Pastry,3.95,1.0,33,Friday
+2025-04-04,Avocado Toast,Food,8.5,2.6,26,Friday
+2025-04-04,Breakfast Sandwich,Food,7.25,2.4,50,Friday
+2025-04-04,Bagel & Cream Cheese,Food,4.5,1.3,27,Friday
+2025-04-04,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-04-04,Bottled Water,Other,2.25,0.35,21,Friday
+2025-04-05,Drip Coffee,Coffee,3.25,0.55,111,Saturday
+2025-04-05,Latte,Coffee,4.75,1.1,97,Saturday
+2025-04-05,Cappuccino,Coffee,4.5,1.05,44,Saturday
+2025-04-05,Cold Brew,Coffee,4.95,1.2,77,Saturday
+2025-04-05,Espresso Shot,Coffee,2.75,0.45,33,Saturday
+2025-04-05,Matcha Latte,Tea,5.25,1.6,44,Saturday
+2025-04-05,Chai Latte,Tea,4.95,1.15,35,Saturday
+2025-04-05,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-04-05,Croissant,Pastry,3.75,1.1,48,Saturday
+2025-04-05,Blueberry Muffin,Pastry,3.95,1.0,39,Saturday
+2025-04-05,Avocado Toast,Food,8.5,2.6,25,Saturday
+2025-04-05,Breakfast Sandwich,Food,7.25,2.4,48,Saturday
+2025-04-05,Bagel & Cream Cheese,Food,4.5,1.3,39,Saturday
+2025-04-05,Granola Bowl,Food,6.75,1.9,18,Saturday
+2025-04-05,Bottled Water,Other,2.25,0.35,21,Saturday
+2025-04-06,Drip Coffee,Coffee,3.25,0.55,102,Sunday
+2025-04-06,Latte,Coffee,4.75,1.1,60,Sunday
+2025-04-06,Cappuccino,Coffee,4.5,1.05,33,Sunday
+2025-04-06,Cold Brew,Coffee,4.95,1.2,60,Sunday
+2025-04-06,Espresso Shot,Coffee,2.75,0.45,28,Sunday
+2025-04-06,Matcha Latte,Tea,5.25,1.6,34,Sunday
+2025-04-06,Chai Latte,Tea,4.95,1.15,28,Sunday
+2025-04-06,Iced Tea,Tea,3.5,0.5,22,Sunday
+2025-04-06,Croissant,Pastry,3.75,1.1,32,Sunday
+2025-04-06,Blueberry Muffin,Pastry,3.95,1.0,34,Sunday
+2025-04-06,Avocado Toast,Food,8.5,2.6,20,Sunday
+2025-04-06,Breakfast Sandwich,Food,7.25,2.4,41,Sunday
+2025-04-06,Bagel & Cream Cheese,Food,4.5,1.3,29,Sunday
+2025-04-06,Granola Bowl,Food,6.75,1.9,12,Sunday
+2025-04-06,Bottled Water,Other,2.25,0.35,19,Sunday
+2025-04-07,Drip Coffee,Coffee,3.25,0.55,88,Monday
+2025-04-07,Latte,Coffee,4.75,1.1,79,Monday
+2025-04-07,Cappuccino,Coffee,4.5,1.05,31,Monday
+2025-04-07,Cold Brew,Coffee,4.95,1.2,54,Monday
+2025-04-07,Espresso Shot,Coffee,2.75,0.45,20,Monday
+2025-04-07,Matcha Latte,Tea,5.25,1.6,24,Monday
+2025-04-07,Chai Latte,Tea,4.95,1.15,32,Monday
+2025-04-07,Iced Tea,Tea,3.5,0.5,21,Monday
+2025-04-07,Croissant,Pastry,3.75,1.1,30,Monday
+2025-04-07,Blueberry Muffin,Pastry,3.95,1.0,29,Monday
+2025-04-07,Avocado Toast,Food,8.5,2.6,23,Monday
+2025-04-07,Breakfast Sandwich,Food,7.25,2.4,37,Monday
+2025-04-07,Bagel & Cream Cheese,Food,4.5,1.3,31,Monday
+2025-04-07,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-04-07,Bottled Water,Other,2.25,0.35,11,Monday
+2025-04-08,Drip Coffee,Coffee,3.25,0.55,78,Tuesday
+2025-04-08,Latte,Coffee,4.75,1.1,61,Tuesday
+2025-04-08,Cappuccino,Coffee,4.5,1.05,37,Tuesday
+2025-04-08,Cold Brew,Coffee,4.95,1.2,52,Tuesday
+2025-04-08,Espresso Shot,Coffee,2.75,0.45,22,Tuesday
+2025-04-08,Matcha Latte,Tea,5.25,1.6,25,Tuesday
+2025-04-08,Chai Latte,Tea,4.95,1.15,31,Tuesday
+2025-04-08,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-04-08,Croissant,Pastry,3.75,1.1,31,Tuesday
+2025-04-08,Blueberry Muffin,Pastry,3.95,1.0,31,Tuesday
+2025-04-08,Avocado Toast,Food,8.5,2.6,23,Tuesday
+2025-04-08,Breakfast Sandwich,Food,7.25,2.4,42,Tuesday
+2025-04-08,Bagel & Cream Cheese,Food,4.5,1.3,22,Tuesday
+2025-04-08,Granola Bowl,Food,6.75,1.9,15,Tuesday
+2025-04-08,Bottled Water,Other,2.25,0.35,16,Tuesday
+2025-04-09,Drip Coffee,Coffee,3.25,0.55,97,Wednesday
+2025-04-09,Latte,Coffee,4.75,1.1,68,Wednesday
+2025-04-09,Cappuccino,Coffee,4.5,1.05,29,Wednesday
+2025-04-09,Cold Brew,Coffee,4.95,1.2,55,Wednesday
+2025-04-09,Espresso Shot,Coffee,2.75,0.45,20,Wednesday
+2025-04-09,Matcha Latte,Tea,5.25,1.6,29,Wednesday
+2025-04-09,Chai Latte,Tea,4.95,1.15,28,Wednesday
+2025-04-09,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-04-09,Croissant,Pastry,3.75,1.1,29,Wednesday
+2025-04-09,Blueberry Muffin,Pastry,3.95,1.0,26,Wednesday
+2025-04-09,Avocado Toast,Food,8.5,2.6,20,Wednesday
+2025-04-09,Breakfast Sandwich,Food,7.25,2.4,37,Wednesday
+2025-04-09,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-04-09,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-04-09,Bottled Water,Other,2.25,0.35,17,Wednesday
+2025-04-10,Drip Coffee,Coffee,3.25,0.55,103,Thursday
+2025-04-10,Latte,Coffee,4.75,1.1,61,Thursday
+2025-04-10,Cappuccino,Coffee,4.5,1.05,45,Thursday
+2025-04-10,Cold Brew,Coffee,4.95,1.2,57,Thursday
+2025-04-10,Espresso Shot,Coffee,2.75,0.45,27,Thursday
+2025-04-10,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-04-10,Chai Latte,Tea,4.95,1.15,27,Thursday
+2025-04-10,Iced Tea,Tea,3.5,0.5,23,Thursday
+2025-04-10,Croissant,Pastry,3.75,1.1,37,Thursday
+2025-04-10,Blueberry Muffin,Pastry,3.95,1.0,41,Thursday
+2025-04-10,Avocado Toast,Food,8.5,2.6,22,Thursday
+2025-04-10,Breakfast Sandwich,Food,7.25,2.4,46,Thursday
+2025-04-10,Bagel & Cream Cheese,Food,4.5,1.3,29,Thursday
+2025-04-10,Granola Bowl,Food,6.75,1.9,13,Thursday
+2025-04-10,Bottled Water,Other,2.25,0.35,22,Thursday
+2025-04-11,Drip Coffee,Coffee,3.25,0.55,85,Friday
+2025-04-11,Latte,Coffee,4.75,1.1,59,Friday
+2025-04-11,Cappuccino,Coffee,4.5,1.05,51,Friday
+2025-04-11,Cold Brew,Coffee,4.95,1.2,71,Friday
+2025-04-11,Espresso Shot,Coffee,2.75,0.45,29,Friday
+2025-04-11,Matcha Latte,Tea,5.25,1.6,33,Friday
+2025-04-11,Chai Latte,Tea,4.95,1.15,38,Friday
+2025-04-11,Iced Tea,Tea,3.5,0.5,25,Friday
+2025-04-11,Croissant,Pastry,3.75,1.1,37,Friday
+2025-04-11,Blueberry Muffin,Pastry,3.95,1.0,38,Friday
+2025-04-11,Avocado Toast,Food,8.5,2.6,22,Friday
+2025-04-11,Breakfast Sandwich,Food,7.25,2.4,41,Friday
+2025-04-11,Bagel & Cream Cheese,Food,4.5,1.3,26,Friday
+2025-04-11,Granola Bowl,Food,6.75,1.9,12,Friday
+2025-04-11,Bottled Water,Other,2.25,0.35,18,Friday
+2025-04-12,Drip Coffee,Coffee,3.25,0.55,127,Saturday
+2025-04-12,Latte,Coffee,4.75,1.1,79,Saturday
+2025-04-12,Cappuccino,Coffee,4.5,1.05,49,Saturday
+2025-04-12,Cold Brew,Coffee,4.95,1.2,62,Saturday
+2025-04-12,Espresso Shot,Coffee,2.75,0.45,36,Saturday
+2025-04-12,Matcha Latte,Tea,5.25,1.6,39,Saturday
+2025-04-12,Chai Latte,Tea,4.95,1.15,39,Saturday
+2025-04-12,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-04-12,Croissant,Pastry,3.75,1.1,39,Saturday
+2025-04-12,Blueberry Muffin,Pastry,3.95,1.0,34,Saturday
+2025-04-12,Avocado Toast,Food,8.5,2.6,31,Saturday
+2025-04-12,Breakfast Sandwich,Food,7.25,2.4,49,Saturday
+2025-04-12,Bagel & Cream Cheese,Food,4.5,1.3,37,Saturday
+2025-04-12,Granola Bowl,Food,6.75,1.9,11,Saturday
+2025-04-12,Bottled Water,Other,2.25,0.35,27,Saturday
+2025-04-13,Drip Coffee,Coffee,3.25,0.55,88,Sunday
+2025-04-13,Latte,Coffee,4.75,1.1,97,Sunday
+2025-04-13,Cappuccino,Coffee,4.5,1.05,41,Sunday
+2025-04-13,Cold Brew,Coffee,4.95,1.2,61,Sunday
+2025-04-13,Espresso Shot,Coffee,2.75,0.45,30,Sunday
+2025-04-13,Matcha Latte,Tea,5.25,1.6,30,Sunday
+2025-04-13,Chai Latte,Tea,4.95,1.15,34,Sunday
+2025-04-13,Iced Tea,Tea,3.5,0.5,20,Sunday
+2025-04-13,Croissant,Pastry,3.75,1.1,44,Sunday
+2025-04-13,Blueberry Muffin,Pastry,3.95,1.0,36,Sunday
+2025-04-13,Avocado Toast,Food,8.5,2.6,26,Sunday
+2025-04-13,Breakfast Sandwich,Food,7.25,2.4,38,Sunday
+2025-04-13,Bagel & Cream Cheese,Food,4.5,1.3,28,Sunday
+2025-04-13,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-04-13,Bottled Water,Other,2.25,0.35,15,Sunday
+2025-04-14,Drip Coffee,Coffee,3.25,0.55,75,Monday
+2025-04-14,Latte,Coffee,4.75,1.1,74,Monday
+2025-04-14,Cappuccino,Coffee,4.5,1.05,32,Monday
+2025-04-14,Cold Brew,Coffee,4.95,1.2,60,Monday
+2025-04-14,Espresso Shot,Coffee,2.75,0.45,22,Monday
+2025-04-14,Matcha Latte,Tea,5.25,1.6,30,Monday
+2025-04-14,Chai Latte,Tea,4.95,1.15,23,Monday
+2025-04-14,Iced Tea,Tea,3.5,0.5,20,Monday
+2025-04-14,Croissant,Pastry,3.75,1.1,35,Monday
+2025-04-14,Blueberry Muffin,Pastry,3.95,1.0,32,Monday
+2025-04-14,Avocado Toast,Food,8.5,2.6,24,Monday
+2025-04-14,Breakfast Sandwich,Food,7.25,2.4,42,Monday
+2025-04-14,Bagel & Cream Cheese,Food,4.5,1.3,25,Monday
+2025-04-14,Granola Bowl,Food,6.75,1.9,11,Monday
+2025-04-14,Bottled Water,Other,2.25,0.35,20,Monday
+2025-04-15,Drip Coffee,Coffee,3.25,0.55,68,Tuesday
+2025-04-15,Latte,Coffee,4.75,1.1,63,Tuesday
+2025-04-15,Cappuccino,Coffee,4.5,1.05,41,Tuesday
+2025-04-15,Cold Brew,Coffee,4.95,1.2,55,Tuesday
+2025-04-15,Espresso Shot,Coffee,2.75,0.45,28,Tuesday
+2025-04-15,Matcha Latte,Tea,5.25,1.6,28,Tuesday
+2025-04-15,Chai Latte,Tea,4.95,1.15,21,Tuesday
+2025-04-15,Iced Tea,Tea,3.5,0.5,18,Tuesday
+2025-04-15,Croissant,Pastry,3.75,1.1,34,Tuesday
+2025-04-15,Blueberry Muffin,Pastry,3.95,1.0,27,Tuesday
+2025-04-15,Avocado Toast,Food,8.5,2.6,24,Tuesday
+2025-04-15,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-04-15,Bagel & Cream Cheese,Food,4.5,1.3,20,Tuesday
+2025-04-15,Granola Bowl,Food,6.75,1.9,14,Tuesday
+2025-04-15,Bottled Water,Other,2.25,0.35,15,Tuesday
+2025-04-16,Drip Coffee,Coffee,3.25,0.55,102,Wednesday
+2025-04-16,Latte,Coffee,4.75,1.1,72,Wednesday
+2025-04-16,Cappuccino,Coffee,4.5,1.05,33,Wednesday
+2025-04-16,Cold Brew,Coffee,4.95,1.2,62,Wednesday
+2025-04-16,Espresso Shot,Coffee,2.75,0.45,32,Wednesday
+2025-04-16,Matcha Latte,Tea,5.25,1.6,23,Wednesday
+2025-04-16,Chai Latte,Tea,4.95,1.15,31,Wednesday
+2025-04-16,Iced Tea,Tea,3.5,0.5,21,Wednesday
+2025-04-16,Croissant,Pastry,3.75,1.1,36,Wednesday
+2025-04-16,Blueberry Muffin,Pastry,3.95,1.0,31,Wednesday
+2025-04-16,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-04-16,Breakfast Sandwich,Food,7.25,2.4,35,Wednesday
+2025-04-16,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-04-16,Granola Bowl,Food,6.75,1.9,12,Wednesday
+2025-04-16,Bottled Water,Other,2.25,0.35,22,Wednesday
+2025-04-17,Drip Coffee,Coffee,3.25,0.55,106,Thursday
+2025-04-17,Latte,Coffee,4.75,1.1,63,Thursday
+2025-04-17,Cappuccino,Coffee,4.5,1.05,42,Thursday
+2025-04-17,Cold Brew,Coffee,4.95,1.2,68,Thursday
+2025-04-17,Espresso Shot,Coffee,2.75,0.45,25,Thursday
+2025-04-17,Matcha Latte,Tea,5.25,1.6,31,Thursday
+2025-04-17,Chai Latte,Tea,4.95,1.15,28,Thursday
+2025-04-17,Iced Tea,Tea,3.5,0.5,24,Thursday
+2025-04-17,Croissant,Pastry,3.75,1.1,34,Thursday
+2025-04-17,Blueberry Muffin,Pastry,3.95,1.0,31,Thursday
+2025-04-17,Avocado Toast,Food,8.5,2.6,25,Thursday
+2025-04-17,Breakfast Sandwich,Food,7.25,2.4,39,Thursday
+2025-04-17,Bagel & Cream Cheese,Food,4.5,1.3,24,Thursday
+2025-04-17,Granola Bowl,Food,6.75,1.9,12,Thursday
+2025-04-17,Bottled Water,Other,2.25,0.35,15,Thursday
+2025-04-18,Drip Coffee,Coffee,3.25,0.55,84,Friday
+2025-04-18,Latte,Coffee,4.75,1.1,64,Friday
+2025-04-18,Cappuccino,Coffee,4.5,1.05,42,Friday
+2025-04-18,Cold Brew,Coffee,4.95,1.2,66,Friday
+2025-04-18,Espresso Shot,Coffee,2.75,0.45,29,Friday
+2025-04-18,Matcha Latte,Tea,5.25,1.6,31,Friday
+2025-04-18,Chai Latte,Tea,4.95,1.15,28,Friday
+2025-04-18,Iced Tea,Tea,3.5,0.5,20,Friday
+2025-04-18,Croissant,Pastry,3.75,1.1,34,Friday
+2025-04-18,Blueberry Muffin,Pastry,3.95,1.0,29,Friday
+2025-04-18,Avocado Toast,Food,8.5,2.6,27,Friday
+2025-04-18,Breakfast Sandwich,Food,7.25,2.4,36,Friday
+2025-04-18,Bagel & Cream Cheese,Food,4.5,1.3,30,Friday
+2025-04-18,Granola Bowl,Food,6.75,1.9,15,Friday
+2025-04-18,Bottled Water,Other,2.25,0.35,27,Friday
+2025-04-19,Drip Coffee,Coffee,3.25,0.55,87,Saturday
+2025-04-19,Latte,Coffee,4.75,1.1,93,Saturday
+2025-04-19,Cappuccino,Coffee,4.5,1.05,50,Saturday
+2025-04-19,Cold Brew,Coffee,4.95,1.2,65,Saturday
+2025-04-19,Espresso Shot,Coffee,2.75,0.45,34,Saturday
+2025-04-19,Matcha Latte,Tea,5.25,1.6,40,Saturday
+2025-04-19,Chai Latte,Tea,4.95,1.15,32,Saturday
+2025-04-19,Iced Tea,Tea,3.5,0.5,27,Saturday
+2025-04-19,Croissant,Pastry,3.75,1.1,48,Saturday
+2025-04-19,Blueberry Muffin,Pastry,3.95,1.0,45,Saturday
+2025-04-19,Avocado Toast,Food,8.5,2.6,27,Saturday
+2025-04-19,Breakfast Sandwich,Food,7.25,2.4,58,Saturday
+2025-04-19,Bagel & Cream Cheese,Food,4.5,1.3,33,Saturday
+2025-04-19,Granola Bowl,Food,6.75,1.9,14,Saturday
+2025-04-19,Bottled Water,Other,2.25,0.35,25,Saturday
+2025-04-20,Drip Coffee,Coffee,3.25,0.55,93,Sunday
+2025-04-20,Latte,Coffee,4.75,1.1,69,Sunday
+2025-04-20,Cappuccino,Coffee,4.5,1.05,49,Sunday
+2025-04-20,Cold Brew,Coffee,4.95,1.2,57,Sunday
+2025-04-20,Espresso Shot,Coffee,2.75,0.45,31,Sunday
+2025-04-20,Matcha Latte,Tea,5.25,1.6,33,Sunday
+2025-04-20,Chai Latte,Tea,4.95,1.15,34,Sunday
+2025-04-20,Iced Tea,Tea,3.5,0.5,24,Sunday
+2025-04-20,Croissant,Pastry,3.75,1.1,41,Sunday
+2025-04-20,Blueberry Muffin,Pastry,3.95,1.0,29,Sunday
+2025-04-20,Avocado Toast,Food,8.5,2.6,27,Sunday
+2025-04-20,Breakfast Sandwich,Food,7.25,2.4,42,Sunday
+2025-04-20,Bagel & Cream Cheese,Food,4.5,1.3,35,Sunday
+2025-04-20,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-04-20,Bottled Water,Other,2.25,0.35,22,Sunday
+2025-04-21,Drip Coffee,Coffee,3.25,0.55,73,Monday
+2025-04-21,Latte,Coffee,4.75,1.1,63,Monday
+2025-04-21,Cappuccino,Coffee,4.5,1.05,38,Monday
+2025-04-21,Cold Brew,Coffee,4.95,1.2,45,Monday
+2025-04-21,Espresso Shot,Coffee,2.75,0.45,20,Monday
+2025-04-21,Matcha Latte,Tea,5.25,1.6,28,Monday
+2025-04-21,Chai Latte,Tea,4.95,1.15,26,Monday
+2025-04-21,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-04-21,Croissant,Pastry,3.75,1.1,38,Monday
+2025-04-21,Blueberry Muffin,Pastry,3.95,1.0,27,Monday
+2025-04-21,Avocado Toast,Food,8.5,2.6,23,Monday
+2025-04-21,Breakfast Sandwich,Food,7.25,2.4,35,Monday
+2025-04-21,Bagel & Cream Cheese,Food,4.5,1.3,24,Monday
+2025-04-21,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-04-21,Bottled Water,Other,2.25,0.35,13,Monday
+2025-04-22,Drip Coffee,Coffee,3.25,0.55,81,Tuesday
+2025-04-22,Latte,Coffee,4.75,1.1,61,Tuesday
+2025-04-22,Cappuccino,Coffee,4.5,1.05,34,Tuesday
+2025-04-22,Cold Brew,Coffee,4.95,1.2,40,Tuesday
+2025-04-22,Espresso Shot,Coffee,2.75,0.45,22,Tuesday
+2025-04-22,Matcha Latte,Tea,5.25,1.6,22,Tuesday
+2025-04-22,Chai Latte,Tea,4.95,1.15,29,Tuesday
+2025-04-22,Iced Tea,Tea,3.5,0.5,18,Tuesday
+2025-04-22,Croissant,Pastry,3.75,1.1,27,Tuesday
+2025-04-22,Blueberry Muffin,Pastry,3.95,1.0,26,Tuesday
+2025-04-22,Avocado Toast,Food,8.5,2.6,23,Tuesday
+2025-04-22,Breakfast Sandwich,Food,7.25,2.4,34,Tuesday
+2025-04-22,Bagel & Cream Cheese,Food,4.5,1.3,24,Tuesday
+2025-04-22,Granola Bowl,Food,6.75,1.9,13,Tuesday
+2025-04-22,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-04-23,Drip Coffee,Coffee,3.25,0.55,68,Wednesday
+2025-04-23,Latte,Coffee,4.75,1.1,70,Wednesday
+2025-04-23,Cappuccino,Coffee,4.5,1.05,37,Wednesday
+2025-04-23,Cold Brew,Coffee,4.95,1.2,74,Wednesday
+2025-04-23,Espresso Shot,Coffee,2.75,0.45,24,Wednesday
+2025-04-23,Matcha Latte,Tea,5.25,1.6,28,Wednesday
+2025-04-23,Chai Latte,Tea,4.95,1.15,31,Wednesday
+2025-04-23,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-04-23,Croissant,Pastry,3.75,1.1,36,Wednesday
+2025-04-23,Blueberry Muffin,Pastry,3.95,1.0,27,Wednesday
+2025-04-23,Avocado Toast,Food,8.5,2.6,26,Wednesday
+2025-04-23,Breakfast Sandwich,Food,7.25,2.4,35,Wednesday
+2025-04-23,Bagel & Cream Cheese,Food,4.5,1.3,27,Wednesday
+2025-04-23,Granola Bowl,Food,6.75,1.9,16,Wednesday
+2025-04-23,Bottled Water,Other,2.25,0.35,17,Wednesday
+2025-04-24,Drip Coffee,Coffee,3.25,0.55,89,Thursday
+2025-04-24,Latte,Coffee,4.75,1.1,79,Thursday
+2025-04-24,Cappuccino,Coffee,4.5,1.05,45,Thursday
+2025-04-24,Cold Brew,Coffee,4.95,1.2,50,Thursday
+2025-04-24,Espresso Shot,Coffee,2.75,0.45,27,Thursday
+2025-04-24,Matcha Latte,Tea,5.25,1.6,28,Thursday
+2025-04-24,Chai Latte,Tea,4.95,1.15,27,Thursday
+2025-04-24,Iced Tea,Tea,3.5,0.5,19,Thursday
+2025-04-24,Croissant,Pastry,3.75,1.1,42,Thursday
+2025-04-24,Blueberry Muffin,Pastry,3.95,1.0,38,Thursday
+2025-04-24,Avocado Toast,Food,8.5,2.6,30,Thursday
+2025-04-24,Breakfast Sandwich,Food,7.25,2.4,40,Thursday
+2025-04-24,Bagel & Cream Cheese,Food,4.5,1.3,25,Thursday
+2025-04-24,Granola Bowl,Food,6.75,1.9,13,Thursday
+2025-04-24,Bottled Water,Other,2.25,0.35,23,Thursday
+2025-04-25,Drip Coffee,Coffee,3.25,0.55,80,Friday
+2025-04-25,Latte,Coffee,4.75,1.1,77,Friday
+2025-04-25,Cappuccino,Coffee,4.5,1.05,43,Friday
+2025-04-25,Cold Brew,Coffee,4.95,1.2,77,Friday
+2025-04-25,Espresso Shot,Coffee,2.75,0.45,25,Friday
+2025-04-25,Matcha Latte,Tea,5.25,1.6,39,Friday
+2025-04-25,Chai Latte,Tea,4.95,1.15,37,Friday
+2025-04-25,Iced Tea,Tea,3.5,0.5,23,Friday
+2025-04-25,Croissant,Pastry,3.75,1.1,42,Friday
+2025-04-25,Blueberry Muffin,Pastry,3.95,1.0,28,Friday
+2025-04-25,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-04-25,Breakfast Sandwich,Food,7.25,2.4,43,Friday
+2025-04-25,Bagel & Cream Cheese,Food,4.5,1.3,21,Friday
+2025-04-25,Granola Bowl,Food,6.75,1.9,17,Friday
+2025-04-25,Bottled Water,Other,2.25,0.35,22,Friday
+2025-04-26,Drip Coffee,Coffee,3.25,0.55,88,Saturday
+2025-04-26,Latte,Coffee,4.75,1.1,76,Saturday
+2025-04-26,Cappuccino,Coffee,4.5,1.05,47,Saturday
+2025-04-26,Cold Brew,Coffee,4.95,1.2,67,Saturday
+2025-04-26,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-04-26,Matcha Latte,Tea,5.25,1.6,35,Saturday
+2025-04-26,Chai Latte,Tea,4.95,1.15,32,Saturday
+2025-04-26,Iced Tea,Tea,3.5,0.5,27,Saturday
+2025-04-26,Croissant,Pastry,3.75,1.1,43,Saturday
+2025-04-26,Blueberry Muffin,Pastry,3.95,1.0,39,Saturday
+2025-04-26,Avocado Toast,Food,8.5,2.6,28,Saturday
+2025-04-26,Breakfast Sandwich,Food,7.25,2.4,52,Saturday
+2025-04-26,Bagel & Cream Cheese,Food,4.5,1.3,33,Saturday
+2025-04-26,Granola Bowl,Food,6.75,1.9,20,Saturday
+2025-04-26,Bottled Water,Other,2.25,0.35,24,Saturday
+2025-04-27,Drip Coffee,Coffee,3.25,0.55,103,Sunday
+2025-04-27,Latte,Coffee,4.75,1.1,89,Sunday
+2025-04-27,Cappuccino,Coffee,4.5,1.05,36,Sunday
+2025-04-27,Cold Brew,Coffee,4.95,1.2,67,Sunday
+2025-04-27,Espresso Shot,Coffee,2.75,0.45,33,Sunday
+2025-04-27,Matcha Latte,Tea,5.25,1.6,29,Sunday
+2025-04-27,Chai Latte,Tea,4.95,1.15,31,Sunday
+2025-04-27,Iced Tea,Tea,3.5,0.5,21,Sunday
+2025-04-27,Croissant,Pastry,3.75,1.1,41,Sunday
+2025-04-27,Blueberry Muffin,Pastry,3.95,1.0,35,Sunday
+2025-04-27,Avocado Toast,Food,8.5,2.6,22,Sunday
+2025-04-27,Breakfast Sandwich,Food,7.25,2.4,48,Sunday
+2025-04-27,Bagel & Cream Cheese,Food,4.5,1.3,26,Sunday
+2025-04-27,Granola Bowl,Food,6.75,1.9,15,Sunday
+2025-04-27,Bottled Water,Other,2.25,0.35,22,Sunday
+2025-04-28,Drip Coffee,Coffee,3.25,0.55,100,Monday
+2025-04-28,Latte,Coffee,4.75,1.1,62,Monday
+2025-04-28,Cappuccino,Coffee,4.5,1.05,42,Monday
+2025-04-28,Cold Brew,Coffee,4.95,1.2,54,Monday
+2025-04-28,Espresso Shot,Coffee,2.75,0.45,19,Monday
+2025-04-28,Matcha Latte,Tea,5.25,1.6,25,Monday
+2025-04-28,Chai Latte,Tea,4.95,1.15,23,Monday
+2025-04-28,Iced Tea,Tea,3.5,0.5,18,Monday
+2025-04-28,Croissant,Pastry,3.75,1.1,32,Monday
+2025-04-28,Blueberry Muffin,Pastry,3.95,1.0,29,Monday
+2025-04-28,Avocado Toast,Food,8.5,2.6,24,Monday
+2025-04-28,Breakfast Sandwich,Food,7.25,2.4,38,Monday
+2025-04-28,Bagel & Cream Cheese,Food,4.5,1.3,33,Monday
+2025-04-28,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-04-28,Bottled Water,Other,2.25,0.35,19,Monday
+2025-04-29,Drip Coffee,Coffee,3.25,0.55,85,Tuesday
+2025-04-29,Latte,Coffee,4.75,1.1,79,Tuesday
+2025-04-29,Cappuccino,Coffee,4.5,1.05,36,Tuesday
+2025-04-29,Cold Brew,Coffee,4.95,1.2,58,Tuesday
+2025-04-29,Espresso Shot,Coffee,2.75,0.45,28,Tuesday
+2025-04-29,Matcha Latte,Tea,5.25,1.6,26,Tuesday
+2025-04-29,Chai Latte,Tea,4.95,1.15,26,Tuesday
+2025-04-29,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-04-29,Croissant,Pastry,3.75,1.1,32,Tuesday
+2025-04-29,Blueberry Muffin,Pastry,3.95,1.0,26,Tuesday
+2025-04-29,Avocado Toast,Food,8.5,2.6,25,Tuesday
+2025-04-29,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-04-29,Bagel & Cream Cheese,Food,4.5,1.3,30,Tuesday
+2025-04-29,Granola Bowl,Food,6.75,1.9,12,Tuesday
+2025-04-29,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-04-30,Drip Coffee,Coffee,3.25,0.55,93,Wednesday
+2025-04-30,Latte,Coffee,4.75,1.1,68,Wednesday
+2025-04-30,Cappuccino,Coffee,4.5,1.05,36,Wednesday
+2025-04-30,Cold Brew,Coffee,4.95,1.2,50,Wednesday
+2025-04-30,Espresso Shot,Coffee,2.75,0.45,26,Wednesday
+2025-04-30,Matcha Latte,Tea,5.25,1.6,28,Wednesday
+2025-04-30,Chai Latte,Tea,4.95,1.15,28,Wednesday
+2025-04-30,Iced Tea,Tea,3.5,0.5,15,Wednesday
+2025-04-30,Croissant,Pastry,3.75,1.1,33,Wednesday
+2025-04-30,Blueberry Muffin,Pastry,3.95,1.0,29,Wednesday
+2025-04-30,Avocado Toast,Food,8.5,2.6,21,Wednesday
+2025-04-30,Breakfast Sandwich,Food,7.25,2.4,33,Wednesday
+2025-04-30,Bagel & Cream Cheese,Food,4.5,1.3,23,Wednesday
+2025-04-30,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-04-30,Bottled Water,Other,2.25,0.35,21,Wednesday
+2025-05-01,Drip Coffee,Coffee,3.25,0.55,74,Thursday
+2025-05-01,Latte,Coffee,4.75,1.1,71,Thursday
+2025-05-01,Cappuccino,Coffee,4.5,1.05,47,Thursday
+2025-05-01,Cold Brew,Coffee,4.95,1.2,60,Thursday
+2025-05-01,Espresso Shot,Coffee,2.75,0.45,26,Thursday
+2025-05-01,Matcha Latte,Tea,5.25,1.6,30,Thursday
+2025-05-01,Chai Latte,Tea,4.95,1.15,29,Thursday
+2025-05-01,Iced Tea,Tea,3.5,0.5,21,Thursday
+2025-05-01,Croissant,Pastry,3.75,1.1,27,Thursday
+2025-05-01,Blueberry Muffin,Pastry,3.95,1.0,29,Thursday
+2025-05-01,Avocado Toast,Food,8.5,2.6,18,Thursday
+2025-05-01,Breakfast Sandwich,Food,7.25,2.4,46,Thursday
+2025-05-01,Bagel & Cream Cheese,Food,4.5,1.3,30,Thursday
+2025-05-01,Granola Bowl,Food,6.75,1.9,13,Thursday
+2025-05-01,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-05-02,Drip Coffee,Coffee,3.25,0.55,126,Friday
+2025-05-02,Latte,Coffee,4.75,1.1,74,Friday
+2025-05-02,Cappuccino,Coffee,4.5,1.05,53,Friday
+2025-05-02,Cold Brew,Coffee,4.95,1.2,66,Friday
+2025-05-02,Espresso Shot,Coffee,2.75,0.45,28,Friday
+2025-05-02,Matcha Latte,Tea,5.25,1.6,30,Friday
+2025-05-02,Chai Latte,Tea,4.95,1.15,30,Friday
+2025-05-02,Iced Tea,Tea,3.5,0.5,22,Friday
+2025-05-02,Croissant,Pastry,3.75,1.1,29,Friday
+2025-05-02,Blueberry Muffin,Pastry,3.95,1.0,37,Friday
+2025-05-02,Avocado Toast,Food,8.5,2.6,24,Friday
+2025-05-02,Breakfast Sandwich,Food,7.25,2.4,46,Friday
+2025-05-02,Bagel & Cream Cheese,Food,4.5,1.3,28,Friday
+2025-05-02,Granola Bowl,Food,6.75,1.9,22,Friday
+2025-05-02,Bottled Water,Other,2.25,0.35,17,Friday
+2025-05-03,Drip Coffee,Coffee,3.25,0.55,98,Saturday
+2025-05-03,Latte,Coffee,4.75,1.1,99,Saturday
+2025-05-03,Cappuccino,Coffee,4.5,1.05,67,Saturday
+2025-05-03,Cold Brew,Coffee,4.95,1.2,63,Saturday
+2025-05-03,Espresso Shot,Coffee,2.75,0.45,40,Saturday
+2025-05-03,Matcha Latte,Tea,5.25,1.6,35,Saturday
+2025-05-03,Chai Latte,Tea,4.95,1.15,42,Saturday
+2025-05-03,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-05-03,Croissant,Pastry,3.75,1.1,58,Saturday
+2025-05-03,Blueberry Muffin,Pastry,3.95,1.0,47,Saturday
+2025-05-03,Avocado Toast,Food,8.5,2.6,26,Saturday
+2025-05-03,Breakfast Sandwich,Food,7.25,2.4,67,Saturday
+2025-05-03,Bagel & Cream Cheese,Food,4.5,1.3,29,Saturday
+2025-05-03,Granola Bowl,Food,6.75,1.9,18,Saturday
+2025-05-03,Bottled Water,Other,2.25,0.35,28,Saturday
+2025-05-04,Drip Coffee,Coffee,3.25,0.55,85,Sunday
+2025-05-04,Latte,Coffee,4.75,1.1,71,Sunday
+2025-05-04,Cappuccino,Coffee,4.5,1.05,45,Sunday
+2025-05-04,Cold Brew,Coffee,4.95,1.2,64,Sunday
+2025-05-04,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-05-04,Matcha Latte,Tea,5.25,1.6,30,Sunday
+2025-05-04,Chai Latte,Tea,4.95,1.15,32,Sunday
+2025-05-04,Iced Tea,Tea,3.5,0.5,24,Sunday
+2025-05-04,Croissant,Pastry,3.75,1.1,45,Sunday
+2025-05-04,Blueberry Muffin,Pastry,3.95,1.0,34,Sunday
+2025-05-04,Avocado Toast,Food,8.5,2.6,21,Sunday
+2025-05-04,Breakfast Sandwich,Food,7.25,2.4,42,Sunday
+2025-05-04,Bagel & Cream Cheese,Food,4.5,1.3,26,Sunday
+2025-05-04,Granola Bowl,Food,6.75,1.9,18,Sunday
+2025-05-04,Bottled Water,Other,2.25,0.35,16,Sunday
+2025-05-05,Drip Coffee,Coffee,3.25,0.55,86,Monday
+2025-05-05,Latte,Coffee,4.75,1.1,58,Monday
+2025-05-05,Cappuccino,Coffee,4.5,1.05,44,Monday
+2025-05-05,Cold Brew,Coffee,4.95,1.2,57,Monday
+2025-05-05,Espresso Shot,Coffee,2.75,0.45,24,Monday
+2025-05-05,Matcha Latte,Tea,5.25,1.6,30,Monday
+2025-05-05,Chai Latte,Tea,4.95,1.15,26,Monday
+2025-05-05,Iced Tea,Tea,3.5,0.5,21,Monday
+2025-05-05,Croissant,Pastry,3.75,1.1,33,Monday
+2025-05-05,Blueberry Muffin,Pastry,3.95,1.0,31,Monday
+2025-05-05,Avocado Toast,Food,8.5,2.6,21,Monday
+2025-05-05,Breakfast Sandwich,Food,7.25,2.4,25,Monday
+2025-05-05,Bagel & Cream Cheese,Food,4.5,1.3,23,Monday
+2025-05-05,Granola Bowl,Food,6.75,1.9,16,Monday
+2025-05-05,Bottled Water,Other,2.25,0.35,20,Monday
+2025-05-06,Drip Coffee,Coffee,3.25,0.55,82,Tuesday
+2025-05-06,Latte,Coffee,4.75,1.1,65,Tuesday
+2025-05-06,Cappuccino,Coffee,4.5,1.05,36,Tuesday
+2025-05-06,Cold Brew,Coffee,4.95,1.2,56,Tuesday
+2025-05-06,Espresso Shot,Coffee,2.75,0.45,25,Tuesday
+2025-05-06,Matcha Latte,Tea,5.25,1.6,25,Tuesday
+2025-05-06,Chai Latte,Tea,4.95,1.15,29,Tuesday
+2025-05-06,Iced Tea,Tea,3.5,0.5,22,Tuesday
+2025-05-06,Croissant,Pastry,3.75,1.1,29,Tuesday
+2025-05-06,Blueberry Muffin,Pastry,3.95,1.0,28,Tuesday
+2025-05-06,Avocado Toast,Food,8.5,2.6,22,Tuesday
+2025-05-06,Breakfast Sandwich,Food,7.25,2.4,39,Tuesday
+2025-05-06,Bagel & Cream Cheese,Food,4.5,1.3,23,Tuesday
+2025-05-06,Granola Bowl,Food,6.75,1.9,12,Tuesday
+2025-05-06,Bottled Water,Other,2.25,0.35,16,Tuesday
+2025-05-07,Drip Coffee,Coffee,3.25,0.55,89,Wednesday
+2025-05-07,Latte,Coffee,4.75,1.1,74,Wednesday
+2025-05-07,Cappuccino,Coffee,4.5,1.05,40,Wednesday
+2025-05-07,Cold Brew,Coffee,4.95,1.2,46,Wednesday
+2025-05-07,Espresso Shot,Coffee,2.75,0.45,22,Wednesday
+2025-05-07,Matcha Latte,Tea,5.25,1.6,32,Wednesday
+2025-05-07,Chai Latte,Tea,4.95,1.15,24,Wednesday
+2025-05-07,Iced Tea,Tea,3.5,0.5,21,Wednesday
+2025-05-07,Croissant,Pastry,3.75,1.1,33,Wednesday
+2025-05-07,Blueberry Muffin,Pastry,3.95,1.0,28,Wednesday
+2025-05-07,Avocado Toast,Food,8.5,2.6,22,Wednesday
+2025-05-07,Breakfast Sandwich,Food,7.25,2.4,46,Wednesday
+2025-05-07,Bagel & Cream Cheese,Food,4.5,1.3,27,Wednesday
+2025-05-07,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-05-07,Bottled Water,Other,2.25,0.35,15,Wednesday
+2025-05-08,Drip Coffee,Coffee,3.25,0.55,95,Thursday
+2025-05-08,Latte,Coffee,4.75,1.1,84,Thursday
+2025-05-08,Cappuccino,Coffee,4.5,1.05,45,Thursday
+2025-05-08,Cold Brew,Coffee,4.95,1.2,66,Thursday
+2025-05-08,Espresso Shot,Coffee,2.75,0.45,28,Thursday
+2025-05-08,Matcha Latte,Tea,5.25,1.6,27,Thursday
+2025-05-08,Chai Latte,Tea,4.95,1.15,29,Thursday
+2025-05-08,Iced Tea,Tea,3.5,0.5,22,Thursday
+2025-05-08,Croissant,Pastry,3.75,1.1,40,Thursday
+2025-05-08,Blueberry Muffin,Pastry,3.95,1.0,30,Thursday
+2025-05-08,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-05-08,Breakfast Sandwich,Food,7.25,2.4,42,Thursday
+2025-05-08,Bagel & Cream Cheese,Food,4.5,1.3,31,Thursday
+2025-05-08,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-05-08,Bottled Water,Other,2.25,0.35,20,Thursday
+2025-05-09,Drip Coffee,Coffee,3.25,0.55,102,Friday
+2025-05-09,Latte,Coffee,4.75,1.1,71,Friday
+2025-05-09,Cappuccino,Coffee,4.5,1.05,40,Friday
+2025-05-09,Cold Brew,Coffee,4.95,1.2,63,Friday
+2025-05-09,Espresso Shot,Coffee,2.75,0.45,32,Friday
+2025-05-09,Matcha Latte,Tea,5.25,1.6,36,Friday
+2025-05-09,Chai Latte,Tea,4.95,1.15,34,Friday
+2025-05-09,Iced Tea,Tea,3.5,0.5,19,Friday
+2025-05-09,Croissant,Pastry,3.75,1.1,33,Friday
+2025-05-09,Blueberry Muffin,Pastry,3.95,1.0,39,Friday
+2025-05-09,Avocado Toast,Food,8.5,2.6,25,Friday
+2025-05-09,Breakfast Sandwich,Food,7.25,2.4,37,Friday
+2025-05-09,Bagel & Cream Cheese,Food,4.5,1.3,33,Friday
+2025-05-09,Granola Bowl,Food,6.75,1.9,17,Friday
+2025-05-09,Bottled Water,Other,2.25,0.35,28,Friday
+2025-05-10,Drip Coffee,Coffee,3.25,0.55,127,Saturday
+2025-05-10,Latte,Coffee,4.75,1.1,95,Saturday
+2025-05-10,Cappuccino,Coffee,4.5,1.05,51,Saturday
+2025-05-10,Cold Brew,Coffee,4.95,1.2,73,Saturday
+2025-05-10,Espresso Shot,Coffee,2.75,0.45,32,Saturday
+2025-05-10,Matcha Latte,Tea,5.25,1.6,32,Saturday
+2025-05-10,Chai Latte,Tea,4.95,1.15,40,Saturday
+2025-05-10,Iced Tea,Tea,3.5,0.5,27,Saturday
+2025-05-10,Croissant,Pastry,3.75,1.1,30,Saturday
+2025-05-10,Blueberry Muffin,Pastry,3.95,1.0,36,Saturday
+2025-05-10,Avocado Toast,Food,8.5,2.6,26,Saturday
+2025-05-10,Breakfast Sandwich,Food,7.25,2.4,55,Saturday
+2025-05-10,Bagel & Cream Cheese,Food,4.5,1.3,34,Saturday
+2025-05-10,Granola Bowl,Food,6.75,1.9,21,Saturday
+2025-05-10,Bottled Water,Other,2.25,0.35,19,Saturday
+2025-05-11,Drip Coffee,Coffee,3.25,0.55,81,Sunday
+2025-05-11,Latte,Coffee,4.75,1.1,87,Sunday
+2025-05-11,Cappuccino,Coffee,4.5,1.05,41,Sunday
+2025-05-11,Cold Brew,Coffee,4.95,1.2,53,Sunday
+2025-05-11,Espresso Shot,Coffee,2.75,0.45,26,Sunday
+2025-05-11,Matcha Latte,Tea,5.25,1.6,30,Sunday
+2025-05-11,Chai Latte,Tea,4.95,1.15,33,Sunday
+2025-05-11,Iced Tea,Tea,3.5,0.5,25,Sunday
+2025-05-11,Croissant,Pastry,3.75,1.1,31,Sunday
+2025-05-11,Blueberry Muffin,Pastry,3.95,1.0,32,Sunday
+2025-05-11,Avocado Toast,Food,8.5,2.6,24,Sunday
+2025-05-11,Breakfast Sandwich,Food,7.25,2.4,42,Sunday
+2025-05-11,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-05-11,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-05-11,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-05-12,Drip Coffee,Coffee,3.25,0.55,70,Monday
+2025-05-12,Latte,Coffee,4.75,1.1,52,Monday
+2025-05-12,Cappuccino,Coffee,4.5,1.05,36,Monday
+2025-05-12,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-05-12,Espresso Shot,Coffee,2.75,0.45,26,Monday
+2025-05-12,Matcha Latte,Tea,5.25,1.6,27,Monday
+2025-05-12,Chai Latte,Tea,4.95,1.15,34,Monday
+2025-05-12,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-05-12,Croissant,Pastry,3.75,1.1,31,Monday
+2025-05-12,Blueberry Muffin,Pastry,3.95,1.0,30,Monday
+2025-05-12,Avocado Toast,Food,8.5,2.6,18,Monday
+2025-05-12,Breakfast Sandwich,Food,7.25,2.4,37,Monday
+2025-05-12,Bagel & Cream Cheese,Food,4.5,1.3,19,Monday
+2025-05-12,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-05-12,Bottled Water,Other,2.25,0.35,17,Monday
+2025-05-13,Drip Coffee,Coffee,3.25,0.55,83,Tuesday
+2025-05-13,Latte,Coffee,4.75,1.1,68,Tuesday
+2025-05-13,Cappuccino,Coffee,4.5,1.05,32,Tuesday
+2025-05-13,Cold Brew,Coffee,4.95,1.2,47,Tuesday
+2025-05-13,Espresso Shot,Coffee,2.75,0.45,28,Tuesday
+2025-05-13,Matcha Latte,Tea,5.25,1.6,30,Tuesday
+2025-05-13,Chai Latte,Tea,4.95,1.15,25,Tuesday
+2025-05-13,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-05-13,Croissant,Pastry,3.75,1.1,35,Tuesday
+2025-05-13,Blueberry Muffin,Pastry,3.95,1.0,35,Tuesday
+2025-05-13,Avocado Toast,Food,8.5,2.6,24,Tuesday
+2025-05-13,Breakfast Sandwich,Food,7.25,2.4,38,Tuesday
+2025-05-13,Bagel & Cream Cheese,Food,4.5,1.3,23,Tuesday
+2025-05-13,Granola Bowl,Food,6.75,1.9,16,Tuesday
+2025-05-13,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-05-14,Drip Coffee,Coffee,3.25,0.55,76,Wednesday
+2025-05-14,Latte,Coffee,4.75,1.1,60,Wednesday
+2025-05-14,Cappuccino,Coffee,4.5,1.05,36,Wednesday
+2025-05-14,Cold Brew,Coffee,4.95,1.2,53,Wednesday
+2025-05-14,Espresso Shot,Coffee,2.75,0.45,27,Wednesday
+2025-05-14,Matcha Latte,Tea,5.25,1.6,33,Wednesday
+2025-05-14,Chai Latte,Tea,4.95,1.15,32,Wednesday
+2025-05-14,Iced Tea,Tea,3.5,0.5,20,Wednesday
+2025-05-14,Croissant,Pastry,3.75,1.1,38,Wednesday
+2025-05-14,Blueberry Muffin,Pastry,3.95,1.0,38,Wednesday
+2025-05-14,Avocado Toast,Food,8.5,2.6,24,Wednesday
+2025-05-14,Breakfast Sandwich,Food,7.25,2.4,45,Wednesday
+2025-05-14,Bagel & Cream Cheese,Food,4.5,1.3,21,Wednesday
+2025-05-14,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-05-14,Bottled Water,Other,2.25,0.35,16,Wednesday
+2025-05-15,Drip Coffee,Coffee,3.25,0.55,61,Thursday
+2025-05-15,Latte,Coffee,4.75,1.1,74,Thursday
+2025-05-15,Cappuccino,Coffee,4.5,1.05,49,Thursday
+2025-05-15,Cold Brew,Coffee,4.95,1.2,54,Thursday
+2025-05-15,Espresso Shot,Coffee,2.75,0.45,27,Thursday
+2025-05-15,Matcha Latte,Tea,5.25,1.6,28,Thursday
+2025-05-15,Chai Latte,Tea,4.95,1.15,28,Thursday
+2025-05-15,Iced Tea,Tea,3.5,0.5,22,Thursday
+2025-05-15,Croissant,Pastry,3.75,1.1,31,Thursday
+2025-05-15,Blueberry Muffin,Pastry,3.95,1.0,36,Thursday
+2025-05-15,Avocado Toast,Food,8.5,2.6,18,Thursday
+2025-05-15,Breakfast Sandwich,Food,7.25,2.4,41,Thursday
+2025-05-15,Bagel & Cream Cheese,Food,4.5,1.3,26,Thursday
+2025-05-15,Granola Bowl,Food,6.75,1.9,17,Thursday
+2025-05-15,Bottled Water,Other,2.25,0.35,21,Thursday
+2025-05-16,Drip Coffee,Coffee,3.25,0.55,73,Friday
+2025-05-16,Latte,Coffee,4.75,1.1,57,Friday
+2025-05-16,Cappuccino,Coffee,4.5,1.05,40,Friday
+2025-05-16,Cold Brew,Coffee,4.95,1.2,59,Friday
+2025-05-16,Espresso Shot,Coffee,2.75,0.45,28,Friday
+2025-05-16,Matcha Latte,Tea,5.25,1.6,35,Friday
+2025-05-16,Chai Latte,Tea,4.95,1.15,35,Friday
+2025-05-16,Iced Tea,Tea,3.5,0.5,19,Friday
+2025-05-16,Croissant,Pastry,3.75,1.1,32,Friday
+2025-05-16,Blueberry Muffin,Pastry,3.95,1.0,36,Friday
+2025-05-16,Avocado Toast,Food,8.5,2.6,24,Friday
+2025-05-16,Breakfast Sandwich,Food,7.25,2.4,43,Friday
+2025-05-16,Bagel & Cream Cheese,Food,4.5,1.3,28,Friday
+2025-05-16,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-05-16,Bottled Water,Other,2.25,0.35,24,Friday
+2025-05-17,Drip Coffee,Coffee,3.25,0.55,89,Saturday
+2025-05-17,Latte,Coffee,4.75,1.1,78,Saturday
+2025-05-17,Cappuccino,Coffee,4.5,1.05,56,Saturday
+2025-05-17,Cold Brew,Coffee,4.95,1.2,85,Saturday
+2025-05-17,Espresso Shot,Coffee,2.75,0.45,32,Saturday
+2025-05-17,Matcha Latte,Tea,5.25,1.6,33,Saturday
+2025-05-17,Chai Latte,Tea,4.95,1.15,28,Saturday
+2025-05-17,Iced Tea,Tea,3.5,0.5,27,Saturday
+2025-05-17,Croissant,Pastry,3.75,1.1,39,Saturday
+2025-05-17,Blueberry Muffin,Pastry,3.95,1.0,49,Saturday
+2025-05-17,Avocado Toast,Food,8.5,2.6,37,Saturday
+2025-05-17,Breakfast Sandwich,Food,7.25,2.4,51,Saturday
+2025-05-17,Bagel & Cream Cheese,Food,4.5,1.3,36,Saturday
+2025-05-17,Granola Bowl,Food,6.75,1.9,18,Saturday
+2025-05-17,Bottled Water,Other,2.25,0.35,27,Saturday
+2025-05-18,Drip Coffee,Coffee,3.25,0.55,93,Sunday
+2025-05-18,Latte,Coffee,4.75,1.1,78,Sunday
+2025-05-18,Cappuccino,Coffee,4.5,1.05,51,Sunday
+2025-05-18,Cold Brew,Coffee,4.95,1.2,65,Sunday
+2025-05-18,Espresso Shot,Coffee,2.75,0.45,35,Sunday
+2025-05-18,Matcha Latte,Tea,5.25,1.6,27,Sunday
+2025-05-18,Chai Latte,Tea,4.95,1.15,29,Sunday
+2025-05-18,Iced Tea,Tea,3.5,0.5,20,Sunday
+2025-05-18,Croissant,Pastry,3.75,1.1,42,Sunday
+2025-05-18,Blueberry Muffin,Pastry,3.95,1.0,31,Sunday
+2025-05-18,Avocado Toast,Food,8.5,2.6,26,Sunday
+2025-05-18,Breakfast Sandwich,Food,7.25,2.4,36,Sunday
+2025-05-18,Bagel & Cream Cheese,Food,4.5,1.3,28,Sunday
+2025-05-18,Granola Bowl,Food,6.75,1.9,20,Sunday
+2025-05-18,Bottled Water,Other,2.25,0.35,24,Sunday
+2025-05-19,Drip Coffee,Coffee,3.25,0.55,63,Monday
+2025-05-19,Latte,Coffee,4.75,1.1,69,Monday
+2025-05-19,Cappuccino,Coffee,4.5,1.05,42,Monday
+2025-05-19,Cold Brew,Coffee,4.95,1.2,49,Monday
+2025-05-19,Espresso Shot,Coffee,2.75,0.45,21,Monday
+2025-05-19,Matcha Latte,Tea,5.25,1.6,31,Monday
+2025-05-19,Chai Latte,Tea,4.95,1.15,27,Monday
+2025-05-19,Iced Tea,Tea,3.5,0.5,20,Monday
+2025-05-19,Croissant,Pastry,3.75,1.1,33,Monday
+2025-05-19,Blueberry Muffin,Pastry,3.95,1.0,36,Monday
+2025-05-19,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-05-19,Breakfast Sandwich,Food,7.25,2.4,34,Monday
+2025-05-19,Bagel & Cream Cheese,Food,4.5,1.3,26,Monday
+2025-05-19,Granola Bowl,Food,6.75,1.9,14,Monday
+2025-05-19,Bottled Water,Other,2.25,0.35,14,Monday
+2025-05-20,Drip Coffee,Coffee,3.25,0.55,93,Tuesday
+2025-05-20,Latte,Coffee,4.75,1.1,55,Tuesday
+2025-05-20,Cappuccino,Coffee,4.5,1.05,38,Tuesday
+2025-05-20,Cold Brew,Coffee,4.95,1.2,50,Tuesday
+2025-05-20,Espresso Shot,Coffee,2.75,0.45,22,Tuesday
+2025-05-20,Matcha Latte,Tea,5.25,1.6,32,Tuesday
+2025-05-20,Chai Latte,Tea,4.95,1.15,19,Tuesday
+2025-05-20,Iced Tea,Tea,3.5,0.5,17,Tuesday
+2025-05-20,Croissant,Pastry,3.75,1.1,30,Tuesday
+2025-05-20,Blueberry Muffin,Pastry,3.95,1.0,31,Tuesday
+2025-05-20,Avocado Toast,Food,8.5,2.6,25,Tuesday
+2025-05-20,Breakfast Sandwich,Food,7.25,2.4,39,Tuesday
+2025-05-20,Bagel & Cream Cheese,Food,4.5,1.3,29,Tuesday
+2025-05-20,Granola Bowl,Food,6.75,1.9,10,Tuesday
+2025-05-20,Bottled Water,Other,2.25,0.35,17,Tuesday
+2025-05-21,Drip Coffee,Coffee,3.25,0.55,71,Wednesday
+2025-05-21,Latte,Coffee,4.75,1.1,67,Wednesday
+2025-05-21,Cappuccino,Coffee,4.5,1.05,41,Wednesday
+2025-05-21,Cold Brew,Coffee,4.95,1.2,56,Wednesday
+2025-05-21,Espresso Shot,Coffee,2.75,0.45,29,Wednesday
+2025-05-21,Matcha Latte,Tea,5.25,1.6,23,Wednesday
+2025-05-21,Chai Latte,Tea,4.95,1.15,25,Wednesday
+2025-05-21,Iced Tea,Tea,3.5,0.5,16,Wednesday
+2025-05-21,Croissant,Pastry,3.75,1.1,28,Wednesday
+2025-05-21,Blueberry Muffin,Pastry,3.95,1.0,34,Wednesday
+2025-05-21,Avocado Toast,Food,8.5,2.6,22,Wednesday
+2025-05-21,Breakfast Sandwich,Food,7.25,2.4,45,Wednesday
+2025-05-21,Bagel & Cream Cheese,Food,4.5,1.3,30,Wednesday
+2025-05-21,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-05-21,Bottled Water,Other,2.25,0.35,16,Wednesday
+2025-05-22,Drip Coffee,Coffee,3.25,0.55,100,Thursday
+2025-05-22,Latte,Coffee,4.75,1.1,67,Thursday
+2025-05-22,Cappuccino,Coffee,4.5,1.05,36,Thursday
+2025-05-22,Cold Brew,Coffee,4.95,1.2,50,Thursday
+2025-05-22,Espresso Shot,Coffee,2.75,0.45,27,Thursday
+2025-05-22,Matcha Latte,Tea,5.25,1.6,36,Thursday
+2025-05-22,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-05-22,Iced Tea,Tea,3.5,0.5,24,Thursday
+2025-05-22,Croissant,Pastry,3.75,1.1,37,Thursday
+2025-05-22,Blueberry Muffin,Pastry,3.95,1.0,30,Thursday
+2025-05-22,Avocado Toast,Food,8.5,2.6,31,Thursday
+2025-05-22,Breakfast Sandwich,Food,7.25,2.4,49,Thursday
+2025-05-22,Bagel & Cream Cheese,Food,4.5,1.3,28,Thursday
+2025-05-22,Granola Bowl,Food,6.75,1.9,13,Thursday
+2025-05-22,Bottled Water,Other,2.25,0.35,15,Thursday
+2025-05-23,Drip Coffee,Coffee,3.25,0.55,102,Friday
+2025-05-23,Latte,Coffee,4.75,1.1,78,Friday
+2025-05-23,Cappuccino,Coffee,4.5,1.05,49,Friday
+2025-05-23,Cold Brew,Coffee,4.95,1.2,66,Friday
+2025-05-23,Espresso Shot,Coffee,2.75,0.45,30,Friday
+2025-05-23,Matcha Latte,Tea,5.25,1.6,39,Friday
+2025-05-23,Chai Latte,Tea,4.95,1.15,33,Friday
+2025-05-23,Iced Tea,Tea,3.5,0.5,21,Friday
+2025-05-23,Croissant,Pastry,3.75,1.1,37,Friday
+2025-05-23,Blueberry Muffin,Pastry,3.95,1.0,37,Friday
+2025-05-23,Avocado Toast,Food,8.5,2.6,22,Friday
+2025-05-23,Breakfast Sandwich,Food,7.25,2.4,47,Friday
+2025-05-23,Bagel & Cream Cheese,Food,4.5,1.3,32,Friday
+2025-05-23,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-05-23,Bottled Water,Other,2.25,0.35,19,Friday
+2025-05-24,Drip Coffee,Coffee,3.25,0.55,87,Saturday
+2025-05-24,Latte,Coffee,4.75,1.1,79,Saturday
+2025-05-24,Cappuccino,Coffee,4.5,1.05,42,Saturday
+2025-05-24,Cold Brew,Coffee,4.95,1.2,72,Saturday
+2025-05-24,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-05-24,Matcha Latte,Tea,5.25,1.6,35,Saturday
+2025-05-24,Chai Latte,Tea,4.95,1.15,40,Saturday
+2025-05-24,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-05-24,Croissant,Pastry,3.75,1.1,46,Saturday
+2025-05-24,Blueberry Muffin,Pastry,3.95,1.0,42,Saturday
+2025-05-24,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-05-24,Breakfast Sandwich,Food,7.25,2.4,40,Saturday
+2025-05-24,Bagel & Cream Cheese,Food,4.5,1.3,37,Saturday
+2025-05-24,Granola Bowl,Food,6.75,1.9,14,Saturday
+2025-05-24,Bottled Water,Other,2.25,0.35,21,Saturday
+2025-05-25,Drip Coffee,Coffee,3.25,0.55,105,Sunday
+2025-05-25,Latte,Coffee,4.75,1.1,83,Sunday
+2025-05-25,Cappuccino,Coffee,4.5,1.05,48,Sunday
+2025-05-25,Cold Brew,Coffee,4.95,1.2,62,Sunday
+2025-05-25,Espresso Shot,Coffee,2.75,0.45,32,Sunday
+2025-05-25,Matcha Latte,Tea,5.25,1.6,27,Sunday
+2025-05-25,Chai Latte,Tea,4.95,1.15,30,Sunday
+2025-05-25,Iced Tea,Tea,3.5,0.5,22,Sunday
+2025-05-25,Croissant,Pastry,3.75,1.1,48,Sunday
+2025-05-25,Blueberry Muffin,Pastry,3.95,1.0,37,Sunday
+2025-05-25,Avocado Toast,Food,8.5,2.6,27,Sunday
+2025-05-25,Breakfast Sandwich,Food,7.25,2.4,38,Sunday
+2025-05-25,Bagel & Cream Cheese,Food,4.5,1.3,36,Sunday
+2025-05-25,Granola Bowl,Food,6.75,1.9,16,Sunday
+2025-05-25,Bottled Water,Other,2.25,0.35,17,Sunday
+2025-05-26,Drip Coffee,Coffee,3.25,0.55,103,Monday
+2025-05-26,Latte,Coffee,4.75,1.1,55,Monday
+2025-05-26,Cappuccino,Coffee,4.5,1.05,34,Monday
+2025-05-26,Cold Brew,Coffee,4.95,1.2,51,Monday
+2025-05-26,Espresso Shot,Coffee,2.75,0.45,21,Monday
+2025-05-26,Matcha Latte,Tea,5.25,1.6,30,Monday
+2025-05-26,Chai Latte,Tea,4.95,1.15,27,Monday
+2025-05-26,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-05-26,Croissant,Pastry,3.75,1.1,41,Monday
+2025-05-26,Blueberry Muffin,Pastry,3.95,1.0,23,Monday
+2025-05-26,Avocado Toast,Food,8.5,2.6,24,Monday
+2025-05-26,Breakfast Sandwich,Food,7.25,2.4,33,Monday
+2025-05-26,Bagel & Cream Cheese,Food,4.5,1.3,29,Monday
+2025-05-26,Granola Bowl,Food,6.75,1.9,16,Monday
+2025-05-26,Bottled Water,Other,2.25,0.35,22,Monday
+2025-05-27,Drip Coffee,Coffee,3.25,0.55,79,Tuesday
+2025-05-27,Latte,Coffee,4.75,1.1,57,Tuesday
+2025-05-27,Cappuccino,Coffee,4.5,1.05,39,Tuesday
+2025-05-27,Cold Brew,Coffee,4.95,1.2,52,Tuesday
+2025-05-27,Espresso Shot,Coffee,2.75,0.45,19,Tuesday
+2025-05-27,Matcha Latte,Tea,5.25,1.6,31,Tuesday
+2025-05-27,Chai Latte,Tea,4.95,1.15,24,Tuesday
+2025-05-27,Iced Tea,Tea,3.5,0.5,22,Tuesday
+2025-05-27,Croissant,Pastry,3.75,1.1,37,Tuesday
+2025-05-27,Blueberry Muffin,Pastry,3.95,1.0,28,Tuesday
+2025-05-27,Avocado Toast,Food,8.5,2.6,21,Tuesday
+2025-05-27,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-05-27,Bagel & Cream Cheese,Food,4.5,1.3,23,Tuesday
+2025-05-27,Granola Bowl,Food,6.75,1.9,18,Tuesday
+2025-05-27,Bottled Water,Other,2.25,0.35,15,Tuesday
+2025-05-28,Drip Coffee,Coffee,3.25,0.55,86,Wednesday
+2025-05-28,Latte,Coffee,4.75,1.1,78,Wednesday
+2025-05-28,Cappuccino,Coffee,4.5,1.05,38,Wednesday
+2025-05-28,Cold Brew,Coffee,4.95,1.2,51,Wednesday
+2025-05-28,Espresso Shot,Coffee,2.75,0.45,21,Wednesday
+2025-05-28,Matcha Latte,Tea,5.25,1.6,34,Wednesday
+2025-05-28,Chai Latte,Tea,4.95,1.15,30,Wednesday
+2025-05-28,Iced Tea,Tea,3.5,0.5,21,Wednesday
+2025-05-28,Croissant,Pastry,3.75,1.1,29,Wednesday
+2025-05-28,Blueberry Muffin,Pastry,3.95,1.0,32,Wednesday
+2025-05-28,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-05-28,Breakfast Sandwich,Food,7.25,2.4,36,Wednesday
+2025-05-28,Bagel & Cream Cheese,Food,4.5,1.3,22,Wednesday
+2025-05-28,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-05-28,Bottled Water,Other,2.25,0.35,16,Wednesday
+2025-05-29,Drip Coffee,Coffee,3.25,0.55,90,Thursday
+2025-05-29,Latte,Coffee,4.75,1.1,74,Thursday
+2025-05-29,Cappuccino,Coffee,4.5,1.05,40,Thursday
+2025-05-29,Cold Brew,Coffee,4.95,1.2,64,Thursday
+2025-05-29,Espresso Shot,Coffee,2.75,0.45,26,Thursday
+2025-05-29,Matcha Latte,Tea,5.25,1.6,33,Thursday
+2025-05-29,Chai Latte,Tea,4.95,1.15,31,Thursday
+2025-05-29,Iced Tea,Tea,3.5,0.5,24,Thursday
+2025-05-29,Croissant,Pastry,3.75,1.1,32,Thursday
+2025-05-29,Blueberry Muffin,Pastry,3.95,1.0,30,Thursday
+2025-05-29,Avocado Toast,Food,8.5,2.6,26,Thursday
+2025-05-29,Breakfast Sandwich,Food,7.25,2.4,41,Thursday
+2025-05-29,Bagel & Cream Cheese,Food,4.5,1.3,31,Thursday
+2025-05-29,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-05-29,Bottled Water,Other,2.25,0.35,18,Thursday
+2025-05-30,Drip Coffee,Coffee,3.25,0.55,108,Friday
+2025-05-30,Latte,Coffee,4.75,1.1,78,Friday
+2025-05-30,Cappuccino,Coffee,4.5,1.05,51,Friday
+2025-05-30,Cold Brew,Coffee,4.95,1.2,77,Friday
+2025-05-30,Espresso Shot,Coffee,2.75,0.45,33,Friday
+2025-05-30,Matcha Latte,Tea,5.25,1.6,44,Friday
+2025-05-30,Chai Latte,Tea,4.95,1.15,26,Friday
+2025-05-30,Iced Tea,Tea,3.5,0.5,21,Friday
+2025-05-30,Croissant,Pastry,3.75,1.1,39,Friday
+2025-05-30,Blueberry Muffin,Pastry,3.95,1.0,33,Friday
+2025-05-30,Avocado Toast,Food,8.5,2.6,26,Friday
+2025-05-30,Breakfast Sandwich,Food,7.25,2.4,42,Friday
+2025-05-30,Bagel & Cream Cheese,Food,4.5,1.3,34,Friday
+2025-05-30,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-05-30,Bottled Water,Other,2.25,0.35,22,Friday
+2025-05-31,Drip Coffee,Coffee,3.25,0.55,97,Saturday
+2025-05-31,Latte,Coffee,4.75,1.1,97,Saturday
+2025-05-31,Cappuccino,Coffee,4.5,1.05,56,Saturday
+2025-05-31,Cold Brew,Coffee,4.95,1.2,75,Saturday
+2025-05-31,Espresso Shot,Coffee,2.75,0.45,33,Saturday
+2025-05-31,Matcha Latte,Tea,5.25,1.6,46,Saturday
+2025-05-31,Chai Latte,Tea,4.95,1.15,34,Saturday
+2025-05-31,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-05-31,Croissant,Pastry,3.75,1.1,49,Saturday
+2025-05-31,Blueberry Muffin,Pastry,3.95,1.0,41,Saturday
+2025-05-31,Avocado Toast,Food,8.5,2.6,32,Saturday
+2025-05-31,Breakfast Sandwich,Food,7.25,2.4,48,Saturday
+2025-05-31,Bagel & Cream Cheese,Food,4.5,1.3,28,Saturday
+2025-05-31,Granola Bowl,Food,6.75,1.9,15,Saturday
+2025-05-31,Bottled Water,Other,2.25,0.35,22,Saturday
+2025-06-01,Drip Coffee,Coffee,3.25,0.55,102,Sunday
+2025-06-01,Latte,Coffee,4.75,1.1,84,Sunday
+2025-06-01,Cappuccino,Coffee,4.5,1.05,34,Sunday
+2025-06-01,Cold Brew,Coffee,4.95,1.2,64,Sunday
+2025-06-01,Espresso Shot,Coffee,2.75,0.45,27,Sunday
+2025-06-01,Matcha Latte,Tea,5.25,1.6,29,Sunday
+2025-06-01,Chai Latte,Tea,4.95,1.15,39,Sunday
+2025-06-01,Iced Tea,Tea,3.5,0.5,23,Sunday
+2025-06-01,Croissant,Pastry,3.75,1.1,42,Sunday
+2025-06-01,Blueberry Muffin,Pastry,3.95,1.0,43,Sunday
+2025-06-01,Avocado Toast,Food,8.5,2.6,23,Sunday
+2025-06-01,Breakfast Sandwich,Food,7.25,2.4,40,Sunday
+2025-06-01,Bagel & Cream Cheese,Food,4.5,1.3,34,Sunday
+2025-06-01,Granola Bowl,Food,6.75,1.9,13,Sunday
+2025-06-01,Bottled Water,Other,2.25,0.35,20,Sunday
+2025-06-02,Drip Coffee,Coffee,3.25,0.55,81,Monday
+2025-06-02,Latte,Coffee,4.75,1.1,74,Monday
+2025-06-02,Cappuccino,Coffee,4.5,1.05,40,Monday
+2025-06-02,Cold Brew,Coffee,4.95,1.2,47,Monday
+2025-06-02,Espresso Shot,Coffee,2.75,0.45,27,Monday
+2025-06-02,Matcha Latte,Tea,5.25,1.6,31,Monday
+2025-06-02,Chai Latte,Tea,4.95,1.15,23,Monday
+2025-06-02,Iced Tea,Tea,3.5,0.5,17,Monday
+2025-06-02,Croissant,Pastry,3.75,1.1,31,Monday
+2025-06-02,Blueberry Muffin,Pastry,3.95,1.0,25,Monday
+2025-06-02,Avocado Toast,Food,8.5,2.6,24,Monday
+2025-06-02,Breakfast Sandwich,Food,7.25,2.4,35,Monday
+2025-06-02,Bagel & Cream Cheese,Food,4.5,1.3,24,Monday
+2025-06-02,Granola Bowl,Food,6.75,1.9,12,Monday
+2025-06-02,Bottled Water,Other,2.25,0.35,16,Monday
+2025-06-03,Drip Coffee,Coffee,3.25,0.55,95,Tuesday
+2025-06-03,Latte,Coffee,4.75,1.1,72,Tuesday
+2025-06-03,Cappuccino,Coffee,4.5,1.05,31,Tuesday
+2025-06-03,Cold Brew,Coffee,4.95,1.2,46,Tuesday
+2025-06-03,Espresso Shot,Coffee,2.75,0.45,26,Tuesday
+2025-06-03,Matcha Latte,Tea,5.25,1.6,27,Tuesday
+2025-06-03,Chai Latte,Tea,4.95,1.15,25,Tuesday
+2025-06-03,Iced Tea,Tea,3.5,0.5,17,Tuesday
+2025-06-03,Croissant,Pastry,3.75,1.1,28,Tuesday
+2025-06-03,Blueberry Muffin,Pastry,3.95,1.0,29,Tuesday
+2025-06-03,Avocado Toast,Food,8.5,2.6,20,Tuesday
+2025-06-03,Breakfast Sandwich,Food,7.25,2.4,41,Tuesday
+2025-06-03,Bagel & Cream Cheese,Food,4.5,1.3,25,Tuesday
+2025-06-03,Granola Bowl,Food,6.75,1.9,12,Tuesday
+2025-06-03,Bottled Water,Other,2.25,0.35,19,Tuesday
+2025-06-04,Drip Coffee,Coffee,3.25,0.55,99,Wednesday
+2025-06-04,Latte,Coffee,4.75,1.1,64,Wednesday
+2025-06-04,Cappuccino,Coffee,4.5,1.05,32,Wednesday
+2025-06-04,Cold Brew,Coffee,4.95,1.2,52,Wednesday
+2025-06-04,Espresso Shot,Coffee,2.75,0.45,21,Wednesday
+2025-06-04,Matcha Latte,Tea,5.25,1.6,36,Wednesday
+2025-06-04,Chai Latte,Tea,4.95,1.15,23,Wednesday
+2025-06-04,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-06-04,Croissant,Pastry,3.75,1.1,41,Wednesday
+2025-06-04,Blueberry Muffin,Pastry,3.95,1.0,33,Wednesday
+2025-06-04,Avocado Toast,Food,8.5,2.6,21,Wednesday
+2025-06-04,Breakfast Sandwich,Food,7.25,2.4,34,Wednesday
+2025-06-04,Bagel & Cream Cheese,Food,4.5,1.3,25,Wednesday
+2025-06-04,Granola Bowl,Food,6.75,1.9,14,Wednesday
+2025-06-04,Bottled Water,Other,2.25,0.35,21,Wednesday
+2025-06-05,Drip Coffee,Coffee,3.25,0.55,88,Thursday
+2025-06-05,Latte,Coffee,4.75,1.1,62,Thursday
+2025-06-05,Cappuccino,Coffee,4.5,1.05,47,Thursday
+2025-06-05,Cold Brew,Coffee,4.95,1.2,65,Thursday
+2025-06-05,Espresso Shot,Coffee,2.75,0.45,26,Thursday
+2025-06-05,Matcha Latte,Tea,5.25,1.6,34,Thursday
+2025-06-05,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-06-05,Iced Tea,Tea,3.5,0.5,18,Thursday
+2025-06-05,Croissant,Pastry,3.75,1.1,36,Thursday
+2025-06-05,Blueberry Muffin,Pastry,3.95,1.0,27,Thursday
+2025-06-05,Avocado Toast,Food,8.5,2.6,21,Thursday
+2025-06-05,Breakfast Sandwich,Food,7.25,2.4,35,Thursday
+2025-06-05,Bagel & Cream Cheese,Food,4.5,1.3,28,Thursday
+2025-06-05,Granola Bowl,Food,6.75,1.9,15,Thursday
+2025-06-05,Bottled Water,Other,2.25,0.35,16,Thursday
+2025-06-06,Drip Coffee,Coffee,3.25,0.55,87,Friday
+2025-06-06,Latte,Coffee,4.75,1.1,80,Friday
+2025-06-06,Cappuccino,Coffee,4.5,1.05,49,Friday
+2025-06-06,Cold Brew,Coffee,4.95,1.2,64,Friday
+2025-06-06,Espresso Shot,Coffee,2.75,0.45,21,Friday
+2025-06-06,Matcha Latte,Tea,5.25,1.6,40,Friday
+2025-06-06,Chai Latte,Tea,4.95,1.15,39,Friday
+2025-06-06,Iced Tea,Tea,3.5,0.5,27,Friday
+2025-06-06,Croissant,Pastry,3.75,1.1,43,Friday
+2025-06-06,Blueberry Muffin,Pastry,3.95,1.0,37,Friday
+2025-06-06,Avocado Toast,Food,8.5,2.6,23,Friday
+2025-06-06,Breakfast Sandwich,Food,7.25,2.4,45,Friday
+2025-06-06,Bagel & Cream Cheese,Food,4.5,1.3,26,Friday
+2025-06-06,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-06-06,Bottled Water,Other,2.25,0.35,17,Friday
+2025-06-07,Drip Coffee,Coffee,3.25,0.55,118,Saturday
+2025-06-07,Latte,Coffee,4.75,1.1,87,Saturday
+2025-06-07,Cappuccino,Coffee,4.5,1.05,57,Saturday
+2025-06-07,Cold Brew,Coffee,4.95,1.2,73,Saturday
+2025-06-07,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-06-07,Matcha Latte,Tea,5.25,1.6,43,Saturday
+2025-06-07,Chai Latte,Tea,4.95,1.15,31,Saturday
+2025-06-07,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-06-07,Croissant,Pastry,3.75,1.1,43,Saturday
+2025-06-07,Blueberry Muffin,Pastry,3.95,1.0,42,Saturday
+2025-06-07,Avocado Toast,Food,8.5,2.6,28,Saturday
+2025-06-07,Breakfast Sandwich,Food,7.25,2.4,51,Saturday
+2025-06-07,Bagel & Cream Cheese,Food,4.5,1.3,36,Saturday
+2025-06-07,Granola Bowl,Food,6.75,1.9,13,Saturday
+2025-06-07,Bottled Water,Other,2.25,0.35,21,Saturday
+2025-06-08,Drip Coffee,Coffee,3.25,0.55,95,Sunday
+2025-06-08,Latte,Coffee,4.75,1.1,86,Sunday
+2025-06-08,Cappuccino,Coffee,4.5,1.05,47,Sunday
+2025-06-08,Cold Brew,Coffee,4.95,1.2,70,Sunday
+2025-06-08,Espresso Shot,Coffee,2.75,0.45,27,Sunday
+2025-06-08,Matcha Latte,Tea,5.25,1.6,33,Sunday
+2025-06-08,Chai Latte,Tea,4.95,1.15,29,Sunday
+2025-06-08,Iced Tea,Tea,3.5,0.5,21,Sunday
+2025-06-08,Croissant,Pastry,3.75,1.1,35,Sunday
+2025-06-08,Blueberry Muffin,Pastry,3.95,1.0,31,Sunday
+2025-06-08,Avocado Toast,Food,8.5,2.6,24,Sunday
+2025-06-08,Breakfast Sandwich,Food,7.25,2.4,39,Sunday
+2025-06-08,Bagel & Cream Cheese,Food,4.5,1.3,29,Sunday
+2025-06-08,Granola Bowl,Food,6.75,1.9,12,Sunday
+2025-06-08,Bottled Water,Other,2.25,0.35,21,Sunday
+2025-06-09,Drip Coffee,Coffee,3.25,0.55,82,Monday
+2025-06-09,Latte,Coffee,4.75,1.1,70,Monday
+2025-06-09,Cappuccino,Coffee,4.5,1.05,36,Monday
+2025-06-09,Cold Brew,Coffee,4.95,1.2,49,Monday
+2025-06-09,Espresso Shot,Coffee,2.75,0.45,27,Monday
+2025-06-09,Matcha Latte,Tea,5.25,1.6,28,Monday
+2025-06-09,Chai Latte,Tea,4.95,1.15,33,Monday
+2025-06-09,Iced Tea,Tea,3.5,0.5,16,Monday
+2025-06-09,Croissant,Pastry,3.75,1.1,32,Monday
+2025-06-09,Blueberry Muffin,Pastry,3.95,1.0,25,Monday
+2025-06-09,Avocado Toast,Food,8.5,2.6,19,Monday
+2025-06-09,Breakfast Sandwich,Food,7.25,2.4,33,Monday
+2025-06-09,Bagel & Cream Cheese,Food,4.5,1.3,23,Monday
+2025-06-09,Granola Bowl,Food,6.75,1.9,15,Monday
+2025-06-09,Bottled Water,Other,2.25,0.35,15,Monday
+2025-06-10,Drip Coffee,Coffee,3.25,0.55,87,Tuesday
+2025-06-10,Latte,Coffee,4.75,1.1,55,Tuesday
+2025-06-10,Cappuccino,Coffee,4.5,1.05,36,Tuesday
+2025-06-10,Cold Brew,Coffee,4.95,1.2,61,Tuesday
+2025-06-10,Espresso Shot,Coffee,2.75,0.45,25,Tuesday
+2025-06-10,Matcha Latte,Tea,5.25,1.6,29,Tuesday
+2025-06-10,Chai Latte,Tea,4.95,1.15,29,Tuesday
+2025-06-10,Iced Tea,Tea,3.5,0.5,20,Tuesday
+2025-06-10,Croissant,Pastry,3.75,1.1,36,Tuesday
+2025-06-10,Blueberry Muffin,Pastry,3.95,1.0,33,Tuesday
+2025-06-10,Avocado Toast,Food,8.5,2.6,18,Tuesday
+2025-06-10,Breakfast Sandwich,Food,7.25,2.4,36,Tuesday
+2025-06-10,Bagel & Cream Cheese,Food,4.5,1.3,27,Tuesday
+2025-06-10,Granola Bowl,Food,6.75,1.9,14,Tuesday
+2025-06-10,Bottled Water,Other,2.25,0.35,18,Tuesday
+2025-06-11,Drip Coffee,Coffee,3.25,0.55,98,Wednesday
+2025-06-11,Latte,Coffee,4.75,1.1,66,Wednesday
+2025-06-11,Cappuccino,Coffee,4.5,1.05,34,Wednesday
+2025-06-11,Cold Brew,Coffee,4.95,1.2,63,Wednesday
+2025-06-11,Espresso Shot,Coffee,2.75,0.45,25,Wednesday
+2025-06-11,Matcha Latte,Tea,5.25,1.6,28,Wednesday
+2025-06-11,Chai Latte,Tea,4.95,1.15,28,Wednesday
+2025-06-11,Iced Tea,Tea,3.5,0.5,19,Wednesday
+2025-06-11,Croissant,Pastry,3.75,1.1,39,Wednesday
+2025-06-11,Blueberry Muffin,Pastry,3.95,1.0,33,Wednesday
+2025-06-11,Avocado Toast,Food,8.5,2.6,23,Wednesday
+2025-06-11,Breakfast Sandwich,Food,7.25,2.4,40,Wednesday
+2025-06-11,Bagel & Cream Cheese,Food,4.5,1.3,26,Wednesday
+2025-06-11,Granola Bowl,Food,6.75,1.9,16,Wednesday
+2025-06-11,Bottled Water,Other,2.25,0.35,13,Wednesday
+2025-06-12,Drip Coffee,Coffee,3.25,0.55,77,Thursday
+2025-06-12,Latte,Coffee,4.75,1.1,73,Thursday
+2025-06-12,Cappuccino,Coffee,4.5,1.05,40,Thursday
+2025-06-12,Cold Brew,Coffee,4.95,1.2,51,Thursday
+2025-06-12,Espresso Shot,Coffee,2.75,0.45,28,Thursday
+2025-06-12,Matcha Latte,Tea,5.25,1.6,28,Thursday
+2025-06-12,Chai Latte,Tea,4.95,1.15,30,Thursday
+2025-06-12,Iced Tea,Tea,3.5,0.5,21,Thursday
+2025-06-12,Croissant,Pastry,3.75,1.1,37,Thursday
+2025-06-12,Blueberry Muffin,Pastry,3.95,1.0,28,Thursday
+2025-06-12,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-06-12,Breakfast Sandwich,Food,7.25,2.4,46,Thursday
+2025-06-12,Bagel & Cream Cheese,Food,4.5,1.3,29,Thursday
+2025-06-12,Granola Bowl,Food,6.75,1.9,16,Thursday
+2025-06-12,Bottled Water,Other,2.25,0.35,19,Thursday
+2025-06-13,Drip Coffee,Coffee,3.25,0.55,78,Friday
+2025-06-13,Latte,Coffee,4.75,1.1,76,Friday
+2025-06-13,Cappuccino,Coffee,4.5,1.05,45,Friday
+2025-06-13,Cold Brew,Coffee,4.95,1.2,73,Friday
+2025-06-13,Espresso Shot,Coffee,2.75,0.45,33,Friday
+2025-06-13,Matcha Latte,Tea,5.25,1.6,36,Friday
+2025-06-13,Chai Latte,Tea,4.95,1.15,29,Friday
+2025-06-13,Iced Tea,Tea,3.5,0.5,23,Friday
+2025-06-13,Croissant,Pastry,3.75,1.1,39,Friday
+2025-06-13,Blueberry Muffin,Pastry,3.95,1.0,33,Friday
+2025-06-13,Avocado Toast,Food,8.5,2.6,22,Friday
+2025-06-13,Breakfast Sandwich,Food,7.25,2.4,46,Friday
+2025-06-13,Bagel & Cream Cheese,Food,4.5,1.3,30,Friday
+2025-06-13,Granola Bowl,Food,6.75,1.9,18,Friday
+2025-06-13,Bottled Water,Other,2.25,0.35,17,Friday
+2025-06-14,Drip Coffee,Coffee,3.25,0.55,96,Saturday
+2025-06-14,Latte,Coffee,4.75,1.1,131,Saturday
+2025-06-14,Cappuccino,Coffee,4.5,1.05,47,Saturday
+2025-06-14,Cold Brew,Coffee,4.95,1.2,74,Saturday
+2025-06-14,Espresso Shot,Coffee,2.75,0.45,34,Saturday
+2025-06-14,Matcha Latte,Tea,5.25,1.6,34,Saturday
+2025-06-14,Chai Latte,Tea,4.95,1.15,44,Saturday
+2025-06-14,Iced Tea,Tea,3.5,0.5,26,Saturday
+2025-06-14,Croissant,Pastry,3.75,1.1,46,Saturday
+2025-06-14,Blueberry Muffin,Pastry,3.95,1.0,48,Saturday
+2025-06-14,Avocado Toast,Food,8.5,2.6,26,Saturday
+2025-06-14,Breakfast Sandwich,Food,7.25,2.4,47,Saturday
+2025-06-14,Bagel & Cream Cheese,Food,4.5,1.3,32,Saturday
+2025-06-14,Granola Bowl,Food,6.75,1.9,15,Saturday
+2025-06-14,Bottled Water,Other,2.25,0.35,24,Saturday
+2025-06-15,Drip Coffee,Coffee,3.25,0.55,99,Sunday
+2025-06-15,Latte,Coffee,4.75,1.1,79,Sunday
+2025-06-15,Cappuccino,Coffee,4.5,1.05,47,Sunday
+2025-06-15,Cold Brew,Coffee,4.95,1.2,67,Sunday
+2025-06-15,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-06-15,Matcha Latte,Tea,5.25,1.6,32,Sunday
+2025-06-15,Chai Latte,Tea,4.95,1.15,35,Sunday
+2025-06-15,Iced Tea,Tea,3.5,0.5,20,Sunday
+2025-06-15,Croissant,Pastry,3.75,1.1,45,Sunday
+2025-06-15,Blueberry Muffin,Pastry,3.95,1.0,32,Sunday
+2025-06-15,Avocado Toast,Food,8.5,2.6,26,Sunday
+2025-06-15,Breakfast Sandwich,Food,7.25,2.4,51,Sunday
+2025-06-15,Bagel & Cream Cheese,Food,4.5,1.3,21,Sunday
+2025-06-15,Granola Bowl,Food,6.75,1.9,15,Sunday
+2025-06-15,Bottled Water,Other,2.25,0.35,19,Sunday
+2025-06-16,Drip Coffee,Coffee,3.25,0.55,97,Monday
+2025-06-16,Latte,Coffee,4.75,1.1,63,Monday
+2025-06-16,Cappuccino,Coffee,4.5,1.05,50,Monday
+2025-06-16,Cold Brew,Coffee,4.95,1.2,43,Monday
+2025-06-16,Espresso Shot,Coffee,2.75,0.45,25,Monday
+2025-06-16,Matcha Latte,Tea,5.25,1.6,27,Monday
+2025-06-16,Chai Latte,Tea,4.95,1.15,28,Monday
+2025-06-16,Iced Tea,Tea,3.5,0.5,18,Monday
+2025-06-16,Croissant,Pastry,3.75,1.1,31,Monday
+2025-06-16,Blueberry Muffin,Pastry,3.95,1.0,22,Monday
+2025-06-16,Avocado Toast,Food,8.5,2.6,21,Monday
+2025-06-16,Breakfast Sandwich,Food,7.25,2.4,30,Monday
+2025-06-16,Bagel & Cream Cheese,Food,4.5,1.3,21,Monday
+2025-06-16,Granola Bowl,Food,6.75,1.9,13,Monday
+2025-06-16,Bottled Water,Other,2.25,0.35,17,Monday
+2025-06-17,Drip Coffee,Coffee,3.25,0.55,91,Tuesday
+2025-06-17,Latte,Coffee,4.75,1.1,56,Tuesday
+2025-06-17,Cappuccino,Coffee,4.5,1.05,40,Tuesday
+2025-06-17,Cold Brew,Coffee,4.95,1.2,54,Tuesday
+2025-06-17,Espresso Shot,Coffee,2.75,0.45,23,Tuesday
+2025-06-17,Matcha Latte,Tea,5.25,1.6,26,Tuesday
+2025-06-17,Chai Latte,Tea,4.95,1.15,26,Tuesday
+2025-06-17,Iced Tea,Tea,3.5,0.5,21,Tuesday
+2025-06-17,Croissant,Pastry,3.75,1.1,32,Tuesday
+2025-06-17,Blueberry Muffin,Pastry,3.95,1.0,31,Tuesday
+2025-06-17,Avocado Toast,Food,8.5,2.6,20,Tuesday
+2025-06-17,Breakfast Sandwich,Food,7.25,2.4,44,Tuesday
+2025-06-17,Bagel & Cream Cheese,Food,4.5,1.3,25,Tuesday
+2025-06-17,Granola Bowl,Food,6.75,1.9,13,Tuesday
+2025-06-17,Bottled Water,Other,2.25,0.35,14,Tuesday
+2025-06-18,Drip Coffee,Coffee,3.25,0.55,70,Wednesday
+2025-06-18,Latte,Coffee,4.75,1.1,73,Wednesday
+2025-06-18,Cappuccino,Coffee,4.5,1.05,39,Wednesday
+2025-06-18,Cold Brew,Coffee,4.95,1.2,57,Wednesday
+2025-06-18,Espresso Shot,Coffee,2.75,0.45,23,Wednesday
+2025-06-18,Matcha Latte,Tea,5.25,1.6,29,Wednesday
+2025-06-18,Chai Latte,Tea,4.95,1.15,26,Wednesday
+2025-06-18,Iced Tea,Tea,3.5,0.5,21,Wednesday
+2025-06-18,Croissant,Pastry,3.75,1.1,34,Wednesday
+2025-06-18,Blueberry Muffin,Pastry,3.95,1.0,37,Wednesday
+2025-06-18,Avocado Toast,Food,8.5,2.6,20,Wednesday
+2025-06-18,Breakfast Sandwich,Food,7.25,2.4,43,Wednesday
+2025-06-18,Bagel & Cream Cheese,Food,4.5,1.3,23,Wednesday
+2025-06-18,Granola Bowl,Food,6.75,1.9,13,Wednesday
+2025-06-18,Bottled Water,Other,2.25,0.35,16,Wednesday
+2025-06-19,Drip Coffee,Coffee,3.25,0.55,103,Thursday
+2025-06-19,Latte,Coffee,4.75,1.1,77,Thursday
+2025-06-19,Cappuccino,Coffee,4.5,1.05,43,Thursday
+2025-06-19,Cold Brew,Coffee,4.95,1.2,59,Thursday
+2025-06-19,Espresso Shot,Coffee,2.75,0.45,23,Thursday
+2025-06-19,Matcha Latte,Tea,5.25,1.6,37,Thursday
+2025-06-19,Chai Latte,Tea,4.95,1.15,34,Thursday
+2025-06-19,Iced Tea,Tea,3.5,0.5,21,Thursday
+2025-06-19,Croissant,Pastry,3.75,1.1,37,Thursday
+2025-06-19,Blueberry Muffin,Pastry,3.95,1.0,34,Thursday
+2025-06-19,Avocado Toast,Food,8.5,2.6,23,Thursday
+2025-06-19,Breakfast Sandwich,Food,7.25,2.4,39,Thursday
+2025-06-19,Bagel & Cream Cheese,Food,4.5,1.3,26,Thursday
+2025-06-19,Granola Bowl,Food,6.75,1.9,14,Thursday
+2025-06-19,Bottled Water,Other,2.25,0.35,18,Thursday
+2025-06-20,Drip Coffee,Coffee,3.25,0.55,106,Friday
+2025-06-20,Latte,Coffee,4.75,1.1,77,Friday
+2025-06-20,Cappuccino,Coffee,4.5,1.05,44,Friday
+2025-06-20,Cold Brew,Coffee,4.95,1.2,58,Friday
+2025-06-20,Espresso Shot,Coffee,2.75,0.45,24,Friday
+2025-06-20,Matcha Latte,Tea,5.25,1.6,41,Friday
+2025-06-20,Chai Latte,Tea,4.95,1.15,34,Friday
+2025-06-20,Iced Tea,Tea,3.5,0.5,25,Friday
+2025-06-20,Croissant,Pastry,3.75,1.1,38,Friday
+2025-06-20,Blueberry Muffin,Pastry,3.95,1.0,41,Friday
+2025-06-20,Avocado Toast,Food,8.5,2.6,26,Friday
+2025-06-20,Breakfast Sandwich,Food,7.25,2.4,51,Friday
+2025-06-20,Bagel & Cream Cheese,Food,4.5,1.3,30,Friday
+2025-06-20,Granola Bowl,Food,6.75,1.9,16,Friday
+2025-06-20,Bottled Water,Other,2.25,0.35,19,Friday
+2025-06-21,Drip Coffee,Coffee,3.25,0.55,112,Saturday
+2025-06-21,Latte,Coffee,4.75,1.1,93,Saturday
+2025-06-21,Cappuccino,Coffee,4.5,1.05,61,Saturday
+2025-06-21,Cold Brew,Coffee,4.95,1.2,85,Saturday
+2025-06-21,Espresso Shot,Coffee,2.75,0.45,33,Saturday
+2025-06-21,Matcha Latte,Tea,5.25,1.6,45,Saturday
+2025-06-21,Chai Latte,Tea,4.95,1.15,25,Saturday
+2025-06-21,Iced Tea,Tea,3.5,0.5,25,Saturday
+2025-06-21,Croissant,Pastry,3.75,1.1,47,Saturday
+2025-06-21,Blueberry Muffin,Pastry,3.95,1.0,43,Saturday
+2025-06-21,Avocado Toast,Food,8.5,2.6,30,Saturday
+2025-06-21,Breakfast Sandwich,Food,7.25,2.4,49,Saturday
+2025-06-21,Bagel & Cream Cheese,Food,4.5,1.3,32,Saturday
+2025-06-21,Granola Bowl,Food,6.75,1.9,16,Saturday
+2025-06-21,Bottled Water,Other,2.25,0.35,29,Saturday
+2025-06-22,Drip Coffee,Coffee,3.25,0.55,106,Sunday
+2025-06-22,Latte,Coffee,4.75,1.1,89,Sunday
+2025-06-22,Cappuccino,Coffee,4.5,1.05,44,Sunday
+2025-06-22,Cold Brew,Coffee,4.95,1.2,57,Sunday
+2025-06-22,Espresso Shot,Coffee,2.75,0.45,29,Sunday
+2025-06-22,Matcha Latte,Tea,5.25,1.6,33,Sunday
+2025-06-22,Chai Latte,Tea,4.95,1.15,30,Sunday
+2025-06-22,Iced Tea,Tea,3.5,0.5,22,Sunday
+2025-06-22,Croissant,Pastry,3.75,1.1,36,Sunday
+2025-06-22,Blueberry Muffin,Pastry,3.95,1.0,30,Sunday
+2025-06-22,Avocado Toast,Food,8.5,2.6,23,Sunday
+2025-06-22,Breakfast Sandwich,Food,7.25,2.4,35,Sunday
+2025-06-22,Bagel & Cream Cheese,Food,4.5,1.3,31,Sunday
+2025-06-22,Granola Bowl,Food,6.75,1.9,17,Sunday
+2025-06-22,Bottled Water,Other,2.25,0.35,18,Sunday
+2025-06-23,Drip Coffee,Coffee,3.25,0.55,63,Monday
+2025-06-23,Latte,Coffee,4.75,1.1,70,Monday
+2025-06-23,Cappuccino,Coffee,4.5,1.05,39,Monday
+2025-06-23,Cold Brew,Coffee,4.95,1.2,52,Monday
+2025-06-23,Espresso Shot,Coffee,2.75,0.45,20,Monday
+2025-06-23,Matcha Latte,Tea,5.25,1.6,22,Monday
+2025-06-23,Chai Latte,Tea,4.95,1.15,32,Monday
+2025-06-23,Iced Tea,Tea,3.5,0.5,19,Monday
+2025-06-23,Croissant,Pastry,3.75,1.1,35,Monday
+2025-06-23,Blueberry Muffin,Pastry,3.95,1.0,28,Monday
+2025-06-23,Avocado Toast,Food,8.5,2.6,22,Monday
+2025-06-23,Breakfast Sandwich,Food,7.25,2.4,31,Monday
+2025-06-23,Bagel & Cream Cheese,Food,4.5,1.3,23,Monday
+2025-06-23,Granola Bowl,Food,6.75,1.9,11,Monday
+2025-06-23,Bottled Water,Other,2.25,0.35,15,Monday
+2025-06-24,Drip Coffee,Coffee,3.25,0.55,74,Tuesday
+2025-06-24,Latte,Coffee,4.75,1.1,52,Tuesday
+2025-06-24,Cappuccino,Coffee,4.5,1.05,36,Tuesday
+2025-06-24,Cold Brew,Coffee,4.95,1.2,48,Tuesday
+2025-06-24,Espresso Shot,Coffee,2.75,0.45,20,Tuesday
+2025-06-24,Matcha Latte,Tea,5.25,1.6,28,Tuesday
+2025-06-24,Chai Latte,Tea,4.95,1.15,27,Tuesday
+2025-06-24,Iced Tea,Tea,3.5,0.5,17,Tuesday
+2025-06-24,Croissant,Pastry,3.75,1.1,41,Tuesday
+2025-06-24,Blueberry Muffin,Pastry,3.95,1.0,31,Tuesday
+2025-06-24,Avocado Toast,Food,8.5,2.6,24,Tuesday
+2025-06-24,Breakfast Sandwich,Food,7.25,2.4,35,Tuesday
+2025-06-24,Bagel & Cream Cheese,Food,4.5,1.3,27,Tuesday
+2025-06-24,Granola Bowl,Food,6.75,1.9,15,Tuesday
+2025-06-24,Bottled Water,Other,2.25,0.35,15,Tuesday
+2025-06-25,Drip Coffee,Coffee,3.25,0.55,78,Wednesday
+2025-06-25,Latte,Coffee,4.75,1.1,94,Wednesday
+2025-06-25,Cappuccino,Coffee,4.5,1.05,38,Wednesday
+2025-06-25,Cold Brew,Coffee,4.95,1.2,58,Wednesday
+2025-06-25,Espresso Shot,Coffee,2.75,0.45,24,Wednesday
+2025-06-25,Matcha Latte,Tea,5.25,1.6,33,Wednesday
+2025-06-25,Chai Latte,Tea,4.95,1.15,25,Wednesday
+2025-06-25,Iced Tea,Tea,3.5,0.5,18,Wednesday
+2025-06-25,Croissant,Pastry,3.75,1.1,40,Wednesday
+2025-06-25,Blueberry Muffin,Pastry,3.95,1.0,31,Wednesday
+2025-06-25,Avocado Toast,Food,8.5,2.6,15,Wednesday
+2025-06-25,Breakfast Sandwich,Food,7.25,2.4,38,Wednesday
+2025-06-25,Bagel & Cream Cheese,Food,4.5,1.3,25,Wednesday
+2025-06-25,Granola Bowl,Food,6.75,1.9,15,Wednesday
+2025-06-25,Bottled Water,Other,2.25,0.35,19,Wednesday
+2025-06-26,Drip Coffee,Coffee,3.25,0.55,93,Thursday
+2025-06-26,Latte,Coffee,4.75,1.1,74,Thursday
+2025-06-26,Cappuccino,Coffee,4.5,1.05,43,Thursday
+2025-06-26,Cold Brew,Coffee,4.95,1.2,50,Thursday
+2025-06-26,Espresso Shot,Coffee,2.75,0.45,24,Thursday
+2025-06-26,Matcha Latte,Tea,5.25,1.6,28,Thursday
+2025-06-26,Chai Latte,Tea,4.95,1.15,25,Thursday
+2025-06-26,Iced Tea,Tea,3.5,0.5,23,Thursday
+2025-06-26,Croissant,Pastry,3.75,1.1,42,Thursday
+2025-06-26,Blueberry Muffin,Pastry,3.95,1.0,34,Thursday
+2025-06-26,Avocado Toast,Food,8.5,2.6,21,Thursday
+2025-06-26,Breakfast Sandwich,Food,7.25,2.4,37,Thursday
+2025-06-26,Bagel & Cream Cheese,Food,4.5,1.3,26,Thursday
+2025-06-26,Granola Bowl,Food,6.75,1.9,17,Thursday
+2025-06-26,Bottled Water,Other,2.25,0.35,20,Thursday
+2025-06-27,Drip Coffee,Coffee,3.25,0.55,118,Friday
+2025-06-27,Latte,Coffee,4.75,1.1,71,Friday
+2025-06-27,Cappuccino,Coffee,4.5,1.05,45,Friday
+2025-06-27,Cold Brew,Coffee,4.95,1.2,54,Friday
+2025-06-27,Espresso Shot,Coffee,2.75,0.45,24,Friday
+2025-06-27,Matcha Latte,Tea,5.25,1.6,34,Friday
+2025-06-27,Chai Latte,Tea,4.95,1.15,31,Friday
+2025-06-27,Iced Tea,Tea,3.5,0.5,22,Friday
+2025-06-27,Croissant,Pastry,3.75,1.1,33,Friday
+2025-06-27,Blueberry Muffin,Pastry,3.95,1.0,35,Friday
+2025-06-27,Avocado Toast,Food,8.5,2.6,24,Friday
+2025-06-27,Breakfast Sandwich,Food,7.25,2.4,48,Friday
+2025-06-27,Bagel & Cream Cheese,Food,4.5,1.3,32,Friday
+2025-06-27,Granola Bowl,Food,6.75,1.9,14,Friday
+2025-06-27,Bottled Water,Other,2.25,0.35,22,Friday
+2025-06-28,Drip Coffee,Coffee,3.25,0.55,103,Saturday
+2025-06-28,Latte,Coffee,4.75,1.1,108,Saturday
+2025-06-28,Cappuccino,Coffee,4.5,1.05,52,Saturday
+2025-06-28,Cold Brew,Coffee,4.95,1.2,67,Saturday
+2025-06-28,Espresso Shot,Coffee,2.75,0.45,31,Saturday
+2025-06-28,Matcha Latte,Tea,5.25,1.6,32,Saturday
+2025-06-28,Chai Latte,Tea,4.95,1.15,42,Saturday
+2025-06-28,Iced Tea,Tea,3.5,0.5,33,Saturday
+2025-06-28,Croissant,Pastry,3.75,1.1,36,Saturday
+2025-06-28,Blueberry Muffin,Pastry,3.95,1.0,38,Saturday
+2025-06-28,Avocado Toast,Food,8.5,2.6,28,Saturday
+2025-06-28,Breakfast Sandwich,Food,7.25,2.4,46,Saturday
+2025-06-28,Bagel & Cream Cheese,Food,4.5,1.3,39,Saturday
+2025-06-28,Granola Bowl,Food,6.75,1.9,21,Saturday
+2025-06-28,Bottled Water,Other,2.25,0.35,23,Saturday
+2025-06-29,Drip Coffee,Coffee,3.25,0.55,117,Sunday
+2025-06-29,Latte,Coffee,4.75,1.1,77,Sunday
+2025-06-29,Cappuccino,Coffee,4.5,1.05,43,Sunday
+2025-06-29,Cold Brew,Coffee,4.95,1.2,63,Sunday
+2025-06-29,Espresso Shot,Coffee,2.75,0.45,25,Sunday
+2025-06-29,Matcha Latte,Tea,5.25,1.6,39,Sunday
+2025-06-29,Chai Latte,Tea,4.95,1.15,33,Sunday
+2025-06-29,Iced Tea,Tea,3.5,0.5,21,Sunday
+2025-06-29,Croissant,Pastry,3.75,1.1,38,Sunday
+2025-06-29,Blueberry Muffin,Pastry,3.95,1.0,29,Sunday
+2025-06-29,Avocado Toast,Food,8.5,2.6,25,Sunday
+2025-06-29,Breakfast Sandwich,Food,7.25,2.4,35,Sunday
+2025-06-29,Bagel & Cream Cheese,Food,4.5,1.3,29,Sunday
+2025-06-29,Granola Bowl,Food,6.75,1.9,14,Sunday
+2025-06-29,Bottled Water,Other,2.25,0.35,21,Sunday
