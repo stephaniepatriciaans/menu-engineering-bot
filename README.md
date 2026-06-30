@@ -92,6 +92,28 @@ Python, pandas, NumPy, Streamlit, Plotly, Anthropic API (Claude)
 - Multi-location comparison if a cafe has several branches
 - Slack/email delivery of the weekly memo automatically
 
+## Demo Preview
+
+![Menu Engineering Dashboard](assets/dashboard.png)
+![AI Menu Memo](assets/memo.png)
+
+## Example Business Impact
+
+Using the bundled synthetic cafe dataset, the app produces item-level recommendations such as:
+
+- Raise the price of a high-demand drink by 10% when the model estimates demand will remain strong.
+- Flag low-margin popular items as “Plowhorses,” meaning they may need repricing, smaller portions, or supplier cost review.
+- Identify low-margin, low-volume “Dog” items that may need redesign, bundling, or removal.
+- Estimate the expected daily profit change for each recommended price move so the owner can prioritize the highest-impact actions first.
+
+Example output format:
+
+> Recommended action: Increase Iced Latte price by 10%.  
+> Estimated impact: +$18.40 daily profit.  
+> Reason: The item is popular, and the estimated demand drop is smaller than the added margin from the price increase.
+
+This turns menu pricing from guesswork into a repeatable data-driven workflow.
+
 ---
 Built by [Stephanie Anshell](https://github.com/stephaniepatriciaans) —
 [portfolio](https://stephaniepatriciaans.github.io/portfolio) · [LinkedIn](https://linkedin.com/in/stephaniepatriciaanshell)

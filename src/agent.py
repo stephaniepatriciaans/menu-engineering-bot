@@ -18,6 +18,8 @@ import os
 import json
 import pandas as pd
 from anthropic import Anthropic
+from dotenv import load_dotenv
+load_dotenv()
 
 
 SYSTEM_PROMPT = """You are a menu engineering consultant writing a short, \

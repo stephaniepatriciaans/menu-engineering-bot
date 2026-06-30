@@ -22,6 +22,7 @@ import plotly.express as px
 
 sys.path.append(os.path.dirname(__file__))
 from analysis import load_sales, build_item_summary, recommend_price_moves
+from validation import validate_sales_df
 
 st.set_page_config(page_title="Menu Engineering Bot", page_icon="☕", layout="wide")
 
@@ -45,18 +46,39 @@ with st.sidebar:
 
 # --- Load data ---
 df = None
+
 if uploaded is not None and not use_demo:
     try:
-        df = pd.read_csv(uploaded, parse_dates=["date"])
-        missing = REQUIRED_COLS - set(df.columns)
-        if missing:
-            st.error(f"Missing required columns: {missing}")
-            df = None
+        raw_df = pd.read_csv(uploaded)
+        df, errors, warnings = validate_sales_df(raw_df)
+
+        for warning in warnings:
+            st.warning(warning)
+
+        if errors:
+            for error in errors:
+                st.error(error)
+            st.stop()
+
+        st.success("CSV uploaded and validated successfully.")
+
     except Exception as e:
         st.error(f"Could not read CSV: {e}")
+        st.stop()
+
 elif use_demo:
     demo_path = os.path.join(os.path.dirname(__file__), "..", "data", "cafe_sales.csv")
-    df = load_sales(demo_path)
+    raw_df = load_sales(demo_path)
+    df, errors, warnings = validate_sales_df(raw_df)
+
+    for warning in warnings:
+        st.warning(warning)
+
+    if errors:
+        for error in errors:
+            st.error(error)
+        st.stop()
+
     st.info("Using bundled synthetic demo dataset (180 days, 15 items).")
 
 if df is None:
@@ -128,14 +150,23 @@ st.header("3. Generate Menu Memo")
 
 if not os.environ.get("ANTHROPIC_API_KEY"):
     st.warning(
-        "No `ANTHROPIC_API_KEY` found in environment. Set it before running "
-        "`streamlit run src/app.py` to enable memo generation, e.g.\n\n"
-        "`export ANTHROPIC_API_KEY=sk-...`"
+        "No `ANTHROPIC_API_KEY` found in environment. "
+        "Set it before running `streamlit run src/app.py`."
     )
 else:
     if st.button("✨ Generate Memo", type="primary"):
         with st.spinner("Writing memo..."):
-            from agent import generate_menu_memo
-            memo = generate_menu_memo(summary, moves)
-            st.markdown("### Memo")
-            st.markdown(memo)
+            try:
+                from agent import generate_menu_memo
+
+                memo = generate_menu_memo(summary, moves)
+                st.markdown("### Memo")
+                st.markdown(memo)
+
+            except Exception as e:
+                st.error("Could not generate the AI memo.")
+                st.code(str(e))
+                st.info(
+                    "The dashboard still works. This usually means the Anthropic API key is invalid, "
+                    "revoked, expired, or not loaded correctly."
+                )

@@ -1,5 +1,17 @@
-echo ".env
-venv/
+# secrets
+.env
+.streamlit/secrets.toml
+
+# Python
 __pycache__/
 *.pyc
-.DS_Store" > .gitignore
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
