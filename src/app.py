@@ -125,7 +125,6 @@ with tab3:
     )
 
 st.header("3. Generate Menu Memo")
-st.caption("Uses Claude to turn the numbers above into a short, plain-English memo you could hand to a cafe owner.")
 
 if not os.environ.get("ANTHROPIC_API_KEY"):
     st.warning(
