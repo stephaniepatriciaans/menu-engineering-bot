@@ -54,7 +54,7 @@ pip install -r requirements.txt
 python src/generate_data.py
 
 # Set your Anthropic API key to enable memo generation
-export ANTHROPIC_API_KEY=sk-...
+export ANTHROPIC_API_KEY=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
 
 # Run the dashboard
 streamlit run src/app.py
