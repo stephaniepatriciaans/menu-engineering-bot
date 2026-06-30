@@ -41,7 +41,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(
         "**Expected columns:** `date, item, category, price, unit_cost, units_sold`\n\n"
-        "Don't have this format? You can still try the demo dataset to see how it works."
     )
 
 # --- Load data ---

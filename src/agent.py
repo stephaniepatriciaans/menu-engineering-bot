@@ -40,6 +40,7 @@ removal (the Dogs), described gently and constructively.
 - End with a 2-sentence summary of total estimated daily profit upside if \
 all top recommendations were adopted.
 - Keep the whole memo under 400 words.
+"Do not use footnotes, asterisks, or symbols. All explanations inline only."
 """
 
 
