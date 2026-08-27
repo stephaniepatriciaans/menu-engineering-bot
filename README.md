@@ -1,13 +1,46 @@
 # Menu Engineering Bot
 
-A universal menu-engineering application for cafes, restaurants, coffee chains, and POS exports. It adapts different source schemas into one canonical dataframe, runs deterministic business/pricing analytics, and optionally uses Claude to explain those already-computed results in a management memo.
+> A universal menu and POS analytics application that turns transaction data into menu-performance insights, pricing simulations, and an AI-assisted management memo.
 
-The core design is intentionally separated:
+Menu Engineering Bot combines **data engineering, deterministic business analytics, pricing analysis, and an LLM explanation layer** in one Streamlit application.
+
+Instead of requiring one specific CSV format, the application can ingest datasets from different cafes, restaurants, coffee chains, or POS systems by automatically mapping external columns into a standardized internal schema.
+
+![Menu Engineering Dashboard](assets/dashboard.png)
+
+## Why I Built This
+
+Restaurant and cafe sales data rarely arrives in one standardized format.
+
+One dataset might contain:
 
 ```text
-Raw POS / menu data
+transaction_date
+product_detail
+product_category
+unit_price
+transaction_qty
+```
+
+while another may contain:
+
+```text
+Date
+Menu Item
+Type
+Selling Price
+COGS
+Qty
+```
+
+The analytics engine should not have to be rewritten for every dataset.
+
+Menu Engineering Bot solves this by separating **data adaptation** from **business analysis**:
+
+```text
+Raw POS / Menu Data
         ↓
-Schema Adapter + Column Mapping
+Schema Detection + Column Mapping
         ↓
 Canonical Dataset
         ↓
@@ -15,29 +48,36 @@ Validation + Capability Detection
         ↓
 Deterministic Analytics Engine
         ↓
-Decision / Price Recommendations
+Pricing / Menu Recommendations
         ↓
-LLM Explanation Layer
+AI Explanation Layer
 ```
 
-The LLM does **not** calculate margin, elasticity, profit, or recommended prices. Those numbers come from Python/pandas/NumPy first; the LLM only explains them.
+The numerical analysis is always performed in Python. The LLM never invents or calculates financial metrics.
 
-## What the app supports
+---
 
-The same pipeline can work with:
+## Key Features
 
-- cafe datasets
-- restaurant datasets
-- coffee-chain/public datasets
-- Square/Toast/other POS-style exports
-- a user's own CSV
-- the bundled full synthetic demo
+### Universal POS / CSV Adapter
 
-Starbucks or Blue Bottle can be used as examples later, but neither brand is hardcoded into the analysis engine.
+External datasets do not need to use predefined column names.
 
-## Canonical internal schema
+The app automatically recognizes common fields and allows users to correct mappings through the Streamlit interface.
 
-Internally, analysis uses:
+![Automatic Column Mapping](assets/column_mapping.png)
+
+For example, an external POS dataset can automatically map:
+
+```text
+transaction_date   → date
+product_detail     → item
+product_category   → category
+unit_price         → price
+transaction_qty    → units_sold
+```
+
+The internal analytics engine always receives the same canonical structure:
 
 ```text
 date
@@ -48,7 +88,17 @@ unit_cost
 units_sold
 ```
 
-Only these transactional fields are required to get started:
+This keeps dataset-specific logic out of `analysis.py`.
+
+---
+
+## Capability-Aware Analysis
+
+Not every public dataset contains confidential cost information.
+
+Menu Engineering Bot detects what information is available and enables only analyses supported by the data.
+
+For a transaction dataset containing:
 
 ```text
 date
@@ -57,154 +107,47 @@ price
 units_sold
 ```
 
-`category` and `unit_cost` are optional.
-
-External datasets **do not** need to use the canonical column names. `src/data_adapter.py` automatically detects common aliases and the Streamlit UI lets the user correct mappings with dropdowns.
-
-For example, this source:
-
-```text
-transaction_date,product_name,product_category,unit_price,cost,quantity
-```
-
-maps automatically to:
-
-```text
-date,item,category,price,unit_cost,units_sold
-```
-
-A source such as:
-
-```text
-Date,Menu Item,Type,Selling Price,COGS,Qty
-```
-
-can map to the same canonical dataframe without changing `analysis.py`.
-
-## Missing cost is handled explicitly
-
-Many public food/beverage datasets contain transactions and prices but not confidential internal unit costs. The app does **not** invent those costs.
-
-If `unit_cost` is missing, the app can still run:
+the application can still provide:
 
 - revenue analysis
-- popularity / volume analysis
-- sales trends
+- sales volume and popularity
 - item rankings
+- product mix
+- sales trends
 - price variation analysis
-- historical elasticity estimation when sufficient price variation exists
+- elasticity analysis when sufficient historical variation exists
 
-The app disables:
+Profit-dependent features require unit-cost information.
 
-- contribution margin
-- total profit
-- traditional Star / Plowhorse / Puzzle / Dog classification
-- profit-maximizing price recommendations
+![Dataset Capabilities](assets/capabilities.png)
 
-until complete cost information is available.
+If cost is unavailable, the application does **not** fabricate it.
 
-The user may optionally:
+Users can either continue without cost data, upload a separate menu-cost file, or intentionally run a scenario using an estimated cost percentage.
 
-1. map a cost column already present in the sales file,
-2. upload a separate menu-cost CSV and match it by item, or
-3. deliberately run a scenario using an estimated cost percentage.
+Scenario costs are explicitly labeled as assumptions and are never presented as real company economics.
 
-Option 3 is labeled as an **assumption** in the dashboard and AI prompt. It is never presented as actual Starbucks, Blue Bottle, restaurant, or cafe cost data.
+---
 
-## Elasticity reliability
+## Real-World Dataset Example
 
-For each item, the deterministic engine attempts to estimate:
+The universal adapter was tested with an external **Maven Roasters coffee-shop transaction dataset** containing fields such as:
 
 ```text
-log(quantity) ~ log(price)
-```
-
-using daily observations when there is enough usable price variation. Each item includes:
-
-```text
-elasticity
-elasticity_source
-elasticity_confidence
-price_points
-observations
-price_variation_%
-```
-
-`elasticity_source` can distinguish a historical estimate from a configured prior:
-
-- `estimated`
-- `category_prior`
-- `default_prior`
-
-Confidence is labeled `High`, `Medium`, `Low`, or `Prior`.
-
-Category priors are configured in `src/config.py`. Unknown categories do not cause failures; they fall back to a generic configurable prior. A category such as `Refreshers`, for example, works without adding application code.
-
-## Price simulation
-
-Candidate price changes are configured centrally rather than hardcoded inside the analysis loop. The default is:
-
-```python
-[-0.10, -0.05, 0.00, 0.05, 0.10, 0.15]
-```
-
-The Streamlit sidebar also lets the user control the maximum tested decrease/increase. Simulations reject changes that would make prices non-positive.
-
-Profit-based recommendations run only when full cost data exists (or when the user explicitly selected a cost scenario assumption).
-
-## Currency and dataset settings
-
-The dashboard accepts:
-
-- business name
-- dataset name
-- currency
-
-Built-in formatting supports:
-
-- USD
-- IDR
-- EUR
-- GBP
-
-The implementation is easy to extend in `src/config.py`. The UI and AI memo do not assume dollars.
-
-## Streamlit workflow
-
-The dashboard follows this flow:
-
-```text
-1. Load Dataset
-2. Detect / Map Columns
-3. Validate Dataset
-4. Show Dataset Overview
-5. Show Available Analyses
-6. Run Revenue / Popularity / Elasticity / Menu Engineering
-7. View Price Recommendations (when cost permits)
-8. Generate AI Decision Memo
-```
-
-The dataset overview includes row count, date range, unique items, categories, total units, revenue, and validation/data-quality warnings.
-
-## Bundled synthetic demo
-
-`data/cafe_sales.csv` remains the one-click **Full Demo Dataset — Synthetic Cafe**. It includes prices, unit costs, quantities, categories, and dates so the complete pipeline can be demonstrated end to end.
-
-`src/generate_data.py` remains the generator for that synthetic dataset, and `data/menu_reference.csv` documents the synthetic assumptions used to create it.
-
-## Loading a Starbucks-style dataset
-
-Suppose a public CSV contains:
-
-```text
+transaction_id
 transaction_date
-product_detail
-product_category
-unit_price
+transaction_time
 transaction_qty
+store_id
+store_location
+product_id
+unit_price
+product_category
+product_type
+product_detail
 ```
 
-Upload it in Streamlit. Automatic mapping should preselect:
+The app detects the relevant analytical fields automatically:
 
 ```text
 transaction_date   → date
@@ -212,74 +155,286 @@ product_detail     → item
 product_category   → category
 unit_price         → price
 transaction_qty    → units_sold
-Not available      → unit_cost
 ```
 
-No change to `analysis.py` is required.
+Because this transaction dataset does not contain unit cost, Menu Engineering Bot correctly enables revenue and popularity analytics while disabling actual profit-based menu engineering.
 
-If that public dataset has no unit-cost field, revenue/popularity/trend analysis still works, while profit-dependent features are disabled. You may add a real cost file or intentionally choose a scenario percentage, but the app will not fabricate Starbucks internal economics.
+No internal cost data is inferred or fabricated.
 
-## Loading a Blue-Bottle-style dataset
+The same adapter architecture can support other cafe, restaurant, coffee-chain, or POS datasets without changing the deterministic analysis engine.
 
-The process is identical. Upload the CSV and let automatic detection map recognizable fields. If a source has unusual names, use the mapping dropdowns once; the analytics engine still receives the same canonical dataframe.
+---
 
-For example:
+## Menu Engineering
+
+When cost information is available, the application calculates:
+
+- contribution margin
+- total revenue
+- total contribution profit
+- average daily sales
+- popularity
+- Star / Plowhorse / Puzzle / Dog classification
+
+![Menu Engineering Quadrants](assets/quadrant_chart.png)
+
+The bundled **Full Demo Dataset — Synthetic Cafe** contains complete synthetic cost and sales information so the entire menu-engineering workflow can be demonstrated safely.
+
+### Menu Engineering Quadrants
+
+| Quadrant | Popularity | Margin | Interpretation |
+|---|---|---|---|
+| Star | High | High | Strong performers |
+| Plowhorse | High | Low | Popular but margin constrained |
+| Puzzle | Low | High | Profitable but under-selected |
+| Dog | Low | Low | Candidates for review |
+
+---
+
+## Price Elasticity
+
+For products with enough historical price variation, the application estimates item-level price elasticity using:
 
 ```text
-Sale Date      → date
-Menu Item      → item
-Type           → category
-Selling Price  → price
-Qty            → units_sold
-COGS           → unit_cost  # only if this field genuinely exists
+log(quantity) ~ log(price)
 ```
 
-There is no Blue Bottle-specific logic in the analysis code.
+Before accepting an estimate, the model checks factors including:
 
-## Public-company data limitation
+```text
+number of observations
+number of unique price points
+amount of price variation
+zero or invalid quantities
+extreme elasticity estimates
+```
 
-Public datasets may be useful for demonstrating transaction volume, product mix, prices, or category trends. They should **not** be described as containing confidential costs, true demand curves, store-level economics, or internal profit unless those fields genuinely exist in the dataset.
+Every result includes metadata such as:
 
-A prior-based elasticity is also not equivalent to elasticity estimated from historical price variation. The UI and memo expose that distinction.
+```text
+elasticity
+elasticity_source
+elasticity_confidence
+price_points
+observations
+```
 
-## Project structure
+Possible sources include:
+
+```text
+estimated
+category_prior
+default_prior
+```
+
+and confidence levels include:
+
+```text
+High
+Medium
+Low
+Prior
+```
+
+A category-based prior is therefore never presented as if it were a historical elasticity estimate.
+
+Unknown categories automatically use a configurable generic fallback rather than causing the application to fail.
+
+---
+
+## Deterministic Price Simulation
+
+Price recommendations are generated by Python—not by the LLM.
+
+The engine evaluates configurable candidate price changes such as:
+
+```python
+[-0.10, -0.05, 0.00, 0.05, 0.10, 0.15]
+```
+
+For each candidate price, the deterministic model estimates the demand response and resulting contribution profit when the required cost data exists.
+
+![Price Recommendations](assets/price_moves.png)
+
+Recommendations expose their elasticity source and confidence so weak assumptions remain visible to the user.
+
+---
+
+## AI Decision Memo
+
+After all numerical analysis is complete, Claude can convert the computed results into a short management memo.
+
+![AI Decision Memo](assets/ai_memo.png)
+
+The AI layer receives calculated outputs such as:
+
+```text
+revenue
+sales volume
+quadrant
+recommended price
+estimated impact
+elasticity source
+elasticity confidence
+available analyses
+business metadata
+```
+
+Claude is instructed to:
+
+- explain only existing calculated results
+- never create new financial numbers
+- distinguish measured results from assumptions
+- acknowledge low-confidence elasticity
+- avoid profit claims when unit-cost data is unavailable
+- provide practical recommendations for restaurant, cafe, or food-service managers
+
+The separation is intentional:
+
+```text
+DATA
+ ↓
+DETERMINISTIC ANALYSIS
+ ↓
+BUSINESS RECOMMENDATION NUMBERS
+ ↓
+LLM EXPLANATION
+```
+
+---
+
+## Currency Support
+
+The dashboard currently supports:
+
+```text
+USD
+IDR
+EUR
+GBP
+```
+
+Currency formatting is centralized and easy to extend.
+
+The application does not assume `$` throughout the analytical engine or AI memo.
+
+---
+
+## Project Architecture
 
 ```text
 menu-engineering-bot/
 ├── assets/
 │   ├── dashboard.png
-│   ├── item_summary.png
+│   ├── column_mapping.png
+│   ├── capabilities.png
 │   ├── quadrant_chart.png
 │   ├── price_moves.png
 │   └── ai_memo.png
+│
 ├── data/
 │   ├── cafe_sales.csv
 │   └── menu_reference.csv
+│
 ├── src/
-│   ├── app.py               # Streamlit workflow/UI
-│   ├── data_adapter.py      # aliases, auto-detection, canonical mapping, cost merge
-│   ├── validation.py        # canonical validation + capability detection
-│   ├── analysis.py          # deterministic revenue/margin/elasticity/quadrants/pricing
-│   ├── config.py            # aliases, priors, currency, price-change config
-│   ├── agent.py             # Claude explanation layer only
-│   └── generate_data.py     # bundled synthetic demo generator
+│   ├── app.py
+│   ├── data_adapter.py
+│   ├── validation.py
+│   ├── analysis.py
+│   ├── config.py
+│   ├── agent.py
+│   └── generate_data.py
+│
 ├── tests/
 │   └── test_universal_pipeline.py
+│
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
 
-## Tests
+### Responsibilities
 
-The lightweight `unittest` suite verifies:
+**`data_adapter.py`**  
+Handles delimiter detection, automatic column recognition, manual schema mapping, cost-file merging, and conversion to the canonical dataframe.
 
-- Dataset A: original canonical format runs full analysis
-- Dataset B: alternate names automatically map to canonical fields
-- Dataset C: missing unit cost still runs safely and disables profit features
-- Dataset D: unknown category falls back to the generic elasticity prior
-- explicit estimated-cost scenario enables scenario profit analysis
+**`validation.py`**  
+Checks data quality and determines which analytical capabilities are available.
+
+**`analysis.py`**  
+Contains deterministic calculations for revenue, margins, menu classification, elasticity, and price simulations.
+
+**`config.py`**  
+Stores column aliases, elasticity priors, fallback assumptions, currency formatting, and pricing configuration.
+
+**`agent.py`**  
+Passes already-computed results to Claude and generates a management explanation.
+
+**`app.py`**  
+Provides the Streamlit user workflow and visualizations.
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/stephaniepatriciaans/menu-engineering-bot.git
+cd menu-engineering-bot
+```
+
+Create a virtual environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+streamlit run src/app.py
+```
+
+Then open:
+
+```text
+http://localhost:8501
+```
+
+---
+
+## Optional Claude Integration
+
+All deterministic analytics work without an API key.
+
+To enable the AI decision memo:
+
+```bash
+cp .env.example .env
+```
+
+Add your Anthropic key to `.env`:
+
+```text
+ANTHROPIC_API_KEY=your_key_here
+```
+
+Then restart Streamlit.
+
+> `.env` is excluded from Git and should never be committed.
+
+---
+
+## Running Tests
 
 Run:
 
@@ -287,41 +442,65 @@ Run:
 python -m unittest discover -s tests -v
 ```
 
-## Running the app
-
-```bash
-git clone https://github.com/stephaniepatriciaans/menu-engineering-bot
-cd menu-engineering-bot
-pip install -r requirements.txt
-
-# Optional: regenerate bundled synthetic demo
-python src/generate_data.py
-
-# Optional: only required for the AI memo
-cp .env.example .env
-# edit .env and add ANTHROPIC_API_KEY
-
-streamlit run src/app.py
-```
-
-Without an Anthropic API key, the adapter, validation, dashboard, elasticity analysis, and deterministic recommendations continue to work. Only AI memo generation is unavailable.
-
-## Main portfolio value
-
-The project is designed to demonstrate the full chain rather than hide the math behind an LLM:
+The test suite covers:
 
 ```text
-DATA ENGINEERING
-      ↓
-DETERMINISTIC BUSINESS ANALYTICS
-      ↓
-PRICING / RECOMMENDATION NUMBERS
-      ↓
-AI EXPLANATION
+Dataset A — canonical input format
+Dataset B — alternate column names
+Dataset C — missing unit cost
+Dataset D — previously unseen category
+Estimated-cost scenario
 ```
 
-That separation keeps the outputs inspectable, testable, and recruiter-friendly.
+These cases verify that schema adaptation and capability detection work independently of any specific restaurant or coffee-chain dataset.
 
 ---
 
-Built by [Stephanie Anshell](https://github.com/stephaniepatriciaans) — [portfolio](https://stephaniepatriciaans.github.io/portfolio)
+## Data & Modeling Limitations
+
+Public restaurant or coffee-company datasets often contain sales transactions, item prices, categories, and quantities but do not contain confidential information such as:
+
+```text
+true unit costs
+store contribution margins
+internal demand curves
+supplier contracts
+operating economics
+```
+
+Menu Engineering Bot does not infer those values unless a user deliberately chooses a labeled scenario assumption.
+
+Similarly, category elasticity priors are modeling assumptions and should not be interpreted as historical estimates.
+
+This distinction is exposed directly in the application through `elasticity_source` and `elasticity_confidence`.
+
+---
+
+## Tech Stack
+
+**Python · pandas · NumPy · Streamlit · Plotly · Anthropic Claude API · unittest**
+
+---
+
+## What This Project Demonstrates
+
+This project combines four areas that are often implemented separately:
+
+**Data Engineering**  
+Adapting heterogeneous POS datasets into a stable canonical schema.
+
+**Business Analytics**  
+Revenue, contribution margin, product mix, and menu-engineering classification.
+
+**Pricing Analytics**  
+Elasticity reliability checks and deterministic price simulations.
+
+**Applied AI**  
+Using an LLM to communicate model outputs without delegating numerical reasoning to the model.
+
+The result is a system designed to remain transparent, testable, and reusable across different food-service datasets.
+
+---
+
+Built by [Stephanie Anshell](https://github.com/stephaniepatriciaans)  
+[Portfolio](https://stephaniepatriciaans.github.io/portfolio)
