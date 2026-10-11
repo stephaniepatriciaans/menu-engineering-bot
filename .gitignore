@@ -1,11 +1,23 @@
-# secrets
+
+# ==========================================
+# Secrets and API keys
+# ==========================================
 .env
+.env.*
+!.env.example
 .streamlit/secrets.toml
 
+# ==========================================
 # Local external datasets
+# ==========================================
 Maven Roasters/
+data/private/
+data/local/
+data/uploads/
 
-# Python
+# ==========================================
+# Python environments and cache
+# ==========================================
 __pycache__/
 *.pyc
 *.pyo
@@ -13,9 +25,26 @@ __pycache__/
 .Python
 venv/
 .venv/
+env/
 .pytest_cache/
+*.egg-info/
+.coverage
+htmlcov/
 
-# OS / editor
+# ==========================================
+# Generated reports
+# ==========================================
+reports/
+outputs/
+*_decision_memo.pdf
+*_decision_memo.md
+*_decision_memo.txt
+
+# ==========================================
+# OS and editor files
+# ==========================================
 .DS_Store
 .vscode/
 .idea/
+*.swp
+*.log
