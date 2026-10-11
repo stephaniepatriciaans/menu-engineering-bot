@@ -90,12 +90,96 @@ def validate_sales_df(df: pd.DataFrame) -> tuple[pd.DataFrame | None, list[str],
 
     if df.duplicated(keep=False).any():
         warnings.append(
-            "Some rows are exact duplicates. The app will still run, but duplicate sales rows may overstate demand."
+            "Some standardized sales rows have identical values. "
+            "These may represent separate, legitimate purchases. "
+            "Review the original transaction IDs before "
+            "deciding whether any records are duplicates. "
+            "No rows have been removed."
         )
 
     if errors:
         return None, errors, warnings
     return df, errors, warnings
+
+
+
+def audit_source_transactions(
+    raw_df: pd.DataFrame,
+) -> list[str]:
+    """
+    Audit the original POS dataset for possible duplicates.
+
+    Preserve all rows. Repeated transaction IDs and identical
+    records are flagged for review, never automatically deleted.
+    """
+    messages: list[str] = []
+
+    if raw_df is None or raw_df.empty:
+        return messages
+
+    # Check identical rows in the original, unmodified CSV
+    exact_repeat_rows = int(
+        raw_df.duplicated(keep=False).sum()
+    )
+
+    if exact_repeat_rows:
+        messages.append(
+            f"Source CSV: {exact_repeat_rows:,} rows belong "
+            "to groups of identical full-source rows. "
+            "Review these records before removing anything."
+        )
+
+    # Look for a transaction identifier
+    id_column = next(
+        (
+            col for col in raw_df.columns
+            if str(col).strip().casefold() == "transaction_id"
+        ),
+        None,
+    )
+
+    if id_column is not None:
+        ids = raw_df[id_column].astype("string").str.strip()
+
+        valid_ids = ids.notna() & ids.ne("")
+
+        missing_ids = int((~valid_ids).sum())
+
+        repeated_id_rows = int(
+            ids.loc[valid_ids].duplicated(
+                keep=False
+            ).sum()
+        )
+
+        if missing_ids:
+            messages.append(
+                f"Source CSV: {missing_ids:,} rows "
+                "have no transaction_id."
+            )
+
+        if repeated_id_rows:
+            messages.append(
+                f"Source CSV: {repeated_id_rows:,} rows "
+                "share transaction_id values with another row. "
+                "This may be normal for multi-item orders; "
+                "inspect full records before treating them "
+                "as duplicates."
+            )
+
+        elif not missing_ids:
+            messages.append(
+                "Source CSV: transaction_id is present "
+                "and unique for every row."
+            )
+
+    else:
+        messages.append(
+            "Source CSV has no transaction_id column. "
+            "Identical values cannot reliably identify "
+            "duplicate purchases."
+        )
+
+    return messages
 
 
 def determine_capabilities(df: pd.DataFrame) -> dict[str, bool]:

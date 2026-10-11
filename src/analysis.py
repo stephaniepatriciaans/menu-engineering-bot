@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from decimal import Decimal, ROUND_HALF_UP
 
 import numpy as np
 import pandas as pd
@@ -200,62 +201,303 @@ def build_item_summary(
     return summary.sort_values("total_revenue", ascending=False).reset_index(drop=True)
 
 
-def simulate_price_change(row: pd.Series, pct_change: float) -> dict[str, object]:
-    """Estimate a price scenario using precomputed elasticity; requires unit cost."""
+# def simulate_price_change(row: pd.Series, pct_change: float) -> dict[str, object]:
+#     """Estimate a price scenario using precomputed elasticity; requires unit cost."""
+#     if pd.isna(row.get("unit_cost")):
+#         raise ValueError("Price/profit simulation requires unit cost data.")
+#     if pct_change <= -1.0:
+#         raise ValueError("Price changes must keep the selling price above zero.")
+
+#     new_price = float(row["price"]) * (1 + float(pct_change))
+#     if new_price <= 0:
+#         raise ValueError("Simulated price must be positive.")
+
+#     pct_qty_change = float(row["elasticity"]) * float(pct_change)
+#     new_daily_units = max(0.0, float(row["avg_daily_units"]) * (1 + pct_qty_change))
+#     old_daily_profit = float(row["avg_daily_units"]) * (float(row["price"]) - float(row["unit_cost"]))
+#     new_daily_profit = new_daily_units * (new_price - float(row["unit_cost"]))
+
+#     return {
+#         "item": row["item"],
+#         "old_price": round(float(row["price"]), 2),
+#         "new_price": round(new_price, 2),
+#         "old_daily_units_est": round(float(row["avg_daily_units"]), 1),
+#         "new_daily_units_est": round(new_daily_units, 1),
+#         "old_daily_profit_est": round(old_daily_profit, 2),
+#         "new_daily_profit_est": round(new_daily_profit, 2),
+#         "daily_profit_delta": round(new_daily_profit - old_daily_profit, 2),
+#     }
+
+
+def simulate_price_change(
+    row: pd.Series,
+    pct_change: float,
+) -> dict[str, object]:
+    """
+    Simulate a candidate price change using the actual
+    rounded selling price.
+
+    The displayed price, percentage change, demand estimate,
+    and profit calculations are kept consistent.
+
+    Requires available unit cost data.
+    """
+
     if pd.isna(row.get("unit_cost")):
-        raise ValueError("Price/profit simulation requires unit cost data.")
-    if pct_change <= -1.0:
-        raise ValueError("Price changes must keep the selling price above zero.")
+        raise ValueError(
+            "Price/profit simulation requires unit cost data."
+        )
 
-    new_price = float(row["price"]) * (1 + float(pct_change))
-    if new_price <= 0:
-        raise ValueError("Simulated price must be positive.")
+    if not -1.0 < pct_change:
+        raise ValueError(
+            "Price changes must keep the selling price above zero."
+        )
 
-    pct_qty_change = float(row["elasticity"]) * float(pct_change)
-    new_daily_units = max(0.0, float(row["avg_daily_units"]) * (1 + pct_qty_change))
-    old_daily_profit = float(row["avg_daily_units"]) * (float(row["price"]) - float(row["unit_cost"]))
-    new_daily_profit = new_daily_units * (new_price - float(row["unit_cost"]))
+    # Convert financial inputs to decimal values.
+    old_price_dec = Decimal(str(row["price"]))
+
+    cost_dec = Decimal(str(row["unit_cost"]))
+
+    requested_change_dec = Decimal(str(pct_change))
+
+    cent = Decimal("0.01")
+
+    # Selling prices must be valid and representable in cents.
+    if not old_price_dec.is_finite() or old_price_dec <= 0:
+        raise ValueError("Original price must be positive and finite.")
+
+    if not cost_dec.is_finite() or cost_dec < 0:
+        raise ValueError("Unit cost must be nonnegative and finite.")
+
+    old_price_dec = old_price_dec.quantize(
+        cent,
+        rounding=ROUND_HALF_UP,
+    )
+
+    new_price_dec = (
+        old_price_dec * (Decimal("1") + requested_change_dec)
+    ).quantize(
+        cent,
+        rounding=ROUND_HALF_UP,
+    )
+
+    if new_price_dec <= 0:
+        raise ValueError(
+            "Simulated rounded price must be positive."
+        )
+
+    # Actual percentage change after rounding.
+    actual_pct_change = float(
+        (new_price_dec - old_price_dec) / old_price_dec
+    )
+
+    old_price = float(old_price_dec)
+    new_price = float(new_price_dec)
+    unit_cost = float(cost_dec)
+
+    old_daily_units = float(row["avg_daily_units"])
+    elasticity = float(row["elasticity"])
+
+    # Calculate demand response using the actual change.
+    pct_qty_change = elasticity * actual_pct_change
+
+    new_daily_units = max(
+        0.0,
+        old_daily_units * (1.0 + pct_qty_change),
+    )
+
+    # Calculate profits from the rounded selling prices.
+    old_daily_profit = (
+        old_daily_units * (old_price - unit_cost)
+    )
+
+    new_daily_profit = (
+        new_daily_units * (new_price - unit_cost)
+    )
+
+    daily_profit_delta = (
+        new_daily_profit - old_daily_profit
+    )
 
     return {
         "item": row["item"],
-        "old_price": round(float(row["price"]), 2),
-        "new_price": round(new_price, 2),
-        "old_daily_units_est": round(float(row["avg_daily_units"]), 1),
-        "new_daily_units_est": round(new_daily_units, 1),
-        "old_daily_profit_est": round(old_daily_profit, 2),
-        "new_daily_profit_est": round(new_daily_profit, 2),
-        "daily_profit_delta": round(new_daily_profit - old_daily_profit, 2),
+        "old_price": old_price,
+        "new_price": new_price,
+        "pct_change_recommended": round(
+            actual_pct_change * 100, 1
+        ),
+        "old_daily_units_est": round(
+            old_daily_units, 1
+        ),
+        "new_daily_units_est": round(
+            new_daily_units, 1
+        ),
+        "old_daily_profit_est": round(
+            old_daily_profit, 2
+        ),
+        "new_daily_profit_est": round(
+            new_daily_profit, 2
+        ),
+        "daily_profit_delta": round(
+            daily_profit_delta, 2
+        ),
     }
+
+
+def assess_pricing_reliability(
+    elasticity_source: str,
+    elasticity_confidence: str,
+) -> tuple[str, str]:
+    """
+    Classify how pricing simulation results should be interpreted.
+
+    This does not change the numerical calculations.
+    All simulated price changes require business validation.
+    """
+    source = str(elasticity_source).strip().lower()
+    confidence = str(elasticity_confidence).strip().lower()
+
+    if source == "estimated":
+        if confidence == "high":
+            return (
+                "Historical estimate — review required",
+                "Historical estimate with higher model confidence. "
+                "Validate against promotions, seasonality, and "
+                "store differences before changing prices.",
+            )
+
+        return (
+            "Exploratory — low-confidence estimate",
+            "Historical elasticity is low or uncertain confidence. "
+            "Do not implement the suggested price change "
+            "without additional validation.",
+        )
+
+    if source == "category_prior":
+        return (
+            "Exploratory — category assumption",
+            "Elasticity is assumed from the product category, "
+            "not estimated from this item's price history.",
+        )
+
+    if source == "default_prior":
+        return (
+            "Exploratory — default assumption",
+            "Elasticity is a general assumption. "
+            "No reliable item-specific elasticity estimate "
+            "is available.",
+        )
+
+    return (
+        "Exploratory — unknown reliability",
+        "Elasticity reliability is unknown. "
+        "Review the source data before using this result.",
+    )
+
 
 
 def recommend_price_moves(
     summary: pd.DataFrame,
     price_changes: Sequence[float] | None = None,
 ) -> pd.DataFrame:
-    """Choose the best deterministic profit scenario from configured candidate changes."""
+    """
+    Select the highest-profit simulated price scenario.
+
+    Uses rounded prices from simulate_price_change() and
+    clearly labels uncertainty in elasticity estimates.
+
+    These are scenarios, not automatically approved price changes.
+    """
+
     if summary is None or summary.empty:
         return pd.DataFrame()
-    if "unit_cost" not in summary.columns or summary["unit_cost"].isna().any():
+
+    # Complete cost data is required.
+    if (
+        "unit_cost" not in summary.columns
+        or summary["unit_cost"].isna().any()
+    ):
         return pd.DataFrame()
 
-    candidates = [float(x) for x in (price_changes or DEFAULT_PRICE_CHANGES) if float(x) > -1.0]
+    configured_changes = (
+        DEFAULT_PRICE_CHANGES
+        if price_changes is None
+        else price_changes
+    )
+
+    candidates = [
+        float(x)
+        for x in configured_changes
+        if float(x) > -1.0
+    ]
+
+    # Always include no price change.
     if 0.0 not in candidates:
         candidates.append(0.0)
+
     candidates = sorted(set(candidates))
 
     best_moves: list[dict[str, object]] = []
+
     for _, row in summary.iterrows():
-        sims = [simulate_price_change(row, pct) for pct in candidates]
-        best = max(sims, key=lambda s: float(s["daily_profit_delta"]))
-        old_price = float(best["old_price"])
-        best["pct_change_recommended"] = round((float(best["new_price"]) - old_price) / old_price * 100, 1)
+
+        # Preserve your existing rounded-price simulation.
+        sims = [
+            simulate_price_change(row, pct)
+            for pct in candidates
+        ]
+
+        if not sims:
+            continue
+
+        best = max(
+            sims,
+            key=lambda s: float(s["daily_profit_delta"])
+        )
+
+        # Retrieve elasticity information.
+        source = str(
+            row.get("elasticity_source", "unknown")
+        )
+
+        confidence = str(
+            row.get("elasticity_confidence", "unknown")
+        )
+
+        # Determine how cautiously to interpret the result.
+        reliability, reliability_reason = (
+            assess_pricing_reliability(
+                source,
+                confidence,
+            )
+        )
+
+        # Preserve original analysis information.
         best["quadrant"] = row.get("quadrant")
         best["elasticity"] = row["elasticity"]
-        best["elasticity_source"] = row["elasticity_source"]
-        best["elasticity_confidence"] = row["elasticity_confidence"]
+        best["elasticity_source"] = source
+        best["elasticity_confidence"] = confidence
+
+        # New reliability fields.
+        best["pricing_reliability"] = reliability
+        best["reliability_reason"] = reliability_reason
+
+        # All simulations require review.
+        best["requires_review"] = True
+
         best_moves.append(best)
 
-    return pd.DataFrame(best_moves).sort_values("daily_profit_delta", ascending=False).reset_index(drop=True)
+    if not best_moves:
+        return pd.DataFrame()
+
+    return (
+        pd.DataFrame(best_moves)
+        .sort_values(
+            "daily_profit_delta",
+            ascending=False,
+        )
+        .reset_index(drop=True)
+    )
 
 
 if __name__ == "__main__":

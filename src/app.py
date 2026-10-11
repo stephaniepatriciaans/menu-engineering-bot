@@ -19,6 +19,9 @@ from analysis import build_item_summary, load_sales, recommend_price_moves
 from config import CANONICAL_FIELDS, CURRENCY_CONFIG, format_currency
 from data_adapter import (
     NOT_AVAILABLE,
+    KNOWN_MAPPING_PRESETS,
+    apply_known_preset,
+    mapping_confidence,
     adapt_to_canonical,
     apply_estimated_cost_percentage,
     detect_column_mapping,
@@ -26,15 +29,49 @@ from data_adapter import (
     read_delimited_csv,
     validate_mapping,
 )
-from validation import determine_capabilities, validate_sales_df
+from validation import (
+    determine_capabilities,
+    validate_sales_df,
+    audit_source_transactions,
+)
 
 st.set_page_config(page_title="Menu Engineering Bot", page_icon="📊", layout="wide")
 
 
-def mapping_selectors(raw_df: pd.DataFrame, prefix: str = "sales") -> dict[str, str | None]:
-    """Render manual mapping controls with automatic aliases preselected."""
+def mapping_selectors(
+    raw_df: pd.DataFrame,
+    prefix: str = "sales",
+) -> dict[str, str | None]:
+    """
+    Render column mapping controls with:
+    - Automatic detection
+    - Dataset mapping presets
+    - Manual column selection
+    - Mapping confidence feedback
+    """
     detected = detect_column_mapping(raw_df.columns)
-    options = [NOT_AVAILABLE] + [str(col) for col in raw_df.columns]
+
+    preset_names = ["Automatic detection"] + list(
+        KNOWN_MAPPING_PRESETS.keys()
+    )
+
+    preset = st.selectbox(
+        "Column mapping preset",
+        preset_names,
+        key=f"{prefix}_preset",
+    )
+
+    if preset != "Automatic detection":
+        preset_mapping = apply_known_preset(
+            raw_df.columns,
+            preset,
+        )
+        detected.update(preset_mapping)
+
+    options = [NOT_AVAILABLE] + [
+        str(col) for col in raw_df.columns
+    ]
+
     labels = {
         "date": "Date (required)",
         "item": "Item (required)",
@@ -43,17 +80,46 @@ def mapping_selectors(raw_df: pd.DataFrame, prefix: str = "sales") -> dict[str, 
         "unit_cost": "Unit Cost (optional)",
         "units_sold": "Units Sold (required)",
     }
+
     result: dict[str, str | None] = {}
     columns = st.columns(3)
+
     for idx, field in enumerate(CANONICAL_FIELDS):
         preselected = detected.get(field) or NOT_AVAILABLE
+
         choice = columns[idx % 3].selectbox(
             labels[field],
             options,
-            index=options.index(preselected) if preselected in options else 0,
-            key=f"{prefix}_map_{field}",
+            index=(
+                options.index(preselected)
+                if preselected in options
+                else 0
+            ),
+            key=f"{prefix}_{preset}_map_{field}",
         )
-        result[field] = None if choice == NOT_AVAILABLE else choice
+
+        result[field] = (
+            None if choice == NOT_AVAILABLE else choice
+        )
+
+    with st.expander("View column mapping confidence"):
+        confidence = mapping_confidence(
+            raw_df.columns,
+            result,
+        )
+
+        for field in CANONICAL_FIELDS:
+            selected = result.get(field) or "Not mapped"
+            st.write(
+                f"**{field}** → {selected} ({confidence[field]})"
+            )
+
+        st.caption(
+            "Confidence describes column-name similarity, not proof "
+            "that a field contains the correct data. "
+            "Please verify the mappings before analysis."
+        )
+
     return result
 
 
@@ -107,24 +173,81 @@ with st.sidebar:
     if source == "Upload my own CSV":
         uploaded = st.file_uploader("Upload sales/POS CSV", type=["csv"])
 
+
+# --------------------------------------------------
+# Load dataset
+# --------------------------------------------------
+
 raw_df: pd.DataFrame | None = None
+
 if source == "Full Demo Dataset — Synthetic Cafe":
-    demo_path = os.path.join(os.path.dirname(__file__), "..", "data", "cafe_sales.csv")
+    demo_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "data",
+        "cafe_sales.csv",
+    )
+
     raw_df = load_sales(demo_path)
-    mapping = {field: field for field in CANONICAL_FIELDS}
-    business_name = business_name if business_name != "My Food-Service Business" else "Synthetic Cafe"
-    dataset_name = dataset_name if dataset_name != "Menu Sales Dataset" else "Full Demo Dataset — Synthetic Cafe"
-    st.info("Using the bundled synthetic dataset with complete price, cost, and quantity fields.")
+
+    mapping = {
+        field: field
+        for field in CANONICAL_FIELDS
+    }
+
+    business_name = (
+        business_name
+        if business_name != "My Food-Service Business"
+        else "Synthetic Cafe"
+    )
+
+    dataset_name = (
+        dataset_name
+        if dataset_name != "Menu Sales Dataset"
+        else "Full Demo Dataset — Synthetic Cafe"
+    )
+
+    st.info(
+        "Using the bundled synthetic dataset with complete "
+        "price, cost, and quantity fields."
+    )
+
 elif uploaded is not None:
     try:
+        # Read the original uploaded CSV
         uploaded.seek(0)
         raw_df = read_delimited_csv(uploaded)
+
+        # Audit source transactions before column mapping
+        source_audit_messages = audit_source_transactions(
+            raw_df
+        )
+
+        # Display transaction audit results
+        with st.expander("Source transaction audit"):
+            for message in source_audit_messages:
+                st.write(message)
+
+            st.caption(
+                "This audit checks for identical source records "
+                "and repeated transaction IDs. "
+                "Repeated IDs may be normal for multi-item orders. "
+                "No records are automatically removed."
+            )
+
     except Exception as exc:
-        st.error(f"Could not read the CSV: {exc}")
+        st.error(
+            f"Could not read or audit the CSV: {exc}"
+        )
         st.stop()
+
 else:
-    st.info("Upload a CSV to begin. You do not need to rename its columns first.")
+    st.info(
+        "Upload a CSV to begin. "
+        "You do not need to rename its columns first."
+    )
     st.stop()
+
 
 st.header("2. Detect / map columns")
 if source == "Upload my own CSV":
@@ -226,44 +349,143 @@ capabilities["historical_elasticity_estimation"] = bool(
     not summary.empty and (summary["elasticity_source"] == "estimated").any()
 )
 
+
+# --------------------------------------------------
+# Dataset capabilities
+# --------------------------------------------------
+
 st.subheader("Dataset capabilities")
+
+# Count how many items have historical elasticity estimates
+estimated_count = int(
+    (summary["elasticity_source"] == "estimated").sum()
+)
+
+total_items = len(summary)
+
+# Count items using assumed elasticity values
+category_prior_count = int(
+    (summary["elasticity_source"] == "category_prior").sum()
+)
+
+default_prior_count = int(
+    (summary["elasticity_source"] == "default_prior").sum()
+)
+
+# Count low-confidence historical estimates
+low_confidence_count = int(
+    (
+        (summary["elasticity_source"] == "estimated")
+        & (
+            summary["elasticity_confidence"]
+            .astype(str)
+            .str.lower() == "low"
+        )
+    ).sum()
+)
+
 capability_text = [
-    capability_line(capabilities["revenue_analysis"], "Revenue analysis"),
-    capability_line(capabilities["popularity_analysis"], "Popularity analysis"),
-    capability_line(capabilities["sales_trend_analysis"], "Sales trend analysis"),
-    capability_line(capabilities["price_variation_analysis"], "Price variation analysis"),
     capability_line(
-        capabilities["historical_elasticity_estimation"],
-        "Historical elasticity estimation",
-        "insufficient price variation; labeled priors are shown instead" if not capabilities["historical_elasticity_estimation"] else "",
+        capabilities["revenue_analysis"],
+        "Revenue analysis",
     ),
+
+    capability_line(
+        capabilities["popularity_analysis"],
+        "Popularity analysis",
+    ),
+
+    capability_line(
+        capabilities["sales_trend_analysis"],
+        "Sales trend analysis",
+    ),
+
+    capability_line(
+        capabilities["price_variation_analysis"],
+        "Price variation analysis",
+    ),
+
+    capability_line(
+        estimated_count > 0,
+        "Historical elasticity estimation",
+        (
+            f"{estimated_count} of {total_items} items estimated "
+            f"({low_confidence_count} low confidence); "
+            f"{category_prior_count} category priors, "
+            f"{default_prior_count} default priors"
+            if estimated_count > 0
+            else (
+                f"No historical estimates among {total_items} items; "
+                f"{category_prior_count} category priors, "
+                f"{default_prior_count} default priors"
+            )
+        ),
+    ),
+
     capability_line(
         capabilities["profit_analysis"],
         "Profit analysis",
-        "unit cost missing or incomplete" if not capabilities["profit_analysis"] else ("cost is a scenario assumption" if cost_is_assumption else ""),
+        (
+            "unit cost missing or incomplete"
+            if not capabilities["profit_analysis"]
+            else (
+                "cost is a scenario assumption"
+                if cost_is_assumption
+                else ""
+            )
+        ),
     ),
+
     capability_line(
         capabilities["menu_engineering_quadrants"],
         "Menu Engineering Quadrants",
-        "unit cost missing or incomplete" if not capabilities["menu_engineering_quadrants"] else "",
+        (
+            "unit cost missing or incomplete"
+            if not capabilities["menu_engineering_quadrants"]
+            else (
+                "based on assumed costs"
+                if cost_is_assumption
+                else ""
+            )
+        ),
     ),
+
     capability_line(
         capabilities["price_optimization"],
         "Profit-based price recommendations",
-        "unit cost missing or incomplete" if not capabilities["price_optimization"] else ("scenario only" if cost_is_assumption else ""),
+        (
+            "unit cost missing or incomplete"
+            if not capabilities["price_optimization"]
+            else (
+                "scenario only"
+                if cost_is_assumption
+                else ""
+            )
+        ),
     ),
 ]
-st.code("\n".join(capability_text), language=None)
+
+st.code(
+    "\n".join(capability_text),
+    language=None,
+)
+
 
 st.header("4. Dataset overview")
 revenue_total = float((df["price"] * df["units_sold"]).sum())
-metric_cols = st.columns(6)
+metric_cols = st.columns(5)
 metric_cols[0].metric("Rows", f"{len(df):,}")
 metric_cols[1].metric("Unique Items", f"{df['item'].nunique():,}")
 metric_cols[2].metric("Categories", f"{df['category'].nunique():,}")
 metric_cols[3].metric("Total Units", f"{df['units_sold'].sum():,.0f}")
 metric_cols[4].metric("Revenue", format_currency(revenue_total, currency))
-metric_cols[5].metric("Date Range", f"{df['date'].min().date()} → {df['date'].max().date()}")
+#metric_cols[5].metric("Date Range", f"{df['date'].min().date()} → {df['date'].max().date()}")
+
+st.caption(
+    f"Data period: "
+    f"{df['date'].min():%B %d, %Y} "
+    f"to {df['date'].max():%B %d, %Y}"
+)
 
 st.header("5. Run available analyses")
 analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
@@ -345,31 +567,205 @@ else:
         st.warning("These price/profit recommendations are scenario results based on your estimated cost percentage.")
     move_columns = [
         "item", "old_price", "new_price", "pct_change_recommended", "daily_profit_delta",
-        "quadrant", "elasticity_source", "elasticity_confidence",
+        "quadrant", "elasticity_source", "elasticity_confidence", "pricing_reliability",
+        "reliability_reason",
     ]
-    st.dataframe(display_moves_table(moves[move_columns], currency), use_container_width=True, hide_index=True)
+    st.warning(
+        "Pricing results are exploratory simulations, "
+        "not validated pricing decisions. "
+        "Low-confidence historical estimates and assumed "
+        "elasticities require additional review."
+    )
+    
+    # Main pricing recommendations table
+    display_columns = [
+        col for col in move_columns
+        if col != "reliability_reason"
+    ]
+
+    st.dataframe(
+        display_moves_table(
+            moves[display_columns],
+            currency,
+        ),
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "pricing_reliability": st.column_config.TextColumn(
+                "Pricing Reliability",
+                width="large",
+            ),
+        },
+    )
+
+# Detailed explanations shown separately
+with st.expander("View pricing reliability explanations"):
+    for _, row in moves.iterrows():
+        st.markdown(f"**{row['item']}**")
+        st.write(row["reliability_reason"])
+        st.divider()
+
+
+
+# --------------------------------------------------
+# 7. Generate AI decision memo
+# --------------------------------------------------
 
 st.header("7. Generate AI decision memo")
+
 metadata = {
     "business_name": business_name,
     "dataset_name": dataset_name,
     "currency": currency,
     "cost_basis": cost_basis,
     "cost_is_assumption": cost_is_assumption,
-    "available_analysis": [name for name, available in capabilities.items() if available],
+    "available_analysis": [
+        name
+        for name, available in capabilities.items()
+        if available
+    ],
 }
 
+# Create a stable fingerprint of the memo inputs.
+# If the dataset, settings, or analysis results change,
+# the previous memo will no longer be displayed.
+import hashlib
+import json
+
+memo_context = {
+    "metadata": metadata,
+    "capabilities": capabilities,
+    "summary": summary.to_json(
+        orient="records",
+        date_format="iso",
+    ),
+    "moves": moves.to_json(
+        orient="records",
+        date_format="iso",
+    ),
+}
+
+context_bytes = json.dumps(
+    memo_context,
+    sort_keys=True,
+    default=str,
+).encode("utf-8")
+
+context_id = hashlib.sha256(context_bytes).hexdigest()
+
+# Initialize Streamlit session state.
+if "generated_memo" not in st.session_state:
+    st.session_state.generated_memo = None
+
+if "generated_memo_context" not in st.session_state:
+    st.session_state.generated_memo_context = None
+
+# Clear outdated memos when the source inputs change.
+if st.session_state.generated_memo_context != context_id:
+    st.session_state.generated_memo = None
+    st.session_state.generated_memo_context = None
+
+# Check Anthropic API configuration.
 if not os.environ.get("ANTHROPIC_API_KEY"):
-    st.warning("No ANTHROPIC_API_KEY is configured. All deterministic analytics still work; only memo generation is disabled.")
+    st.warning(
+        "No ANTHROPIC_API_KEY is configured. "
+        "All deterministic analytics still work; "
+        "only memo generation is disabled."
+    )
+
 else:
-    if st.button("Generate decision memo", type="primary"):
+    # Generate or regenerate the memo.
+    if st.button(
+        "Generate decision memo",
+        type="primary",
+    ):
         try:
             from agent import generate_menu_memo
 
-            with st.spinner("Generating memo from computed results..."):
-                memo = generate_menu_memo(summary, moves, metadata=metadata, capabilities=capabilities)
-            st.markdown("### Decision Memo")
-            st.markdown(memo)
+            with st.spinner(
+                "Generating memo from computed results..."
+            ):
+                memo = generate_menu_memo(
+                    summary,
+                    moves,
+                    metadata=metadata,
+                    capabilities=capabilities,
+                )
+
+            # Persist the memo across Streamlit reruns.
+            st.session_state.generated_memo = memo
+            st.session_state.generated_memo_context = context_id
+
+            st.success(
+                "AI decision memo generated successfully!"
+            )
+
         except Exception as exc:
-            st.error("Could not generate the AI memo. The analytics above are unaffected.")
+            st.error(
+                "Could not generate the AI memo. "
+                "The analytics above are unaffected."
+            )
             st.code(str(exc))
+
+
+# --------------------------------------------------
+# Display and download the generated memo
+# --------------------------------------------------
+
+if (
+    st.session_state.generated_memo is not None
+    and st.session_state.generated_memo_context == context_id
+):
+    memo = st.session_state.generated_memo
+
+    st.markdown("### Decision Memo")
+
+    # Escape dollar signs only for Streamlit display.
+    # Keep the original memo unchanged for downloads.
+    display_memo = memo.replace("$", r"\$")
+
+    st.markdown(display_memo)
+
+    st.divider()
+
+    st.subheader("Download decision memo")
+
+    # Make a safe filename from the business name.
+    import re
+
+    safe_business_name = re.sub(
+        r"[^A-Za-z0-9_-]+",
+        "_",
+        business_name.strip(),
+    ).strip("_") or "business"
+
+    download_col1, download_col2 = st.columns(2)
+
+    with download_col1:
+        st.download_button(
+            label="Download Markdown (.md)",
+            data=memo.encode("utf-8"),
+            file_name=(
+                f"{safe_business_name}_decision_memo.md"
+            ),
+            mime="text/markdown",
+            use_container_width=True,
+        )
+
+    with download_col2:
+        st.download_button(
+            label="Download Text (.txt)",
+            data=memo.encode("utf-8"),
+            file_name=(
+                f"{safe_business_name}_decision_memo.txt"
+            ),
+            mime="text/plain",
+            use_container_width=True,
+        )
+
+    st.caption(
+        "This memo is AI-generated from the computed analysis. "
+        "Verify all recommendations before making business decisions. "
+        "Estimated costs and uncertain price elasticities "
+        "should not be treated as confirmed results."
+    )

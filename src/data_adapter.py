@@ -59,6 +59,73 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
         sep=detected_delimiter,
     )
 
+# Convenience templates for common example POS export layouts.
+# These are examples, not verified official company export formats.
+KNOWN_MAPPING_PRESETS: dict[str, dict[str, str]] = {
+    "Starbucks-style POS export": {
+        "date": "transaction_date",
+        "item": "product_detail",
+        "category": "product_category",
+        "price": "unit_price",
+        "units_sold": "transaction_qty",
+    },
+    "Blue Bottle-style POS export": {
+        "date": "order_date",
+        "item": "item_name",
+        "category": "menu_category",
+        "price": "sales_price",
+        "units_sold": "qty",
+    },
+    "Square/Toast-style export": {
+        "date": "date",
+        "item": "item",
+        "category": "category",
+        "price": "price",
+        "unit_cost": "cost",
+        "units_sold": "qty",
+    },
+}
+
+
+def apply_known_preset(
+    columns: Iterable[object],
+    preset_name: str,
+) -> dict[str, str | None]:
+    """Apply only preset fields found in the uploaded CSV."""
+    available = {str(col) for col in columns}
+    preset = KNOWN_MAPPING_PRESETS.get(preset_name, {})
+
+    return {
+        field: raw_col
+        for field, raw_col in preset.items()
+        if raw_col in available
+    }
+
+
+def mapping_confidence(
+    columns: Iterable[object],
+    mapping: Mapping[str, str | None],
+) -> dict[str, str]:
+    """Show whether mappings are exact, recognized aliases, or tentative."""
+    labels: dict[str, str] = {}
+
+    for field in CANONICAL_FIELDS:
+        raw = mapping.get(field)
+
+        if not raw:
+            labels[field] = "not mapped"
+        elif normalize_column_name(raw) == normalize_column_name(field):
+            labels[field] = "exact"
+        elif normalize_column_name(raw) in {
+            normalize_column_name(a)
+            for a in COLUMN_ALIASES[field]
+        }:
+            labels[field] = "alias"
+        else:
+            labels[field] = "review manually"
+
+    return labels
+
 
 def detect_column_mapping(columns: Iterable[object]) -> dict[str, str | None]:
     """Detect raw-to-canonical mappings using normalized aliases and conservative fuzzy matching."""

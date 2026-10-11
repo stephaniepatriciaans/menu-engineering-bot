@@ -12,8 +12,8 @@ OPTIONAL_FIELDS = ["category", "unit_cost"]
 COLUMN_ALIASES: dict[str, list[str]] = {
     "date": [
         "date", "transaction_date", "order_date", "sale_date", "sales_date",
-        "business_date", "datetime", "date_time", "timestamp", "transaction_time",
-        "order_datetime", "created_at",
+        "business_date", "datetime", "date_time", "timestamp",
+        "order_datetime", "transaction_date", "created_at",
     ],
     "item": [
         "item", "product", "product_name", "product_detail", "product_description",
