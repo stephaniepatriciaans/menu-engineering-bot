@@ -384,7 +384,7 @@ if df["date"].isna().any():
         "and will be excluded from date-based analysis."
     )
     df = df.dropna(subset=["date"]).copy()
-    
+
 # Determine available dates from the uploaded dataset
 min_date = df["date"].min().date()
 max_date = df["date"].max().date()
@@ -654,20 +654,137 @@ st.caption(
 st.header("5. Run available analyses")
 analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
 
+
 with analysis_tabs[0]:
-    left, right = st.columns(2)
-    top_volume = summary.nlargest(min(15, len(summary)), "total_units_sold")
-    left.plotly_chart(
-        px.bar(top_volume, x="total_units_sold", y="item", orientation="h", title="Top items by units sold"),
+    st.subheader("Sales Performance Over Time")
+
+    # Allow users to choose their preferred time grouping.
+    time_grouping = st.radio(
+        "Group sales by",
+        options=["Daily", "Weekly", "Monthly", "Yearly"],
+        index=2,
+        horizontal=True,
+        key="sales_time_grouping",
+    )
+
+    # Allow users to choose what to measure.
+    metric_choice = st.selectbox(
+        "Metric",
+        options=["Revenue", "Units Sold"],
+        key="sales_trend_metric",
+    )
+
+    # Use data already filtered by date and category.
+    trend_df = df[["date", "price", "units_sold"]].copy()
+
+    trend_df["date"] = pd.to_datetime(trend_df["date"])
+    trend_df["revenue"] = (
+        trend_df["price"] * trend_df["units_sold"]
+    )
+
+    # Group transactions by reporting period.
+    if time_grouping == "Daily":
+        trend_df["period"] = trend_df["date"].dt.normalize()
+
+    elif time_grouping == "Weekly":
+        # Weeks start Monday and end Sunday.
+        trend_df["period"] = (
+            trend_df["date"]
+            .dt.to_period("W-SUN")
+            .dt.start_time
+        )
+
+    elif time_grouping == "Monthly":
+        trend_df["period"] = (
+            trend_df["date"]
+            .dt.to_period("M")
+            .dt.start_time
+        )
+
+    else:
+        trend_df["period"] = (
+            trend_df["date"]
+            .dt.to_period("Y")
+            .dt.start_time
+        )
+
+    # Calculate total revenue and units by period.
+    grouped_sales = (
+        trend_df.groupby("period", as_index=False)
+        .agg(
+            revenue=("revenue", "sum"),
+            units_sold=("units_sold", "sum"),
+        )
+        .sort_values("period")
+    )
+
+    # Select the metric to display.
+    if metric_choice == "Revenue":
+        y_column = "revenue"
+        y_label = f"Revenue ({currency})"
+    else:
+        y_column = "units_sold"
+        y_label = "Units Sold"
+
+    # Display the time-series chart.
+    fig = px.line(
+        grouped_sales,
+        x="period",
+        y=y_column,
+        markers=True,
+        title=f"{time_grouping} {metric_choice} Trend",
+        labels={
+            "period": "Period Starting",
+            y_column: y_label,
+        },
+    )
+
+    fig.update_layout(
+        hovermode="x unified",
+        xaxis_title="Date",
+        yaxis_title=y_label,
+    )
+
+    st.plotly_chart(
+        fig,
         use_container_width=True,
     )
-    daily = df.assign(revenue=df["price"] * df["units_sold"]).groupby("date", as_index=False).agg(
-        revenue=("revenue", "sum"), units_sold=("units_sold", "sum")
+
+    # Display the aggregated data.
+    with st.expander("View sales data by period"):
+        display_sales = grouped_sales.copy()
+        display_sales["period"] = (
+            display_sales["period"].dt.strftime("%Y-%m-%d")
+        )
+        display_sales["revenue"] = display_sales[
+            "revenue"
+        ].map(lambda x: format_currency(x, currency))
+
+        st.dataframe(
+            display_sales,
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    # Preserve the existing popularity chart.
+    st.subheader("Top Selling Menu Items")
+
+    top_volume = summary.nlargest(
+        min(15, len(summary)),
+        "total_units_sold",
     )
-    right.plotly_chart(
-        px.line(daily, x="date", y="revenue", title=f"Daily revenue ({currency})"),
+
+    st.plotly_chart(
+        px.bar(
+            top_volume,
+            x="total_units_sold",
+            y="item",
+            orientation="h",
+            title="Top Items by Units Sold",
+        ),
         use_container_width=True,
     )
+
 
 with analysis_tabs[1]:
     st.caption(
