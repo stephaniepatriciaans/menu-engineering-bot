@@ -16,7 +16,16 @@ load_dotenv()
 sys.path.append(os.path.dirname(__file__))
 
 from analysis import build_item_summary, load_sales, recommend_price_moves
-from config import CANONICAL_FIELDS, CURRENCY_CONFIG, format_currency
+
+from config import (
+    CANONICAL_FIELDS,
+    CURRENCY_CONFIG,
+    CATEGORY_GROUPS,
+    category_group,
+    classify_menu_item,
+    format_currency,
+)
+
 from data_adapter import (
     NOT_AVAILABLE,
     KNOWN_MAPPING_PRESETS,
@@ -341,10 +350,81 @@ if errors or df is None:
     for error in errors:
         st.error(error)
     st.stop()
+
+
 st.success("Dataset validated in the canonical schema.")
 
+# --------------------------------------------------
+# Category filtering
+# --------------------------------------------------
+
+st.header("Filter menu by category")
+
+# Make sure the category grouping is available
+# after validation, even if validation removes
+# extra columns.
+df = df.copy()
+
+df["category_group"] = [
+    classify_menu_item(category, item)
+    for category, item in zip(df["category"], df["item"])
+]
+
+# Show the main category filter
+available_groups = [
+    group
+    for group in CATEGORY_GROUPS
+    if group in df["category_group"].unique()
+]
+
+selected_groups = st.multiselect(
+    "Select food categories",
+    options=available_groups,
+    default=available_groups,
+    help="Choose Savory, Dessert, Drinks, or Other.",
+)
+
+# Apply broad-category filtering
+filtered_df = df[
+    df["category_group"].isin(selected_groups)
+].copy()
+
+# Optional detailed category filter
+available_categories = sorted(
+    filtered_df["category"].dropna().astype(str).unique()
+)
+
+selected_categories = st.multiselect(
+    "Filter by detailed category (optional)",
+    options=available_categories,
+    default=available_categories,
+    help="For example: Coffee, Tea, Bakery, or Sandwich.",
+)
+
+filtered_df = filtered_df[
+    filtered_df["category"].isin(selected_categories)
+].copy()
+
+if filtered_df.empty:
+    st.warning(
+        "No menu items match your selected categories. "
+        "Please select at least one category."
+    )
+    st.stop()
+
+# Update the dataframe used by downstream analyses.
+df = filtered_df
+
+st.caption(
+    f"Showing {len(df):,} sales rows across "
+    f"{df['item'].nunique():,} unique menu items."
+)
+
+# Recalculate capabilities and item summaries
+# using the selected categories.
 capabilities = determine_capabilities(df)
 summary = build_item_summary(df)
+
 # This is stricter than simply seeing multiple prices: it reflects whether the
 # estimator actually accepted at least one item-level historical estimate.
 capabilities["historical_elasticity_estimation"] = bool(

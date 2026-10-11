@@ -39,6 +39,116 @@ COLUMN_ALIASES: dict[str, list[str]] = {
     ],
 }
 
+
+# Broad category groups used for dashboard filtering.
+CATEGORY_GROUPS = ["Savory", "Dessert", "Drinks", "Other"]
+
+# Map restaurant-specific categories to broader groups.
+# Add or change entries to support different restaurant datasets.
+CATEGORY_GROUP_MAPPING: dict[str, str] = {
+    # Drinks
+    "coffee": "Drinks",
+    "tea": "Drinks",
+    "cold beverage": "Drinks",
+    "hot beverage": "Drinks",
+    "beverage": "Drinks",
+    "drinks": "Drinks",
+    "juice": "Drinks",
+    "smoothie": "Drinks",
+    "matcha": "Drinks",
+    "alcohol": "Drinks",
+    "drinking chocolate": "Drinks",
+
+    # Desserts
+    "bakery": "Dessert",
+    "pastry": "Dessert",
+    "dessert": "Dessert",
+    "cake": "Dessert",
+    "cookie": "Dessert",
+    "ice cream": "Dessert",
+
+    # Savory
+    "food": "Savory",
+    "savory": "Savory",
+    "sandwich": "Savory",
+    "sandwiches": "Savory",
+    "pasta": "Savory",
+    "salad": "Savory",
+    "breakfast": "Savory",
+    "main course": "Savory",
+
+    # Unknown or mixed categories
+    "other": "Other",
+    "uncategorized": "Other",
+    "flavours": "Other",
+    "coffee beans": "Other",
+    "loose tea": "Other",
+    "branded": "Other",
+    "packaged chocolate": "Other",
+}
+
+
+# Optional item-level overrides.
+# These take priority over broad category mappings.
+ITEM_CATEGORY_OVERRIDES: dict[str, str] = {
+    "jumbo savory scone": "Savory",
+}
+
+
+def classify_menu_item(
+    category: object,
+    item: object,
+    category_mapping: Mapping[str, str] | None = None,
+    item_overrides: Mapping[str, str] | None = None,
+) -> str:
+    """Classify an item, prioritizing specific item overrides."""
+
+    overrides = (
+        ITEM_CATEGORY_OVERRIDES
+        if item_overrides is None
+        else item_overrides
+    )
+
+    normalized_item = str(item).strip().casefold()
+
+    for item_name, group in overrides.items():
+        if str(item_name).strip().casefold() == normalized_item:
+            if group not in CATEGORY_GROUPS:
+                raise ValueError(
+                    f"Unsupported category group: {group}"
+                )
+            return group
+
+    return category_group(category, mapping=category_mapping)
+
+
+def category_group(
+    category: object,
+    mapping: Mapping[str, str] | None = None,
+) -> str:
+    """Map an original menu category to a broad category group."""
+
+    source = (
+        CATEGORY_GROUP_MAPPING
+        if mapping is None
+        else mapping
+    )
+
+    normalized = str(category).strip().casefold()
+
+    if not normalized:
+        return "Other"
+
+    for original_category, group in source.items():
+        if str(original_category).strip().casefold() == normalized:
+            if group not in CATEGORY_GROUPS:
+                raise ValueError(
+                    f"Unsupported category group: {group}"
+                )
+            return group
+
+    return "Other"
+
 # These are scenario priors, not measured demand curves. Unknown categories fall
 # back to DEFAULT_ELASTICITY_PRIOR and never cause analysis to fail.
 CATEGORY_ELASTICITY_PRIORS: dict[str, float] = {

@@ -8,7 +8,14 @@ from typing import Iterable, Mapping
 
 import pandas as pd
 
-from config import CANONICAL_FIELDS, COLUMN_ALIASES, CORE_FIELDS, normalize_column_name
+from config import (
+    CANONICAL_FIELDS,
+    COLUMN_ALIASES,
+    CORE_FIELDS,
+    normalize_column_name,
+    category_group,
+    classify_menu_item,
+)
 
 NOT_AVAILABLE = "Not available"
 
@@ -185,7 +192,9 @@ def adapt_to_canonical(
 ) -> tuple[pd.DataFrame, list[str]]:
     """Rename/select raw columns into the canonical schema without doing numeric analysis."""
     if raw_df is None or raw_df.empty:
-        return pd.DataFrame(columns=CANONICAL_FIELDS), []
+        return pd.DataFrame(
+            columns=[*CANONICAL_FIELDS, "category_group"]
+        ), []
 
     mapping = dict(mapping or detect_column_mapping(raw_df.columns))
     errors = validate_mapping(mapping, raw_df.columns)
@@ -214,7 +223,26 @@ def adapt_to_canonical(
             "Unit cost was not mapped. Revenue/popularity analysis can run, but profit-based analysis needs cost data."
         )
 
-    return out[CANONICAL_FIELDS].copy(), warnings
+    # Preserve existing canonical columns and their order.
+    out = out[CANONICAL_FIELDS].copy()
+
+    # Automatically group menu categories.
+    out["category_group"] = [
+        classify_menu_item(category, item)
+        for category, item in zip(out["category"], out["item"])
+    ]
+
+    # Warn users when categories are not recognized.
+    other_count = int((out["category_group"] == "Other").sum())
+
+    if other_count:
+        warnings.append(
+            f"{other_count} rows were classified as 'Other'. "
+            "Review category mappings if needed."
+        )
+
+    return out, warnings
+
 
 
 def merge_cost_reference(
