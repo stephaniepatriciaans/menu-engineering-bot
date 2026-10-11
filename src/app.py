@@ -342,6 +342,10 @@ if not canonical_df["unit_cost"].notna().all():
             "These are not actual business costs."
         )
 
+# --------------------------------------------------
+# Validate Dataset
+# --------------------------------------------------
+
 st.header("3. Validate dataset")
 df, errors, validation_warnings = validate_sales_df(canonical_df)
 for warning in validation_warnings:
@@ -354,8 +358,78 @@ if errors or df is None:
 
 st.success("Dataset validated in the canonical schema.")
 
+
 # --------------------------------------------------
-# Category filtering
+# Date range filtering
+# --------------------------------------------------
+
+st.header("Filter sales by date")
+
+# Preserve validated data before filtering
+df = df.copy()
+
+# Make sure dates are pandas datetime values
+df["date"] = pd.to_datetime(df["date"], errors="coerce")
+
+if df["date"].isna().all():
+    st.error(
+        "No valid transaction dates were found in this dataset."
+    )
+    st.stop()
+
+if df["date"].isna().any():
+    missing_dates = int(df["date"].isna().sum())
+    st.warning(
+        f"{missing_dates:,} rows have invalid dates "
+        "and will be excluded from date-based analysis."
+    )
+    df = df.dropna(subset=["date"]).copy()
+    
+# Determine available dates from the uploaded dataset
+min_date = df["date"].min().date()
+max_date = df["date"].max().date()
+
+# Date range selector
+selected_date_range = st.date_input(
+    "Select a date range",
+    value=(min_date, max_date),
+    min_value=min_date,
+    max_value=max_date,
+    help="Choose the period you want to analyze.",
+    key="sales_date_range",
+)
+
+# Streamlit may temporarily return only one date
+# while the user is selecting a range.
+if len(selected_date_range) != 2:
+    st.info("Please select both a start date and an end date.")
+    st.stop()
+
+start_date, end_date = selected_date_range
+
+# Apply date filtering, inclusive of both selected dates
+date_mask = (
+    (df["date"].dt.date >= start_date)
+    & (df["date"].dt.date <= end_date)
+)
+
+df = df.loc[date_mask].copy()
+
+if df.empty:
+    st.warning(
+        "No sales records exist for the selected date range."
+    )
+    st.stop()
+
+st.caption(
+    f"Selected period: {start_date:%B %d, %Y} "
+    f"to {end_date:%B %d, %Y} "
+    f"— {len(df):,} sales rows."
+)
+
+
+# --------------------------------------------------
+# Category Filters
 # --------------------------------------------------
 
 st.header("Filter menu by category")
@@ -552,8 +626,12 @@ st.code(
     language=None,
 )
 
+# --------------------------------------------------
+# Calculate Analytics
+# --------------------------------------------------
 
 st.header("4. Dataset overview")
+
 revenue_total = float((df["price"] * df["units_sold"]).sum())
 metric_cols = st.columns(5)
 metric_cols[0].metric("Rows", f"{len(df):,}")
@@ -568,6 +646,10 @@ st.caption(
     f"{df['date'].min():%B %d, %Y} "
     f"to {df['date'].max():%B %d, %Y}"
 )
+
+# --------------------------------------------------
+# Display Dashboard
+# --------------------------------------------------
 
 st.header("5. Run available analyses")
 analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
