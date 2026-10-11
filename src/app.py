@@ -621,13 +621,81 @@ with analysis_tabs[2]:
     else:
         st.info("Menu quadrants require complete unit cost data because margin is one axis of the classification.")
 
+
 with analysis_tabs[3]:
+    st.subheader("Menu Item Explorer")
+
+    st.caption(
+        "Explore menu items by revenue, sales volume, or name. "
+        "Category filters are applied automatically."
+    )
+
+    # Sorting options
+    sorting_options = {
+        "Highest revenue": ("total_revenue", False),
+        "Lowest revenue": ("total_revenue", True),
+        "Best-selling (units)": ("total_units_sold", False),
+        "Lowest-selling (units)": ("total_units_sold", True),
+        "Alphabetical (A-Z)": ("item", True),
+        "Alphabetical (Z-A)": ("item", False),
+    }
+
+    selected_sort = st.selectbox(
+        "Sort menu items by",
+        options=list(sorting_options.keys()),
+        index=0,
+        key="menu_item_sort",
+    )
+
+    sort_column, ascending = sorting_options[selected_sort]
+
+    # Sort a copy so the original summary is unchanged.
+    sorted_summary = summary.sort_values(
+        by=sort_column,
+        ascending=ascending,
+        kind="stable",
+    ).copy()
+
     has_cost = capabilities["profit_analysis"]
-    columns = ["item", "category", "price", "avg_daily_units", "total_units_sold", "total_revenue"]
+
+    columns = [
+        "item",
+        "category",
+        "price",
+        "avg_daily_units",
+        "total_units_sold",
+        "total_revenue",
+    ]
+
     if has_cost:
-        columns += ["unit_cost", "contribution_margin_amount", "contribution_margin_%", "total_profit", "quadrant"]
-    columns += ["elasticity", "elasticity_source", "elasticity_confidence"]
-    st.dataframe(display_item_table(summary[columns], currency, has_cost), use_container_width=True, hide_index=True)
+        columns += [
+            "unit_cost",
+            "contribution_margin_amount",
+            "contribution_margin_%",
+            "total_profit",
+            "quadrant",
+        ]
+
+    columns += [
+        "elasticity",
+        "elasticity_source",
+        "elasticity_confidence",
+    ]
+
+    st.dataframe(
+        display_item_table(
+            sorted_summary[columns],
+            currency,
+            has_cost,
+        ),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    st.caption(
+        f"Displaying {len(sorted_summary):,} menu items. "
+        f"Sorted by: {selected_sort}."
+    )
 
 st.header("6. Price recommendations")
 price_changes = [value / 100 for value in range(-max_decrease, max_increase + 1, 5)]
