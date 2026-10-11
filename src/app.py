@@ -35,6 +35,8 @@ from validation import (
     audit_source_transactions,
 )
 
+from pdf_report import generate_memo_pdf
+
 st.set_page_config(page_title="Menu Engineering Bot", page_icon="📊", layout="wide")
 
 
@@ -739,29 +741,52 @@ if (
         business_name.strip(),
     ).strip("_") or "business"
 
-    download_col1, download_col2 = st.columns(2)
+# --------------------------------------------------
+# Download decision memo
+# --------------------------------------------------
+    # Create three download columns
+    download_col1, download_col2, download_col3 = st.columns(3)
 
+    # Markdown download
     with download_col1:
         st.download_button(
             label="Download Markdown (.md)",
             data=memo.encode("utf-8"),
-            file_name=(
-                f"{safe_business_name}_decision_memo.md"
-            ),
+            file_name=f"{safe_business_name}_decision_memo.md",
             mime="text/markdown",
             use_container_width=True,
         )
 
+    # Download Plain text
     with download_col2:
         st.download_button(
             label="Download Text (.txt)",
             data=memo.encode("utf-8"),
-            file_name=(
-                f"{safe_business_name}_decision_memo.txt"
-            ),
+            file_name=f"{safe_business_name}_decision_memo.txt",
             mime="text/plain",
             use_container_width=True,
         )
+
+    # Download PDF
+    with download_col3:
+        try:
+            pdf_bytes = generate_memo_pdf(
+                memo=memo,
+                business_name=business_name,
+                dataset_name=dataset_name,
+            )
+
+            st.download_button(
+                label="Download PDF (.pdf)",
+                data=pdf_bytes,
+                file_name=f"{safe_business_name}_decision_memo.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+            )
+
+        except Exception as exc:
+            st.error(f"Could not generate PDF: {exc}")
+
 
     st.caption(
         "This memo is AI-generated from the computed analysis. "
