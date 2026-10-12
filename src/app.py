@@ -1,4 +1,4 @@
-"""Streamlit front end for the universal Menu Engineering Bot."""
+"""Streamlit front end for the universal Menu Engineering Bot"""
 
 from __future__ import annotations
 
@@ -6,7 +6,6 @@ import os
 import sys
 
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 
 from dotenv import load_dotenv
@@ -21,23 +20,15 @@ sys.path.append(os.path.dirname(__file__))
 # ================================================================
 from analysis import (
     build_item_summary, 
-    load_sales, 
-    recommend_price_moves,
+    load_sales,
 )
 
 # ================================================================
 # FROM DASHBOARD UTILS
 # ================================================================
 from dashboard_utils import (
-    SORTING_OPTIONS,
-    sort_menu_items,
     filter_by_date_range,
-    aggregate_sales_by_period,
-    compare_weekday_weekend,
-    analyze_day_of_week,
     add_transaction_datetime,
-    analyze_peak_hours,
-    analyze_hourly_revenue,
 )
 
 # ================================================================
@@ -45,26 +36,15 @@ from dashboard_utils import (
 # ================================================================
 from config import (
     CANONICAL_FIELDS,
-    CURRENCY_CONFIG,
     CATEGORY_GROUPS,
-    category_group,
     classify_menu_item,
-    format_currency,
 )
 
 # ================================================================
 # FROM DATA ADAPTER
 # ================================================================
 from data_adapter import (
-    NOT_AVAILABLE,
-    KNOWN_MAPPING_PRESETS,
-    apply_known_preset,
-    mapping_confidence,
     adapt_to_canonical,
-    apply_estimated_cost_percentage,
-    detect_column_mapping,
-    merge_cost_reference,
-    read_delimited_csv,
     validate_mapping,
 )
 
@@ -74,7 +54,6 @@ from data_adapter import (
 from validation import (
     determine_capabilities,
     validate_sales_df,
-    audit_source_transactions,
 )
 
 # ================================================================
@@ -83,13 +62,10 @@ from validation import (
 from ui.components import (
     render_kpi_cards,
     render_business_header,
-    render_data_quality_summary,
     render_validation_overview,
-    render_chart_header,
 )
 
 from ui.styles import apply_dashboard_styles
-from ui.charts import style_chart
 from ui.mapping import mapping_selectors
 from ui.sidebar import render_sidebar
 from ui.cost_settings import render_cost_settings
@@ -99,11 +75,6 @@ from ui.data_upload import (
     render_source_audit,
 )
 
-from ui.table_formatters import (
-    display_item_table,
-    display_moves_table,
-    safe_format_currency,
-)
 
 # ================================================================
 # FROM UI SECTIONS
@@ -153,9 +124,9 @@ source = settings.source
 uploaded = settings.uploaded
 
 
-# --------------------------------------------------
+# ================================================================
 # Load dataset
-# --------------------------------------------------
+# ================================================================
 
 raw_df: pd.DataFrame | None = None
 
@@ -219,9 +190,9 @@ else:
     st.stop()
 
 
-# -----------------------------------------------------------------
+# ================================================================
 # Feature 2: Data Setup & Column Mapping
-# -----------------------------------------------------------------
+# ================================================================
 
 with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
 
@@ -245,9 +216,9 @@ with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
         )
 
 
-# --------------------------------------------------
+# ================================================================
 # Validate column mapping — visible outside expander
-# --------------------------------------------------
+# ================================================================
 
 mapping_errors = validate_mapping(mapping, raw_df.columns)
 
@@ -263,9 +234,9 @@ if mapping_errors:
     st.stop()
 
 
-# --------------------------------------------------
+# ================================================================
 # Adapt dataset to canonical schema
-# --------------------------------------------------
+# ================================================================
 
 try:
     canonical_df, adapter_warnings = adapt_to_canonical(
@@ -282,17 +253,17 @@ except ValueError as exc:
     st.stop()
 
 
-# --------------------------------------------------
+# ================================================================
 # Optional cost handling
-# --------------------------------------------------
+# ================================================================
 
 canonical_df, cost_basis, cost_is_assumption = (
     render_cost_settings(canonical_df)
 )
 
-# --------------------------------------------------
+# ================================================================
 # Feature 3: Validate Dataset
-# --------------------------------------------------
+# ================================================================
 
 st.subheader("Dataset Validation")
 
@@ -319,9 +290,9 @@ render_validation_overview(
     validation_warnings=validation_warnings,
 )
 
-# --------------------------------------------------
+# ================================================================
 # Date range filtering
-# --------------------------------------------------
+# ================================================================
 with st.expander("⚙️ Sales Filters", expanded=False):
 
     st.subheader("Filter sales by date")
@@ -389,9 +360,9 @@ with st.expander("⚙️ Sales Filters", expanded=False):
     )
 
 
-    # --------------------------------------------------
+    # ================================================================
     # Category Filters
-    # --------------------------------------------------
+    # ================================================================
     st.header("Filter menu by category")
 
     # Make sure the category grouping is available
@@ -465,9 +436,9 @@ with st.expander("⚙️ Sales Filters", expanded=False):
         not summary.empty and (summary["elasticity_source"] == "estimated").any()
     )
 
-    # -----------------------------------------------------------------
+    # ================================================================
     # Feature 7: Create transaction timestamps for hourly analysis.
-    # -----------------------------------------------------------------
+    # ================================================================
     df = add_transaction_datetime(df)
 
     valid_timestamp_count = int(
@@ -487,9 +458,9 @@ with st.expander("⚙️ Sales Filters", expanded=False):
         )
 
 
-# --------------------------------------------------
+# ================================================================
 # Dataset capabilities
-# --------------------------------------------------
+# ================================================================
 
 # Count how many items have historical elasticity estimates.
 estimated_count = int(
@@ -601,9 +572,9 @@ capability_text = [
     ),
 ]
 
-# --------------------------------------------------
+# ================================================================
 # Modern Fintech — Active Filter Summary
-# --------------------------------------------------
+# ================================================================
 
 st.caption(
     f"📅 {start_date:%b %d, %Y} – {end_date:%b %d, %Y}"
@@ -611,9 +582,9 @@ st.caption(
     f"   |   🧾 {len(df):,} sales records"
 )
 
-# --------------------------------------------------
+# ================================================================
 # Modern Fintech — Collapsible Dataset Capabilities
-# --------------------------------------------------
+# ================================================================
 
 with st.expander("View Dataset Capabilities", expanded=False):
     st.caption(
@@ -627,9 +598,9 @@ with st.expander("View Dataset Capabilities", expanded=False):
     )
 
 
-# --------------------------------------------------
+# ================================================================
 # Calculate Analytics
-# --------------------------------------------------
+# ================================================================
 
 render_business_header(
     business_name=business_name,
@@ -641,9 +612,9 @@ render_business_header(
 # Reusable KPI cards from src/ui/components.py
 render_kpi_cards(df, currency)
 
-# --------------------------------------------------
+# ================================================================
 # Display Dashboard
-# --------------------------------------------------
+# ================================================================
 
 st.header("Sales Analytics")
 analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
@@ -657,23 +628,23 @@ with analysis_tabs[0]:
     ])
 
 
-    # -----------------------------------------------------------------
+    # ================================================================
     # Feature 9: Sales Trends navigation tab
-    # -----------------------------------------------------------------
+    # ================================================================
     with revenue_tabs[0]:
         render_sales_trends(df, currency)
         
         
-    # -----------------------------------------------------------------
+    # ================================================================
     # Feature 9: Popular Items navigation tab
-    # -----------------------------------------------------------------
+    # ================================================================
     with revenue_tabs[3]:
         render_popular_items(summary)
 
 
-    # -----------------------------------------------------------------
+    # ================================================================
     # Feature 9: Day Analysis navigation tab
-    # -----------------------------------------------------------------
+    # ================================================================
     with revenue_tabs[1]:
         render_day_analysis(df, currency)
         

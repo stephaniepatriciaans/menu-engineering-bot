@@ -201,33 +201,6 @@ def build_item_summary(
     return summary.sort_values("total_revenue", ascending=False).reset_index(drop=True)
 
 
-# def simulate_price_change(row: pd.Series, pct_change: float) -> dict[str, object]:
-#     """Estimate a price scenario using precomputed elasticity; requires unit cost."""
-#     if pd.isna(row.get("unit_cost")):
-#         raise ValueError("Price/profit simulation requires unit cost data.")
-#     if pct_change <= -1.0:
-#         raise ValueError("Price changes must keep the selling price above zero.")
-
-#     new_price = float(row["price"]) * (1 + float(pct_change))
-#     if new_price <= 0:
-#         raise ValueError("Simulated price must be positive.")
-
-#     pct_qty_change = float(row["elasticity"]) * float(pct_change)
-#     new_daily_units = max(0.0, float(row["avg_daily_units"]) * (1 + pct_qty_change))
-#     old_daily_profit = float(row["avg_daily_units"]) * (float(row["price"]) - float(row["unit_cost"]))
-#     new_daily_profit = new_daily_units * (new_price - float(row["unit_cost"]))
-
-#     return {
-#         "item": row["item"],
-#         "old_price": round(float(row["price"]), 2),
-#         "new_price": round(new_price, 2),
-#         "old_daily_units_est": round(float(row["avg_daily_units"]), 1),
-#         "new_daily_units_est": round(new_daily_units, 1),
-#         "old_daily_profit_est": round(old_daily_profit, 2),
-#         "new_daily_profit_est": round(new_daily_profit, 2),
-#         "daily_profit_delta": round(new_daily_profit - old_daily_profit, 2),
-#     }
-
 
 def simulate_price_change(
     row: pd.Series,
