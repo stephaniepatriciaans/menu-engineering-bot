@@ -10,13 +10,24 @@ import plotly.express as px
 import streamlit as st
 
 from dotenv import load_dotenv
+from pdf_report import generate_memo_pdf
 
 load_dotenv()
 
 sys.path.append(os.path.dirname(__file__))
 
-from analysis import build_item_summary, load_sales, recommend_price_moves
+# ================================================================
+# FROM ANALYSIS
+# ================================================================
+from analysis import (
+    build_item_summary, 
+    load_sales, 
+    recommend_price_moves,
+)
 
+# ================================================================
+# FROM DASHBOARD UTILS
+# ================================================================
 from dashboard_utils import (
     SORTING_OPTIONS,
     sort_menu_items,
@@ -29,6 +40,9 @@ from dashboard_utils import (
     analyze_hourly_revenue,
 )
 
+# ================================================================
+# FROM CONFIG
+# ================================================================
 from config import (
     CANONICAL_FIELDS,
     CURRENCY_CONFIG,
@@ -38,6 +52,9 @@ from config import (
     format_currency,
 )
 
+# ================================================================
+# FROM DATA ADAPTER
+# ================================================================
 from data_adapter import (
     NOT_AVAILABLE,
     KNOWN_MAPPING_PRESETS,
@@ -50,13 +67,15 @@ from data_adapter import (
     read_delimited_csv,
     validate_mapping,
 )
+
+# ================================================================
+# FROM VALIDATION
+# ================================================================
 from validation import (
     determine_capabilities,
     validate_sales_df,
     audit_source_transactions,
 )
-
-from pdf_report import generate_memo_pdf
 
 # ================================================================
 # FROM UI
@@ -68,6 +87,7 @@ from ui.components import (
     render_validation_overview,
     render_chart_header,
 )
+
 from ui.styles import apply_dashboard_styles
 from ui.charts import style_chart
 from ui.mapping import mapping_selectors
@@ -98,6 +118,8 @@ from ui.sections.menu_item_explorer import render_menu_item_explorer
 from ui.sections.pricing_recommendations import render_pricing_recommendations
 from ui.sections.ai_decision_memo import render_ai_decision_memo
 
+
+# ================================================================
 st.set_page_config(
     page_title="Menu Engineering Bot",
     page_icon="📊",
