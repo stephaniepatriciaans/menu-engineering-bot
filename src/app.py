@@ -69,6 +69,12 @@ from ui.styles import apply_dashboard_styles
 from ui.charts import style_chart
 from ui.mapping import mapping_selectors
 from ui.sidebar import render_sidebar
+from ui.cost_settings import render_cost_settings
+
+from ui.data_upload import (
+    load_uploaded_sales,
+    render_source_audit,
+)
 
 from ui.table_formatters import (
     display_item_table,
@@ -155,26 +161,11 @@ if source == "Full Demo Dataset — Synthetic Cafe":
 
 elif uploaded is not None:
     try:
-        # Read the original uploaded CSV
-        uploaded.seek(0)
-        raw_df = read_delimited_csv(uploaded)
-
-        # Audit source transactions before column mapping
-        source_audit_messages = audit_source_transactions(
-            raw_df
+        raw_df, source_audit_messages = load_uploaded_sales(
+            uploaded
         )
 
-        # Display transaction audit results
-        with st.expander("Source transaction audit"):
-            for message in source_audit_messages:
-                st.write(message)
-
-            st.caption(
-                "This audit checks for identical source records "
-                "and repeated transaction IDs. "
-                "Repeated IDs may be normal for multi-item orders. "
-                "No records are automatically removed."
-            )
+        render_source_audit(source_audit_messages)
 
     except Exception as exc:
         st.error(
@@ -184,8 +175,8 @@ elif uploaded is not None:
 
 else:
     st.info(
-        "Upload a CSV to begin. "
-        "You do not need to rename its columns first."
+        "Upload a CSV to start"
+        "You do not need to rename its columns first"
     )
     st.stop()
 
@@ -257,150 +248,9 @@ except ValueError as exc:
 # Optional cost handling
 # --------------------------------------------------
 
-cost_basis = (
-    "provided_cost_column"
-    if canonical_df["unit_cost"].notna().all()
-    else "unavailable"
+canonical_df, cost_basis, cost_is_assumption = (
+    render_cost_settings(canonical_df)
 )
-
-cost_is_assumption = False
-
-with st.expander("💰 Optional Cost Settings", expanded=False):
-
-    if not canonical_df["unit_cost"].notna().all():
-
-        st.write(
-            "Unit cost is not fully available. "
-            "Only provide real cost data or explicitly choose "
-            "a scenario assumption."
-        )
-
-        cost_option = st.radio(
-            "Cost handling",
-            [
-                "Continue without unit cost",
-                "Upload a separate menu-cost CSV",
-                "Scenario analysis using estimated cost percentage",
-            ],
-        )
-
-        if cost_option == "Upload a separate menu-cost CSV":
-
-            cost_upload = st.file_uploader(
-                "Upload menu-cost CSV",
-                type=["csv"],
-                key="cost_upload",
-            )
-
-            if cost_upload is not None:
-                try:
-                    cost_upload.seek(0)
-
-                    raw_cost_df = read_delimited_csv(
-                        cost_upload
-                    )
-
-                    cost_detected = detect_column_mapping(
-                        raw_cost_df.columns
-                    )
-
-                    cost_options = [
-                        NOT_AVAILABLE,
-                        *[str(c) for c in raw_cost_df.columns],
-                    ]
-
-                    c1, c2 = st.columns(2)
-
-                    item_default = (
-                        cost_detected.get("item")
-                        or NOT_AVAILABLE
-                    )
-
-                    cost_default = (
-                        cost_detected.get("unit_cost")
-                        or NOT_AVAILABLE
-                    )
-
-                    cost_item_col = c1.selectbox(
-                        "Cost file: Item",
-                        cost_options,
-                        index=(
-                            cost_options.index(item_default)
-                            if item_default in cost_options
-                            else 0
-                        ),
-                    )
-
-                    cost_value_col = c2.selectbox(
-                        "Cost file: Unit Cost",
-                        cost_options,
-                        index=(
-                            cost_options.index(cost_default)
-                            if cost_default in cost_options
-                            else 0
-                        ),
-                    )
-
-                    if (
-                        cost_item_col != NOT_AVAILABLE
-                        and cost_value_col != NOT_AVAILABLE
-                    ):
-
-                        canonical_df, cost_warnings = (
-                            merge_cost_reference(
-                                canonical_df,
-                                raw_cost_df,
-                                cost_item_col,
-                                cost_value_col,
-                            )
-                        )
-
-                        cost_basis = "separate_menu_cost_csv"
-
-                        for warning in cost_warnings:
-                            st.warning(warning)
-
-                except Exception as exc:
-                    st.error(
-                        f"Could not use the cost CSV: {exc}"
-                    )
-
-        elif (
-            cost_option
-            == "Scenario analysis using estimated cost percentage"
-        ):
-
-            estimated_pct = st.slider(
-                "Estimated cost as % of price",
-                5,
-                95,
-                30,
-                1,
-            )
-
-            canonical_df = apply_estimated_cost_percentage(
-                canonical_df,
-                estimated_pct / 100,
-            )
-
-            cost_basis = (
-                f"assumption_{estimated_pct}_percent_of_price"
-            )
-
-            cost_is_assumption = True
-
-            st.warning(
-                f"Scenario assumption enabled: unit cost is modeled "
-                f"as {estimated_pct}% of selling price. "
-                "These are not actual business costs."
-            )
-
-    else:
-        st.success(
-            "Complete unit cost data is available. "
-            "Profit-based analysis can use the provided costs."
-        )
-
 
 # --------------------------------------------------
 # Feature 3: Validate Dataset

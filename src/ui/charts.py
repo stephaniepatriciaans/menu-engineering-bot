@@ -1,4 +1,3 @@
-
 """Reusable Plotly chart styling for the dashboard."""
 
 import plotly.graph_objects as go
@@ -83,7 +82,9 @@ def style_chart(
         title_font=dict(size=15),
     )
 
-    if fig.layout.title.text:
+    title_info = fig.to_plotly_json().get("layout", {}).get("title", {})
+
+    if isinstance(title_info, dict) and title_info.get("text"):
         fig.update_layout(
             title_font=dict(size=19),
         )
