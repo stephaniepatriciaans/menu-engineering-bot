@@ -68,13 +68,17 @@ from ui.components import (
 from ui.styles import apply_dashboard_styles
 from ui.charts import style_chart
 
+from ui.table_formatters import (
+    display_item_table,
+    display_moves_table,
+)
+
 st.set_page_config(
     page_title="Menu Engineering Bot",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-# Apply the Modern Fintech design system.
 apply_dashboard_styles()
 
 
@@ -168,27 +172,7 @@ def capability_line(ok: bool, label: str, reason: str = "") -> str:
     icon = "✓" if ok else "✗"
     suffix = f" — {reason}" if reason else ""
     return f"{icon} {label}{suffix}"
-
-
-def display_item_table(summary: pd.DataFrame, currency: str, has_cost: bool) -> pd.DataFrame:
-    table = summary.copy()
-    table["price"] = table["price"].map(lambda x: format_currency(x, currency))
-    table["total_revenue"] = table["total_revenue"].map(lambda x: format_currency(x, currency))
-    if has_cost:
-        table["unit_cost"] = table["unit_cost"].map(lambda x: format_currency(x, currency))
-        table["contribution_margin_amount"] = table["contribution_margin_amount"].map(lambda x: format_currency(x, currency))
-        table["total_profit"] = table["total_profit"].map(lambda x: format_currency(x, currency))
-    return table
-
-
-def display_moves_table(moves: pd.DataFrame, currency: str) -> pd.DataFrame:
-    table = moves.copy()
-    for col in ["old_price", "new_price", "old_daily_profit_est", "new_daily_profit_est", "daily_profit_delta"]:
-        if col in table:
-            table[col] = table[col].map(lambda x: format_currency(x, currency))
-    return table
-
-
+    
 st.title("Menu Engineering Bot")
 st.caption(
     "Universal menu/POS data adapter + deterministic pricing analytics + AI explanation. "
