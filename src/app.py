@@ -76,6 +76,7 @@ from ui.sections.popular_items import render_popular_items
 from ui.sections.day_analysis import render_day_analysis
 from ui.sections.hourly_analysis import render_hourly_analysis
 from ui.sections.elasticity_reliability import render_elasticity_reliability
+from ui.sections.menu_quadrants import render_menu_quadrants
 
 from ui.data_upload import (
     load_uploaded_sales,
@@ -659,76 +660,7 @@ with analysis_tabs[1]:
 # MENU ENGINEERING QUADRANTS TAB
 # ================================================================
 with analysis_tabs[2]:
-
-    with st.container(border=True):
-
-        render_chart_header(
-            "Menu Engineering Quadrants",
-            "Evaluate menu performance using popularity "
-            "and contribution margin.",
-        )
-
-        if capabilities["menu_engineering_quadrants"]:
-
-            quadrant_chart = px.scatter(
-                summary,
-                x="avg_daily_units",
-                y="contribution_margin_%",
-                color="quadrant",
-                size="total_profit",
-                hover_name="item",
-                hover_data=[
-                    "category",
-                    "price",
-                    "elasticity_source",
-                    "elasticity_confidence",
-                ],
-                labels={
-                    "avg_daily_units": "Avg Daily Units Sold",
-                    "contribution_margin_%": (
-                        "Contribution Margin %"
-                    ),
-                },
-            )
-
-            quadrant_chart.add_vline(
-                x=summary["avg_daily_units"].median(),
-                line_dash="dash",
-                line_color="gray",
-            )
-
-            quadrant_chart.add_hline(
-                y=summary["contribution_margin_%"].median(),
-                line_dash="dash",
-                line_color="gray",
-            )
-
-            quadrant_chart = style_chart(
-                quadrant_chart,
-                title="Menu Engineering Quadrants",
-            )
-
-            # Inner chart card
-            with st.container(border=True):
-
-                st.plotly_chart(
-                    quadrant_chart,
-                    width="stretch",
-                    config={"displayModeBar": False},
-                )
-
-            if cost_is_assumption:
-                st.warning(
-                    "Quadrants use the estimated cost-percentage "
-                    "scenario, not actual unit costs."
-                )
-
-        else:
-            st.info(
-                "Menu quadrants require complete unit cost data "
-                "because margin is one axis of the classification."
-            )
-
+    render_menu_quadrants(summary, capabilities, cost_is_assumption)
 
 # ================================================================
 # MENU ITEM EXPLORER TAB
