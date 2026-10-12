@@ -1,0 +1,541 @@
+date,item,category,price,unit_cost,units_sold
+2025-01-01,Latte,Coffee,5.0,2.0,102
+2025-01-02,Latte,Coffee,5.0,2.0,95
+2025-01-03,Latte,Coffee,5.0,2.0,104
+2025-01-04,Latte,Coffee,5.0,2.0,105
+2025-01-05,Latte,Coffee,5.0,2.0,90
+2025-01-06,Latte,Coffee,5.0,2.0,93
+2025-01-07,Latte,Coffee,5.0,2.0,101
+2025-01-08,Latte,Coffee,5.25,2.0,93
+2025-01-09,Latte,Coffee,5.25,2.0,94
+2025-01-10,Latte,Coffee,5.25,2.0,90
+2025-01-11,Latte,Coffee,5.25,2.0,98
+2025-01-12,Latte,Coffee,5.25,2.0,98
+2025-01-13,Latte,Coffee,5.25,2.0,95
+2025-01-14,Latte,Coffee,5.25,2.0,100
+2025-01-15,Latte,Coffee,5.5,2.0,91
+2025-01-16,Latte,Coffee,5.5,2.0,85
+2025-01-17,Latte,Coffee,5.5,2.0,91
+2025-01-18,Latte,Coffee,5.5,2.0,85
+2025-01-19,Latte,Coffee,5.5,2.0,93
+2025-01-20,Latte,Coffee,5.5,2.0,89
+2025-01-21,Latte,Coffee,5.5,2.0,88
+2025-01-22,Latte,Coffee,4.75,2.0,103
+2025-01-23,Latte,Coffee,4.75,2.0,113
+2025-01-24,Latte,Coffee,4.75,2.0,106
+2025-01-25,Latte,Coffee,4.75,2.0,104
+2025-01-26,Latte,Coffee,4.75,2.0,104
+2025-01-27,Latte,Coffee,4.75,2.0,109
+2025-01-28,Latte,Coffee,4.75,2.0,108
+2025-01-29,Latte,Coffee,5.0,2.0,102
+2025-01-30,Latte,Coffee,5.0,2.0,102
+2025-01-31,Latte,Coffee,5.0,2.0,111
+2025-02-01,Latte,Coffee,5.0,2.0,98
+2025-02-02,Latte,Coffee,5.0,2.0,97
+2025-02-03,Latte,Coffee,5.0,2.0,96
+2025-02-04,Latte,Coffee,5.0,2.0,103
+2025-02-05,Latte,Coffee,5.25,2.0,100
+2025-02-06,Latte,Coffee,5.25,2.0,94
+2025-02-07,Latte,Coffee,5.25,2.0,90
+2025-02-08,Latte,Coffee,5.25,2.0,90
+2025-02-09,Latte,Coffee,5.25,2.0,97
+2025-02-10,Latte,Coffee,5.25,2.0,98
+2025-02-11,Latte,Coffee,5.25,2.0,97
+2025-02-12,Latte,Coffee,5.5,2.0,86
+2025-02-13,Latte,Coffee,5.5,2.0,90
+2025-02-14,Latte,Coffee,5.5,2.0,90
+2025-02-15,Latte,Coffee,5.5,2.0,90
+2025-02-16,Latte,Coffee,5.5,2.0,93
+2025-02-17,Latte,Coffee,5.5,2.0,90
+2025-02-18,Latte,Coffee,5.5,2.0,92
+2025-02-19,Latte,Coffee,4.75,2.0,107
+2025-02-20,Latte,Coffee,4.75,2.0,108
+2025-02-21,Latte,Coffee,4.75,2.0,110
+2025-02-22,Latte,Coffee,4.75,2.0,99
+2025-02-23,Latte,Coffee,4.75,2.0,105
+2025-02-24,Latte,Coffee,4.75,2.0,104
+2025-02-25,Latte,Coffee,4.75,2.0,103
+2025-02-26,Latte,Coffee,5.0,2.0,99
+2025-02-27,Latte,Coffee,5.0,2.0,107
+2025-02-28,Latte,Coffee,5.0,2.0,96
+2025-03-01,Latte,Coffee,5.0,2.0,105
+2025-03-02,Latte,Coffee,5.0,2.0,92
+2025-03-03,Latte,Coffee,5.0,2.0,98
+2025-03-04,Latte,Coffee,5.0,2.0,101
+2025-03-05,Latte,Coffee,5.25,2.0,97
+2025-03-06,Latte,Coffee,5.25,2.0,98
+2025-03-07,Latte,Coffee,5.25,2.0,98
+2025-03-08,Latte,Coffee,5.25,2.0,93
+2025-03-09,Latte,Coffee,5.25,2.0,92
+2025-03-10,Latte,Coffee,5.25,2.0,98
+2025-03-11,Latte,Coffee,5.25,2.0,93
+2025-03-12,Latte,Coffee,5.5,2.0,84
+2025-03-13,Latte,Coffee,5.5,2.0,84
+2025-03-14,Latte,Coffee,5.5,2.0,85
+2025-03-15,Latte,Coffee,5.5,2.0,91
+2025-03-16,Latte,Coffee,5.5,2.0,90
+2025-03-17,Latte,Coffee,5.5,2.0,92
+2025-03-18,Latte,Coffee,5.5,2.0,87
+2025-03-19,Latte,Coffee,4.75,2.0,107
+2025-03-20,Latte,Coffee,4.75,2.0,110
+2025-03-21,Latte,Coffee,4.75,2.0,105
+2025-03-22,Latte,Coffee,4.75,2.0,109
+2025-03-23,Latte,Coffee,4.75,2.0,103
+2025-03-24,Latte,Coffee,4.75,2.0,104
+2025-03-25,Latte,Coffee,4.75,2.0,104
+2025-03-26,Latte,Coffee,5.0,2.0,94
+2025-03-27,Latte,Coffee,5.0,2.0,102
+2025-03-28,Latte,Coffee,5.0,2.0,98
+2025-03-29,Latte,Coffee,5.0,2.0,100
+2025-03-30,Latte,Coffee,5.0,2.0,102
+2025-03-31,Latte,Coffee,5.0,2.0,102
+2025-04-01,Latte,Coffee,5.0,2.0,103
+2025-04-02,Latte,Coffee,5.25,2.0,94
+2025-04-03,Latte,Coffee,5.25,2.0,92
+2025-04-04,Latte,Coffee,5.25,2.0,94
+2025-04-05,Latte,Coffee,5.25,2.0,86
+2025-04-06,Latte,Coffee,5.25,2.0,87
+2025-04-07,Latte,Coffee,5.25,2.0,88
+2025-04-08,Latte,Coffee,5.25,2.0,90
+2025-04-09,Latte,Coffee,5.5,2.0,91
+2025-04-10,Latte,Coffee,5.5,2.0,85
+2025-04-11,Latte,Coffee,5.5,2.0,88
+2025-04-12,Latte,Coffee,5.5,2.0,95
+2025-04-13,Latte,Coffee,5.5,2.0,88
+2025-04-14,Latte,Coffee,5.5,2.0,92
+2025-04-15,Latte,Coffee,5.5,2.0,85
+2025-04-16,Latte,Coffee,4.75,2.0,105
+2025-04-17,Latte,Coffee,4.75,2.0,101
+2025-04-18,Latte,Coffee,4.75,2.0,105
+2025-04-19,Latte,Coffee,4.75,2.0,111
+2025-04-20,Latte,Coffee,4.75,2.0,97
+2025-04-21,Latte,Coffee,4.75,2.0,109
+2025-04-22,Latte,Coffee,4.75,2.0,108
+2025-04-23,Latte,Coffee,5.0,2.0,97
+2025-04-24,Latte,Coffee,5.0,2.0,93
+2025-04-25,Latte,Coffee,5.0,2.0,100
+2025-04-26,Latte,Coffee,5.0,2.0,97
+2025-04-27,Latte,Coffee,5.0,2.0,101
+2025-04-28,Latte,Coffee,5.0,2.0,100
+2025-04-29,Latte,Coffee,5.0,2.0,108
+2025-04-30,Latte,Coffee,5.25,2.0,93
+2025-05-01,Latte,Coffee,5.25,2.0,89
+2025-05-02,Latte,Coffee,5.25,2.0,95
+2025-05-03,Latte,Coffee,5.25,2.0,95
+2025-05-04,Latte,Coffee,5.25,2.0,101
+2025-05-05,Latte,Coffee,5.25,2.0,98
+2025-05-06,Latte,Coffee,5.25,2.0,96
+2025-05-07,Latte,Coffee,5.5,2.0,96
+2025-05-08,Latte,Coffee,5.5,2.0,84
+2025-05-09,Latte,Coffee,5.5,2.0,86
+2025-05-10,Latte,Coffee,5.5,2.0,85
+2025-05-11,Latte,Coffee,5.5,2.0,87
+2025-05-12,Latte,Coffee,5.5,2.0,83
+2025-05-13,Latte,Coffee,5.5,2.0,92
+2025-05-14,Latte,Coffee,4.75,2.0,105
+2025-05-15,Latte,Coffee,4.75,2.0,99
+2025-05-16,Latte,Coffee,4.75,2.0,101
+2025-05-17,Latte,Coffee,4.75,2.0,108
+2025-05-18,Latte,Coffee,4.75,2.0,111
+2025-05-19,Latte,Coffee,4.75,2.0,117
+2025-05-20,Latte,Coffee,4.75,2.0,122
+2025-05-21,Latte,Coffee,5.0,2.0,102
+2025-05-22,Latte,Coffee,5.0,2.0,95
+2025-05-23,Latte,Coffee,5.0,2.0,89
+2025-05-24,Latte,Coffee,5.0,2.0,101
+2025-05-25,Latte,Coffee,5.0,2.0,96
+2025-05-26,Latte,Coffee,5.0,2.0,98
+2025-05-27,Latte,Coffee,5.0,2.0,97
+2025-05-28,Latte,Coffee,5.25,2.0,94
+2025-05-29,Latte,Coffee,5.25,2.0,99
+2025-05-30,Latte,Coffee,5.25,2.0,95
+2025-05-31,Latte,Coffee,5.25,2.0,94
+2025-06-01,Latte,Coffee,5.25,2.0,89
+2025-06-02,Latte,Coffee,5.25,2.0,86
+2025-06-03,Latte,Coffee,5.25,2.0,92
+2025-06-04,Latte,Coffee,5.5,2.0,89
+2025-06-05,Latte,Coffee,5.5,2.0,97
+2025-06-06,Latte,Coffee,5.5,2.0,90
+2025-06-07,Latte,Coffee,5.5,2.0,94
+2025-06-08,Latte,Coffee,5.5,2.0,87
+2025-06-09,Latte,Coffee,5.5,2.0,84
+2025-06-10,Latte,Coffee,5.5,2.0,85
+2025-06-11,Latte,Coffee,4.75,2.0,102
+2025-06-12,Latte,Coffee,4.75,2.0,118
+2025-06-13,Latte,Coffee,4.75,2.0,102
+2025-06-14,Latte,Coffee,4.75,2.0,111
+2025-06-15,Latte,Coffee,4.75,2.0,102
+2025-06-16,Latte,Coffee,4.75,2.0,111
+2025-06-17,Latte,Coffee,4.75,2.0,108
+2025-06-18,Latte,Coffee,5.0,2.0,99
+2025-06-19,Latte,Coffee,5.0,2.0,100
+2025-06-20,Latte,Coffee,5.0,2.0,97
+2025-06-21,Latte,Coffee,5.0,2.0,102
+2025-06-22,Latte,Coffee,5.0,2.0,98
+2025-06-23,Latte,Coffee,5.0,2.0,94
+2025-06-24,Latte,Coffee,5.0,2.0,94
+2025-06-25,Latte,Coffee,5.25,2.0,95
+2025-06-26,Latte,Coffee,5.25,2.0,102
+2025-06-27,Latte,Coffee,5.25,2.0,95
+2025-06-28,Latte,Coffee,5.25,2.0,94
+2025-06-29,Latte,Coffee,5.25,2.0,96
+2025-01-01,Cold Brew,Coffee,4.5,1.75,85
+2025-01-02,Cold Brew,Coffee,4.5,1.75,81
+2025-01-03,Cold Brew,Coffee,4.5,1.75,78
+2025-01-04,Cold Brew,Coffee,4.5,1.75,84
+2025-01-05,Cold Brew,Coffee,4.5,1.75,82
+2025-01-06,Cold Brew,Coffee,4.5,1.75,86
+2025-01-07,Cold Brew,Coffee,4.5,1.75,81
+2025-01-08,Cold Brew,Coffee,4.73,1.75,70
+2025-01-09,Cold Brew,Coffee,4.73,1.75,69
+2025-01-10,Cold Brew,Coffee,4.73,1.75,80
+2025-01-11,Cold Brew,Coffee,4.73,1.75,81
+2025-01-12,Cold Brew,Coffee,4.73,1.75,74
+2025-01-13,Cold Brew,Coffee,4.73,1.75,73
+2025-01-14,Cold Brew,Coffee,4.73,1.75,80
+2025-01-15,Cold Brew,Coffee,4.95,1.75,66
+2025-01-16,Cold Brew,Coffee,4.95,1.75,66
+2025-01-17,Cold Brew,Coffee,4.95,1.75,72
+2025-01-18,Cold Brew,Coffee,4.95,1.75,68
+2025-01-19,Cold Brew,Coffee,4.95,1.75,69
+2025-01-20,Cold Brew,Coffee,4.95,1.75,69
+2025-01-21,Cold Brew,Coffee,4.95,1.75,71
+2025-01-22,Cold Brew,Coffee,4.27,1.75,93
+2025-01-23,Cold Brew,Coffee,4.27,1.75,87
+2025-01-24,Cold Brew,Coffee,4.27,1.75,89
+2025-01-25,Cold Brew,Coffee,4.27,1.75,78
+2025-01-26,Cold Brew,Coffee,4.27,1.75,86
+2025-01-27,Cold Brew,Coffee,4.27,1.75,83
+2025-01-28,Cold Brew,Coffee,4.27,1.75,81
+2025-01-29,Cold Brew,Coffee,4.5,1.75,76
+2025-01-30,Cold Brew,Coffee,4.5,1.75,79
+2025-01-31,Cold Brew,Coffee,4.5,1.75,84
+2025-02-01,Cold Brew,Coffee,4.5,1.75,75
+2025-02-02,Cold Brew,Coffee,4.5,1.75,80
+2025-02-03,Cold Brew,Coffee,4.5,1.75,78
+2025-02-04,Cold Brew,Coffee,4.5,1.75,79
+2025-02-05,Cold Brew,Coffee,4.73,1.75,78
+2025-02-06,Cold Brew,Coffee,4.73,1.75,76
+2025-02-07,Cold Brew,Coffee,4.73,1.75,79
+2025-02-08,Cold Brew,Coffee,4.73,1.75,74
+2025-02-09,Cold Brew,Coffee,4.73,1.75,72
+2025-02-10,Cold Brew,Coffee,4.73,1.75,73
+2025-02-11,Cold Brew,Coffee,4.73,1.75,75
+2025-02-12,Cold Brew,Coffee,4.95,1.75,70
+2025-02-13,Cold Brew,Coffee,4.95,1.75,66
+2025-02-14,Cold Brew,Coffee,4.95,1.75,70
+2025-02-15,Cold Brew,Coffee,4.95,1.75,70
+2025-02-16,Cold Brew,Coffee,4.95,1.75,78
+2025-02-17,Cold Brew,Coffee,4.95,1.75,76
+2025-02-18,Cold Brew,Coffee,4.95,1.75,66
+2025-02-19,Cold Brew,Coffee,4.27,1.75,85
+2025-02-20,Cold Brew,Coffee,4.27,1.75,80
+2025-02-21,Cold Brew,Coffee,4.27,1.75,84
+2025-02-22,Cold Brew,Coffee,4.27,1.75,88
+2025-02-23,Cold Brew,Coffee,4.27,1.75,92
+2025-02-24,Cold Brew,Coffee,4.27,1.75,83
+2025-02-25,Cold Brew,Coffee,4.27,1.75,84
+2025-02-26,Cold Brew,Coffee,4.5,1.75,71
+2025-02-27,Cold Brew,Coffee,4.5,1.75,79
+2025-02-28,Cold Brew,Coffee,4.5,1.75,76
+2025-03-01,Cold Brew,Coffee,4.5,1.75,78
+2025-03-02,Cold Brew,Coffee,4.5,1.75,76
+2025-03-03,Cold Brew,Coffee,4.5,1.75,80
+2025-03-04,Cold Brew,Coffee,4.5,1.75,73
+2025-03-05,Cold Brew,Coffee,4.73,1.75,69
+2025-03-06,Cold Brew,Coffee,4.73,1.75,82
+2025-03-07,Cold Brew,Coffee,4.73,1.75,69
+2025-03-08,Cold Brew,Coffee,4.73,1.75,70
+2025-03-09,Cold Brew,Coffee,4.73,1.75,81
+2025-03-10,Cold Brew,Coffee,4.73,1.75,85
+2025-03-11,Cold Brew,Coffee,4.73,1.75,70
+2025-03-12,Cold Brew,Coffee,4.95,1.75,68
+2025-03-13,Cold Brew,Coffee,4.95,1.75,71
+2025-03-14,Cold Brew,Coffee,4.95,1.75,75
+2025-03-15,Cold Brew,Coffee,4.95,1.75,66
+2025-03-16,Cold Brew,Coffee,4.95,1.75,68
+2025-03-17,Cold Brew,Coffee,4.95,1.75,72
+2025-03-18,Cold Brew,Coffee,4.95,1.75,71
+2025-03-19,Cold Brew,Coffee,4.27,1.75,85
+2025-03-20,Cold Brew,Coffee,4.27,1.75,86
+2025-03-21,Cold Brew,Coffee,4.27,1.75,81
+2025-03-22,Cold Brew,Coffee,4.27,1.75,86
+2025-03-23,Cold Brew,Coffee,4.27,1.75,85
+2025-03-24,Cold Brew,Coffee,4.27,1.75,88
+2025-03-25,Cold Brew,Coffee,4.27,1.75,84
+2025-03-26,Cold Brew,Coffee,4.5,1.75,82
+2025-03-27,Cold Brew,Coffee,4.5,1.75,84
+2025-03-28,Cold Brew,Coffee,4.5,1.75,81
+2025-03-29,Cold Brew,Coffee,4.5,1.75,81
+2025-03-30,Cold Brew,Coffee,4.5,1.75,80
+2025-03-31,Cold Brew,Coffee,4.5,1.75,80
+2025-04-01,Cold Brew,Coffee,4.5,1.75,77
+2025-04-02,Cold Brew,Coffee,4.73,1.75,75
+2025-04-03,Cold Brew,Coffee,4.73,1.75,74
+2025-04-04,Cold Brew,Coffee,4.73,1.75,82
+2025-04-05,Cold Brew,Coffee,4.73,1.75,80
+2025-04-06,Cold Brew,Coffee,4.73,1.75,76
+2025-04-07,Cold Brew,Coffee,4.73,1.75,71
+2025-04-08,Cold Brew,Coffee,4.73,1.75,70
+2025-04-09,Cold Brew,Coffee,4.95,1.75,73
+2025-04-10,Cold Brew,Coffee,4.95,1.75,70
+2025-04-11,Cold Brew,Coffee,4.95,1.75,71
+2025-04-12,Cold Brew,Coffee,4.95,1.75,63
+2025-04-13,Cold Brew,Coffee,4.95,1.75,73
+2025-04-14,Cold Brew,Coffee,4.95,1.75,71
+2025-04-15,Cold Brew,Coffee,4.95,1.75,65
+2025-04-16,Cold Brew,Coffee,4.27,1.75,85
+2025-04-17,Cold Brew,Coffee,4.27,1.75,88
+2025-04-18,Cold Brew,Coffee,4.27,1.75,87
+2025-04-19,Cold Brew,Coffee,4.27,1.75,85
+2025-04-20,Cold Brew,Coffee,4.27,1.75,86
+2025-04-21,Cold Brew,Coffee,4.27,1.75,85
+2025-04-22,Cold Brew,Coffee,4.27,1.75,87
+2025-04-23,Cold Brew,Coffee,4.5,1.75,86
+2025-04-24,Cold Brew,Coffee,4.5,1.75,70
+2025-04-25,Cold Brew,Coffee,4.5,1.75,79
+2025-04-26,Cold Brew,Coffee,4.5,1.75,81
+2025-04-27,Cold Brew,Coffee,4.5,1.75,81
+2025-04-28,Cold Brew,Coffee,4.5,1.75,79
+2025-04-29,Cold Brew,Coffee,4.5,1.75,73
+2025-04-30,Cold Brew,Coffee,4.73,1.75,75
+2025-05-01,Cold Brew,Coffee,4.73,1.75,81
+2025-05-02,Cold Brew,Coffee,4.73,1.75,69
+2025-05-03,Cold Brew,Coffee,4.73,1.75,77
+2025-05-04,Cold Brew,Coffee,4.73,1.75,73
+2025-05-05,Cold Brew,Coffee,4.73,1.75,74
+2025-05-06,Cold Brew,Coffee,4.73,1.75,70
+2025-05-07,Cold Brew,Coffee,4.95,1.75,68
+2025-05-08,Cold Brew,Coffee,4.95,1.75,74
+2025-05-09,Cold Brew,Coffee,4.95,1.75,71
+2025-05-10,Cold Brew,Coffee,4.95,1.75,75
+2025-05-11,Cold Brew,Coffee,4.95,1.75,73
+2025-05-12,Cold Brew,Coffee,4.95,1.75,71
+2025-05-13,Cold Brew,Coffee,4.95,1.75,75
+2025-05-14,Cold Brew,Coffee,4.27,1.75,88
+2025-05-15,Cold Brew,Coffee,4.27,1.75,90
+2025-05-16,Cold Brew,Coffee,4.27,1.75,85
+2025-05-17,Cold Brew,Coffee,4.27,1.75,87
+2025-05-18,Cold Brew,Coffee,4.27,1.75,84
+2025-05-19,Cold Brew,Coffee,4.27,1.75,91
+2025-05-20,Cold Brew,Coffee,4.27,1.75,81
+2025-05-21,Cold Brew,Coffee,4.5,1.75,83
+2025-05-22,Cold Brew,Coffee,4.5,1.75,79
+2025-05-23,Cold Brew,Coffee,4.5,1.75,85
+2025-05-24,Cold Brew,Coffee,4.5,1.75,83
+2025-05-25,Cold Brew,Coffee,4.5,1.75,87
+2025-05-26,Cold Brew,Coffee,4.5,1.75,83
+2025-05-27,Cold Brew,Coffee,4.5,1.75,74
+2025-05-28,Cold Brew,Coffee,4.73,1.75,74
+2025-05-29,Cold Brew,Coffee,4.73,1.75,70
+2025-05-30,Cold Brew,Coffee,4.73,1.75,72
+2025-05-31,Cold Brew,Coffee,4.73,1.75,80
+2025-06-01,Cold Brew,Coffee,4.73,1.75,77
+2025-06-02,Cold Brew,Coffee,4.73,1.75,72
+2025-06-03,Cold Brew,Coffee,4.73,1.75,70
+2025-06-04,Cold Brew,Coffee,4.95,1.75,69
+2025-06-05,Cold Brew,Coffee,4.95,1.75,65
+2025-06-06,Cold Brew,Coffee,4.95,1.75,67
+2025-06-07,Cold Brew,Coffee,4.95,1.75,70
+2025-06-08,Cold Brew,Coffee,4.95,1.75,73
+2025-06-09,Cold Brew,Coffee,4.95,1.75,71
+2025-06-10,Cold Brew,Coffee,4.95,1.75,61
+2025-06-11,Cold Brew,Coffee,4.27,1.75,88
+2025-06-12,Cold Brew,Coffee,4.27,1.75,87
+2025-06-13,Cold Brew,Coffee,4.27,1.75,88
+2025-06-14,Cold Brew,Coffee,4.27,1.75,94
+2025-06-15,Cold Brew,Coffee,4.27,1.75,78
+2025-06-16,Cold Brew,Coffee,4.27,1.75,84
+2025-06-17,Cold Brew,Coffee,4.27,1.75,89
+2025-06-18,Cold Brew,Coffee,4.5,1.75,74
+2025-06-19,Cold Brew,Coffee,4.5,1.75,86
+2025-06-20,Cold Brew,Coffee,4.5,1.75,81
+2025-06-21,Cold Brew,Coffee,4.5,1.75,83
+2025-06-22,Cold Brew,Coffee,4.5,1.75,78
+2025-06-23,Cold Brew,Coffee,4.5,1.75,83
+2025-06-24,Cold Brew,Coffee,4.5,1.75,84
+2025-06-25,Cold Brew,Coffee,4.73,1.75,75
+2025-06-26,Cold Brew,Coffee,4.73,1.75,75
+2025-06-27,Cold Brew,Coffee,4.73,1.75,75
+2025-06-28,Cold Brew,Coffee,4.73,1.75,71
+2025-06-29,Cold Brew,Coffee,4.73,1.75,74
+2025-01-01,Croissant,Bakery,3.75,1.2,60
+2025-01-02,Croissant,Bakery,3.75,1.2,61
+2025-01-03,Croissant,Bakery,3.75,1.2,63
+2025-01-04,Croissant,Bakery,3.75,1.2,57
+2025-01-05,Croissant,Bakery,3.75,1.2,60
+2025-01-06,Croissant,Bakery,3.75,1.2,64
+2025-01-07,Croissant,Bakery,3.75,1.2,58
+2025-01-08,Croissant,Bakery,3.94,1.2,55
+2025-01-09,Croissant,Bakery,3.94,1.2,58
+2025-01-10,Croissant,Bakery,3.94,1.2,60
+2025-01-11,Croissant,Bakery,3.94,1.2,58
+2025-01-12,Croissant,Bakery,3.94,1.2,62
+2025-01-13,Croissant,Bakery,3.94,1.2,60
+2025-01-14,Croissant,Bakery,3.94,1.2,60
+2025-01-15,Croissant,Bakery,4.12,1.2,57
+2025-01-16,Croissant,Bakery,4.12,1.2,62
+2025-01-17,Croissant,Bakery,4.12,1.2,55
+2025-01-18,Croissant,Bakery,4.12,1.2,50
+2025-01-19,Croissant,Bakery,4.12,1.2,60
+2025-01-20,Croissant,Bakery,4.12,1.2,54
+2025-01-21,Croissant,Bakery,4.12,1.2,56
+2025-01-22,Croissant,Bakery,3.56,1.2,67
+2025-01-23,Croissant,Bakery,3.56,1.2,58
+2025-01-24,Croissant,Bakery,3.56,1.2,59
+2025-01-25,Croissant,Bakery,3.56,1.2,58
+2025-01-26,Croissant,Bakery,3.56,1.2,60
+2025-01-27,Croissant,Bakery,3.56,1.2,64
+2025-01-28,Croissant,Bakery,3.56,1.2,64
+2025-01-29,Croissant,Bakery,3.75,1.2,61
+2025-01-30,Croissant,Bakery,3.75,1.2,56
+2025-01-31,Croissant,Bakery,3.75,1.2,53
+2025-02-01,Croissant,Bakery,3.75,1.2,60
+2025-02-02,Croissant,Bakery,3.75,1.2,59
+2025-02-03,Croissant,Bakery,3.75,1.2,61
+2025-02-04,Croissant,Bakery,3.75,1.2,62
+2025-02-05,Croissant,Bakery,3.94,1.2,58
+2025-02-06,Croissant,Bakery,3.94,1.2,60
+2025-02-07,Croissant,Bakery,3.94,1.2,58
+2025-02-08,Croissant,Bakery,3.94,1.2,59
+2025-02-09,Croissant,Bakery,3.94,1.2,56
+2025-02-10,Croissant,Bakery,3.94,1.2,57
+2025-02-11,Croissant,Bakery,3.94,1.2,58
+2025-02-12,Croissant,Bakery,4.12,1.2,58
+2025-02-13,Croissant,Bakery,4.12,1.2,55
+2025-02-14,Croissant,Bakery,4.12,1.2,57
+2025-02-15,Croissant,Bakery,4.12,1.2,55
+2025-02-16,Croissant,Bakery,4.12,1.2,55
+2025-02-17,Croissant,Bakery,4.12,1.2,58
+2025-02-18,Croissant,Bakery,4.12,1.2,50
+2025-02-19,Croissant,Bakery,3.56,1.2,58
+2025-02-20,Croissant,Bakery,3.56,1.2,58
+2025-02-21,Croissant,Bakery,3.56,1.2,55
+2025-02-22,Croissant,Bakery,3.56,1.2,60
+2025-02-23,Croissant,Bakery,3.56,1.2,65
+2025-02-24,Croissant,Bakery,3.56,1.2,62
+2025-02-25,Croissant,Bakery,3.56,1.2,63
+2025-02-26,Croissant,Bakery,3.75,1.2,63
+2025-02-27,Croissant,Bakery,3.75,1.2,64
+2025-02-28,Croissant,Bakery,3.75,1.2,60
+2025-03-01,Croissant,Bakery,3.75,1.2,64
+2025-03-02,Croissant,Bakery,3.75,1.2,60
+2025-03-03,Croissant,Bakery,3.75,1.2,57
+2025-03-04,Croissant,Bakery,3.75,1.2,58
+2025-03-05,Croissant,Bakery,3.94,1.2,53
+2025-03-06,Croissant,Bakery,3.94,1.2,55
+2025-03-07,Croissant,Bakery,3.94,1.2,57
+2025-03-08,Croissant,Bakery,3.94,1.2,60
+2025-03-09,Croissant,Bakery,3.94,1.2,63
+2025-03-10,Croissant,Bakery,3.94,1.2,54
+2025-03-11,Croissant,Bakery,3.94,1.2,59
+2025-03-12,Croissant,Bakery,4.12,1.2,53
+2025-03-13,Croissant,Bakery,4.12,1.2,57
+2025-03-14,Croissant,Bakery,4.12,1.2,55
+2025-03-15,Croissant,Bakery,4.12,1.2,51
+2025-03-16,Croissant,Bakery,4.12,1.2,58
+2025-03-17,Croissant,Bakery,4.12,1.2,54
+2025-03-18,Croissant,Bakery,4.12,1.2,54
+2025-03-19,Croissant,Bakery,3.56,1.2,59
+2025-03-20,Croissant,Bakery,3.56,1.2,61
+2025-03-21,Croissant,Bakery,3.56,1.2,64
+2025-03-22,Croissant,Bakery,3.56,1.2,62
+2025-03-23,Croissant,Bakery,3.56,1.2,64
+2025-03-24,Croissant,Bakery,3.56,1.2,64
+2025-03-25,Croissant,Bakery,3.56,1.2,67
+2025-03-26,Croissant,Bakery,3.75,1.2,59
+2025-03-27,Croissant,Bakery,3.75,1.2,56
+2025-03-28,Croissant,Bakery,3.75,1.2,63
+2025-03-29,Croissant,Bakery,3.75,1.2,59
+2025-03-30,Croissant,Bakery,3.75,1.2,63
+2025-03-31,Croissant,Bakery,3.75,1.2,61
+2025-04-01,Croissant,Bakery,3.75,1.2,60
+2025-04-02,Croissant,Bakery,3.94,1.2,59
+2025-04-03,Croissant,Bakery,3.94,1.2,63
+2025-04-04,Croissant,Bakery,3.94,1.2,64
+2025-04-05,Croissant,Bakery,3.94,1.2,58
+2025-04-06,Croissant,Bakery,3.94,1.2,58
+2025-04-07,Croissant,Bakery,3.94,1.2,61
+2025-04-08,Croissant,Bakery,3.94,1.2,55
+2025-04-09,Croissant,Bakery,4.12,1.2,57
+2025-04-10,Croissant,Bakery,4.12,1.2,56
+2025-04-11,Croissant,Bakery,4.12,1.2,57
+2025-04-12,Croissant,Bakery,4.12,1.2,53
+2025-04-13,Croissant,Bakery,4.12,1.2,51
+2025-04-14,Croissant,Bakery,4.12,1.2,50
+2025-04-15,Croissant,Bakery,4.12,1.2,53
+2025-04-16,Croissant,Bakery,3.56,1.2,61
+2025-04-17,Croissant,Bakery,3.56,1.2,62
+2025-04-18,Croissant,Bakery,3.56,1.2,69
+2025-04-19,Croissant,Bakery,3.56,1.2,66
+2025-04-20,Croissant,Bakery,3.56,1.2,60
+2025-04-21,Croissant,Bakery,3.56,1.2,64
+2025-04-22,Croissant,Bakery,3.56,1.2,61
+2025-04-23,Croissant,Bakery,3.75,1.2,59
+2025-04-24,Croissant,Bakery,3.75,1.2,61
+2025-04-25,Croissant,Bakery,3.75,1.2,62
+2025-04-26,Croissant,Bakery,3.75,1.2,59
+2025-04-27,Croissant,Bakery,3.75,1.2,63
+2025-04-28,Croissant,Bakery,3.75,1.2,57
+2025-04-29,Croissant,Bakery,3.75,1.2,60
+2025-04-30,Croissant,Bakery,3.94,1.2,65
+2025-05-01,Croissant,Bakery,3.94,1.2,58
+2025-05-02,Croissant,Bakery,3.94,1.2,62
+2025-05-03,Croissant,Bakery,3.94,1.2,58
+2025-05-04,Croissant,Bakery,3.94,1.2,59
+2025-05-05,Croissant,Bakery,3.94,1.2,58
+2025-05-06,Croissant,Bakery,3.94,1.2,57
+2025-05-07,Croissant,Bakery,4.12,1.2,53
+2025-05-08,Croissant,Bakery,4.12,1.2,57
+2025-05-09,Croissant,Bakery,4.12,1.2,53
+2025-05-10,Croissant,Bakery,4.12,1.2,58
+2025-05-11,Croissant,Bakery,4.12,1.2,59
+2025-05-12,Croissant,Bakery,4.12,1.2,57
+2025-05-13,Croissant,Bakery,4.12,1.2,55
+2025-05-14,Croissant,Bakery,3.56,1.2,64
+2025-05-15,Croissant,Bakery,3.56,1.2,62
+2025-05-16,Croissant,Bakery,3.56,1.2,65
+2025-05-17,Croissant,Bakery,3.56,1.2,57
+2025-05-18,Croissant,Bakery,3.56,1.2,61
+2025-05-19,Croissant,Bakery,3.56,1.2,56
+2025-05-20,Croissant,Bakery,3.56,1.2,58
+2025-05-21,Croissant,Bakery,3.75,1.2,64
+2025-05-22,Croissant,Bakery,3.75,1.2,63
+2025-05-23,Croissant,Bakery,3.75,1.2,58
+2025-05-24,Croissant,Bakery,3.75,1.2,55
+2025-05-25,Croissant,Bakery,3.75,1.2,51
+2025-05-26,Croissant,Bakery,3.75,1.2,58
+2025-05-27,Croissant,Bakery,3.75,1.2,67
+2025-05-28,Croissant,Bakery,3.94,1.2,59
+2025-05-29,Croissant,Bakery,3.94,1.2,56
+2025-05-30,Croissant,Bakery,3.94,1.2,59
+2025-05-31,Croissant,Bakery,3.94,1.2,53
+2025-06-01,Croissant,Bakery,3.94,1.2,57
+2025-06-02,Croissant,Bakery,3.94,1.2,58
+2025-06-03,Croissant,Bakery,3.94,1.2,57
+2025-06-04,Croissant,Bakery,4.12,1.2,58
+2025-06-05,Croissant,Bakery,4.12,1.2,57
+2025-06-06,Croissant,Bakery,4.12,1.2,58
+2025-06-07,Croissant,Bakery,4.12,1.2,54
+2025-06-08,Croissant,Bakery,4.12,1.2,58
+2025-06-09,Croissant,Bakery,4.12,1.2,60
+2025-06-10,Croissant,Bakery,4.12,1.2,53
+2025-06-11,Croissant,Bakery,3.56,1.2,60
+2025-06-12,Croissant,Bakery,3.56,1.2,67
+2025-06-13,Croissant,Bakery,3.56,1.2,62
+2025-06-14,Croissant,Bakery,3.56,1.2,67
+2025-06-15,Croissant,Bakery,3.56,1.2,61
+2025-06-16,Croissant,Bakery,3.56,1.2,67
+2025-06-17,Croissant,Bakery,3.56,1.2,63
+2025-06-18,Croissant,Bakery,3.75,1.2,61
+2025-06-19,Croissant,Bakery,3.75,1.2,65
+2025-06-20,Croissant,Bakery,3.75,1.2,59
+2025-06-21,Croissant,Bakery,3.75,1.2,57
+2025-06-22,Croissant,Bakery,3.75,1.2,59
+2025-06-23,Croissant,Bakery,3.75,1.2,61
+2025-06-24,Croissant,Bakery,3.75,1.2,55
+2025-06-25,Croissant,Bakery,3.94,1.2,60
+2025-06-26,Croissant,Bakery,3.94,1.2,56
+2025-06-27,Croissant,Bakery,3.94,1.2,61
+2025-06-28,Croissant,Bakery,3.94,1.2,51
+2025-06-29,Croissant,Bakery,3.94,1.2,55

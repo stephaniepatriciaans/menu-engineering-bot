@@ -13,6 +13,7 @@ from pandas.testing import assert_frame_equal
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from memo_export import build_memo_export
 from ui.sections import ai_decision_memo
 
 
@@ -111,15 +112,23 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
     )
 
     memo_text = "Increase Latte price to $5.50."
-    generator_mock = Mock(return_value=memo_text)
 
-    # The application imports the agent inside the click handler.
-    monkeypatch.setitem(
-        sys.modules,
-        "agent",
-        SimpleNamespace(
-            generate_menu_memo=generator_mock,
-        ),
+    generator_mock = Mock(
+        return_value={
+            "memo": memo_text,
+            "audit": {
+                "requires_review": False,
+                "finding_count": 0,
+                "findings": [],
+            },
+            "requires_review": False,
+        }
+    )
+
+    monkeypatch.setattr(
+        ai_decision_memo,
+        "generate_menu_memo_with_audit",
+        generator_mock,
     )
 
     pdf_mock = Mock(return_value=b"%PDF-test")
@@ -158,11 +167,26 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
     session = widgets["session"]
 
     assert session.generated_memo == memo_text
+    assert session.generated_memo_audit == {
+        "requires_review": False,
+        "finding_count": 0,
+        "findings": [],
+    }
+
+    expected_export = build_memo_export(
+        memo_text,
+        session.generated_memo_audit,
+    )
+
+    assert "Financial Audit & Review Status" in expected_export
+    assert "No issues detected by automated checks" in expected_export
+
     assert isinstance(session.generated_memo_context, str)
     assert len(session.generated_memo_context) == 64
 
     widgets["success"].assert_called_once_with(
-        "AI decision memo generated successfully!"
+        "AI decision memo generated. "
+        "Review its financial claims before use."
     )
 
     # Streamlit display escapes dollar signs.
@@ -173,12 +197,12 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
     )
 
     assert widgets["markdown"].call_args_list[1].args[0] == (
-        r"Increase Latte price to **\$**5.50."
+        r"Increase Latte price to \$5.50."
     )
 
     # PDF generator receives original, unmodified memo.
     pdf_mock.assert_called_once_with(
-        memo=memo_text,
+        memo=expected_export,
         business_name="My Coffee Shop",
         dataset_name="January Sales",
     )
@@ -197,8 +221,8 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
         "My_Coffee_Shop_decision_memo.pdf",
     ]
 
-    assert downloads[0]["data"] == memo_text.encode("utf-8")
-    assert downloads[1]["data"] == memo_text.encode("utf-8")
+    assert downloads[0]["data"] == expected_export.encode("utf-8")
+    assert downloads[1]["data"] == expected_export.encode("utf-8")
     assert downloads[2]["data"] == b"%PDF-test"
 
     widgets["warning"].assert_not_called()
@@ -269,3 +293,207 @@ def test_ai_memo_missing_api_key_and_stale_cache(monkeypatch):
     pdf_mock.assert_not_called()
     widgets["success"].assert_not_called()
     widgets["error"].assert_not_called()
+
+
+# Test 1 — Audit warnings appear in the dashboard
+def test_ai_memo_displays_financial_audit_warning(monkeypatch):
+    """The dashboard must warn about flagged AI financial claims."""
+    summary, moves = make_inputs()
+
+    widgets = setup_mocks(
+        monkeypatch,
+        button_clicked=True,
+    )
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+
+    generator_mock = Mock(
+        return_value={
+            "memo": "Increase Latte to $7.00.",
+            "audit": {
+                "requires_review": True,
+                "finding_count": 1,
+                "findings": [{
+                    "claim": "Increase Latte to $7.00",
+                    "reason": "Recommended price mismatch",
+                    "expected_price": 5.50,
+                    "requires_review": True,
+                }],
+            },
+            "requires_review": True,
+        }
+    )
+
+    monkeypatch.setattr(
+        ai_decision_memo,
+        "generate_menu_memo_with_audit",
+        generator_mock,
+    )
+
+    pdf_mock = Mock(return_value=b"%PDF-test")
+
+    ai_decision_memo.render_ai_decision_memo(
+        summary=summary,
+        moves=moves,
+        business_name="My Coffee Shop",
+        dataset_name="January Sales",
+        currency="USD",
+        cost_basis="actual",
+        cost_is_assumption=False,
+        capabilities={"price_optimization": True},
+        generate_memo_pdf=pdf_mock,
+    )
+
+    assert widgets["session"].generated_memo_audit[
+        "requires_review"
+    ] is True
+
+    widgets["warning"].assert_called()
+    warning_texts = [
+        str(call.args[0])
+        for call in widgets["warning"].call_args_list
+    ]
+    assert any(
+        "Financial claims require review" in text
+        for text in warning_texts
+    )
+
+
+# Test 2 — Changing the dataset clears outdated audit results
+def test_ai_memo_clears_stale_audit(monkeypatch):
+    """A changed dataset must invalidate both the memo and its audit."""
+    summary, moves = make_inputs()
+
+    widgets = setup_mocks(
+        monkeypatch,
+        button_clicked=True,
+    )
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+
+    generator_mock = Mock(
+        return_value={
+            "memo": "Increase Latte to $7.00.",
+            "audit": {
+                "requires_review": True,
+                "finding_count": 1,
+                "findings": [{
+                    "claim": "Increase Latte to $7.00",
+                    "reason": "Recommended price mismatch",
+                    "requires_review": True,
+                }],
+            },
+            "requires_review": True,
+        }
+    )
+
+    monkeypatch.setattr(
+        ai_decision_memo,
+        "generate_menu_memo_with_audit",
+        generator_mock,
+    )
+
+    kwargs = {
+        "business_name": "My Coffee Shop",
+        "dataset_name": "January Sales",
+        "currency": "USD",
+        "cost_basis": "actual",
+        "cost_is_assumption": False,
+        "capabilities": {"price_optimization": True},
+        "generate_memo_pdf": Mock(return_value=b"%PDF-test"),
+    }
+
+    ai_decision_memo.render_ai_decision_memo(
+        summary=summary,
+        moves=moves,
+        **kwargs,
+    )
+
+    session = widgets["session"]
+    assert session.generated_memo is not None
+    assert session.generated_memo_audit is not None
+
+    # Simulate a dataset change without generating another memo.
+    changed_summary = summary.copy(deep=True)
+    changed_summary["item"] = "Different Menu Item"
+
+    # The mocked button now behaves as unclicked.
+    widgets["button"].return_value = False
+
+    ai_decision_memo.render_ai_decision_memo(
+        summary=changed_summary,
+        moves=moves,
+        **kwargs,
+    )
+
+    assert session.generated_memo is None
+    assert session.generated_memo_audit is None
+    assert session.generated_memo_context is None
+
+    generator_mock.assert_called_once()
+
+
+def test_failed_regeneration_clears_previous_memo(monkeypatch):
+    """Failed regeneration must not leave a previous memo displayed."""
+
+    summary, moves = make_inputs()
+
+    widgets = setup_mocks(
+        monkeypatch,
+        button_clicked=True,
+    )
+
+    monkeypatch.setenv(
+        "ANTHROPIC_API_KEY",
+        "test-key-not-real",
+    )
+
+    generator_mock = Mock(
+        side_effect=[
+            {
+                "memo": "Old memo: Increase Latte to $5.50.",
+                "audit": {
+                    "requires_review": False,
+                    "finding_count": 0,
+                    "findings": [],
+                },
+                "requires_review": False,
+            },
+            RuntimeError("Claude temporarily unavailable"),
+        ]
+    )
+
+    monkeypatch.setattr(
+        ai_decision_memo,
+        "generate_menu_memo_with_audit",
+        generator_mock,
+    )
+
+    kwargs = {
+        "summary": summary,
+        "moves": moves,
+        "business_name": "My Coffee Shop",
+        "dataset_name": "January Sales",
+        "currency": "USD",
+        "cost_basis": "actual",
+        "cost_is_assumption": False,
+        "capabilities": {"price_optimization": True},
+        "generate_memo_pdf": Mock(return_value=b"%PDF-test"),
+    }
+
+    # First generation succeeds.
+    ai_decision_memo.render_ai_decision_memo(**kwargs)
+
+    session = widgets["session"]
+
+    assert session.generated_memo is not None
+    assert session.generated_memo_audit is not None
+
+    # Second generation fails.
+    ai_decision_memo.render_ai_decision_memo(**kwargs)
+
+    assert generator_mock.call_count == 2
+
+    assert session.generated_memo is None
+    assert session.generated_memo_audit is None
+    assert session.generated_memo_context is None
+
+    widgets["error"].assert_called()

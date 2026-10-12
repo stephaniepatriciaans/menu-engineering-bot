@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import io
+from collections.abc import Iterable, Mapping
 from difflib import SequenceMatcher
-from typing import Iterable, Mapping
 
 import pandas as pd
 
@@ -12,9 +12,8 @@ from config import (
     CANONICAL_FIELDS,
     COLUMN_ALIASES,
     CORE_FIELDS,
-    normalize_column_name,
-    category_group,
     classify_menu_item,
+    normalize_column_name,
 )
 
 NOT_AVAILABLE = "Not available"

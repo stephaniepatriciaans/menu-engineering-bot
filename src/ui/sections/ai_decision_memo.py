@@ -4,10 +4,14 @@ import hashlib
 import json
 import os
 import re
-from typing import Callable
+from collections.abc import Callable
 
 import pandas as pd
 import streamlit as st
+
+from agent import generate_menu_memo_with_audit
+from ai_errors import friendly_ai_error
+from memo_export import build_memo_export
 
 
 def render_ai_decision_memo(
@@ -66,12 +70,16 @@ def render_ai_decision_memo(
     if "generated_memo" not in st.session_state:
         st.session_state.generated_memo = None
 
+    if "generated_memo_audit" not in st.session_state:
+        st.session_state.generated_memo_audit = None
+
     if "generated_memo_context" not in st.session_state:
         st.session_state.generated_memo_context = None
 
     # Clear outdated memos when the inputs change
     if st.session_state.generated_memo_context != context_id:
         st.session_state.generated_memo = None
+        st.session_state.generated_memo_audit = None
         st.session_state.generated_memo_context = None
 
     # Check Anthropic API configuration
@@ -82,39 +90,46 @@ def render_ai_decision_memo(
             "only memo generation is disabled."
         )
 
+
     else:
         # Generate or regenerate the memo
         if st.button(
             "Generate decision memo",
             type="primary",
         ):
-            try:
-                from agent import generate_menu_memo
 
+            # Invalidate the previous memo before regeneration.
+            st.session_state.generated_memo = None
+            st.session_state.generated_memo_audit = None
+            st.session_state.generated_memo_context = None
+
+            try:
                 with st.spinner(
                     "Generating memo from computed results..."
                 ):
-                    memo = generate_menu_memo(
+                    result = generate_menu_memo_with_audit(
                         summary,
                         moves,
                         metadata=metadata,
                         capabilities=capabilities,
                     )
 
-                # Persist the memo across Streamlit reruns
-                st.session_state.generated_memo = memo
+                # Persist BOTH the memo and its audit report
+                st.session_state.generated_memo = result["memo"]
+                st.session_state.generated_memo_audit = result["audit"]
                 st.session_state.generated_memo_context = context_id
 
                 st.success(
-                    "AI decision memo generated successfully!"
+                    "AI decision memo generated. "
+                    "Review its financial claims before use."
                 )
 
-            except Exception as exc:
-                st.error(
-                    "Could not generate the AI memo. "
-                    "The analytics above are unaffected."
-                )
-                st.code(str(exc))
+            except Exception as exc:  # noqa: BLE001
+                # AI providers may raise different network, API,
+                # authentication, and response-format exceptions.
+                # Display a friendly error instead of crashing.
+                st.error(friendly_ai_error(exc))
+
 
     # --------------------------------------------------
     # Display and download the generated memo
@@ -129,11 +144,62 @@ def render_ai_decision_memo(
 
         # Escape dollar signs only for Streamlit display
         # Keep the original memo unchanged for downloads
-        display_memo = memo.replace("$", r"**\$**")
+        display_memo = memo.replace("$", r"\$")
+
 
         st.markdown(display_memo)
 
+        # Show the financial audit associated with this memo
+        audit = st.session_state.generated_memo_audit
+
+        if audit is not None:
+            if audit["requires_review"]:
+                st.warning(
+                    "Financial claims require review. "
+                    "Some statements in this AI-generated memo "
+                    "may not match the calculated results."
+                )
+
+                with st.expander(
+                    f"View financial audit findings "
+                    f"({audit['finding_count']})"
+                ):
+                    for finding in audit["findings"]:
+                        st.markdown(
+                            f"**Claim:** "
+                            f"{finding.get('claim', 'N/A')}"
+                        )
+                        st.write(
+                            f"**Reason:** "
+                            f"{finding.get('reason', 'Review required')}"
+                        )
+
+                        if "expected_price" in finding:
+                            st.write(
+                                "Expected price:",
+                                finding["expected_price"],
+                            )
+
+                        if "expected_daily_profit_delta" in finding:
+                            st.write(
+                                "Expected daily profit change:",
+                                finding["expected_daily_profit_delta"],
+                            )
+
+                        st.divider()
+
+            else:
+                st.info(
+                    "No issues were detected by the automated "
+                    "financial checks. This does not guarantee "
+                    "that the memo is factually accurate."
+                )
+
+        # Build a download-safe version that includes audit findings
+        export_memo = build_memo_export(memo, audit)
+
         st.divider()
+
 
         st.subheader("Download decision memo")
 
@@ -153,7 +219,7 @@ def render_ai_decision_memo(
         with download_col1:
             st.download_button(
                 label="Download Markdown (.md)",
-                data=memo.encode("utf-8"),
+                data=export_memo.encode("utf-8"),
                 file_name=(
                     f"{safe_business_name}_decision_memo.md"
                 ),
@@ -165,7 +231,7 @@ def render_ai_decision_memo(
         with download_col2:
             st.download_button(
                 label="Download Text (.txt)",
-                data=memo.encode("utf-8"),
+                data=export_memo.encode("utf-8"),
                 file_name=(
                     f"{safe_business_name}_decision_memo.txt"
                 ),
@@ -177,7 +243,7 @@ def render_ai_decision_memo(
         with download_col3:
             try:
                 pdf_bytes = generate_memo_pdf(
-                    memo=memo,
+                    memo=export_memo,
                     business_name=business_name,
                     dataset_name=dataset_name,
                 )
@@ -192,7 +258,9 @@ def render_ai_decision_memo(
                     width="stretch",
                 )
 
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
+                # PDF rendering can fail independently of memo generation.
+                # Preserve the working Markdown and text downloads.
                 st.error(f"Could not generate PDF: {exc}")
 
         st.caption(
