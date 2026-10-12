@@ -17,6 +17,18 @@ sys.path.append(os.path.dirname(__file__))
 
 from analysis import build_item_summary, load_sales, recommend_price_moves
 
+from dashboard_utils import (
+    SORTING_OPTIONS,
+    sort_menu_items,
+    filter_by_date_range,
+    aggregate_sales_by_period,
+    compare_weekday_weekend,
+    analyze_day_of_week,
+    add_transaction_datetime,
+    analyze_peak_hours,
+    analyze_hourly_revenue,
+)
+
 from config import (
     CANONICAL_FIELDS,
     CURRENCY_CONFIG,
@@ -46,7 +58,24 @@ from validation import (
 
 from pdf_report import generate_memo_pdf
 
-st.set_page_config(page_title="Menu Engineering Bot", page_icon="📊", layout="wide")
+from ui.components import (
+    render_kpi_cards,
+    render_business_header,
+    render_data_quality_summary,
+    render_validation_overview,
+    render_chart_header,
+)
+from ui.styles import apply_dashboard_styles
+from ui.charts import style_chart
+
+st.set_page_config(
+    page_title="Menu Engineering Bot",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+# Apply the Modern Fintech design system.
+apply_dashboard_styles()
 
 
 def mapping_selectors(
@@ -90,6 +119,7 @@ def mapping_selectors(
         "price": "Price (required)",
         "unit_cost": "Unit Cost (optional)",
         "units_sold": "Units Sold (required)",
+        "transaction_time": "Transaction Time (optional)",
     }
 
     result: dict[str, str | None] = {}
@@ -201,8 +231,10 @@ if source == "Full Demo Dataset — Synthetic Cafe":
 
     raw_df = load_sales(demo_path)
 
+    # Map only columns that actually exist in the demo dataset.
+    # Optional fields, such as transaction_time, may be missing.
     mapping = {
-        field: field
+        field: field if field in raw_df.columns else None
         for field in CANONICAL_FIELDS
     }
 
@@ -260,266 +292,427 @@ else:
     st.stop()
 
 
-st.header("2. Detect / map columns")
-if source == "Upload my own CSV":
-    st.write("Automatic detection has preselected likely matches. Correct any mapping that is wrong.")
-    with st.expander("Preview raw columns", expanded=False):
-        st.dataframe(raw_df.head(10), use_container_width=True)
-    mapping = mapping_selectors(raw_df)
-else:
-    st.success("Bundled demo columns already match the canonical schema.")
+# -----------------------------------------------------------------
+# Feature 2: Data Setup & Column Mapping
+# -----------------------------------------------------------------
+
+with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
+
+    if source == "Upload my own CSV":
+        st.write(
+            "Automatic detection has preselected likely matches. "
+            "Correct any mapping that is wrong."
+        )
+
+        with st.expander("Preview raw columns", expanded=False):
+            st.dataframe(
+                raw_df.head(10),
+                width="stretch",
+            )
+
+        mapping = mapping_selectors(raw_df)
+
+    else:
+        st.success(
+            "Bundled demo columns already match the canonical schema."
+        )
+
+
+# --------------------------------------------------
+# Validate column mapping — visible outside expander
+# --------------------------------------------------
 
 mapping_errors = validate_mapping(mapping, raw_df.columns)
+
 if mapping_errors:
+    st.error(
+        "Dataset column mapping needs attention. "
+        "Open Data Setup & Column Mapping to correct the selections."
+    )
+
     for error in mapping_errors:
         st.error(error)
+
     st.stop()
 
+
+# --------------------------------------------------
+# Adapt dataset to canonical schema
+# --------------------------------------------------
+
 try:
-    canonical_df, adapter_warnings = adapt_to_canonical(raw_df, mapping)
+    canonical_df, adapter_warnings = adapt_to_canonical(
+        raw_df,
+        mapping,
+    )
+
 except ValueError as exc:
+    st.error(
+        "The dataset could not be standardized. "
+        "Please review the column mapping."
+    )
     st.error(str(exc))
     st.stop()
 
-for warning in adapter_warnings:
-    st.warning(warning)
 
-cost_basis = "provided_cost_column" if canonical_df["unit_cost"].notna().all() else "unavailable"
+# --------------------------------------------------
+# Optional cost handling
+# --------------------------------------------------
+
+cost_basis = (
+    "provided_cost_column"
+    if canonical_df["unit_cost"].notna().all()
+    else "unavailable"
+)
+
 cost_is_assumption = False
 
-if not canonical_df["unit_cost"].notna().all():
-    st.subheader("Optional cost data")
-    st.write(
-        "Unit cost is not fully available. Do not add a cost source unless you actually have one or intentionally want a scenario assumption."
-    )
-    cost_option = st.radio(
-        "Cost handling",
-        [
-            "Continue without unit cost",
-            "Upload a separate menu-cost CSV",
-            "Scenario analysis using estimated cost percentage",
-        ],
-    )
+with st.expander("💰 Optional Cost Settings", expanded=False):
 
-    if cost_option == "Upload a separate menu-cost CSV":
-        cost_upload = st.file_uploader("Upload menu-cost CSV", type=["csv"], key="cost_upload")
-        if cost_upload is not None:
-            try:
-                cost_upload.seek(0)
-                raw_cost_df = read_delimited_csv(cost_upload)
-                cost_detected = detect_column_mapping(raw_cost_df.columns)
-                cost_options = [NOT_AVAILABLE] + [str(c) for c in raw_cost_df.columns]
-                c1, c2 = st.columns(2)
-                item_default = cost_detected.get("item") or NOT_AVAILABLE
-                cost_default = cost_detected.get("unit_cost") or NOT_AVAILABLE
-                cost_item_col = c1.selectbox(
-                    "Cost file: Item",
-                    cost_options,
-                    index=cost_options.index(item_default) if item_default in cost_options else 0,
-                )
-                cost_value_col = c2.selectbox(
-                    "Cost file: Unit Cost",
-                    cost_options,
-                    index=cost_options.index(cost_default) if cost_default in cost_options else 0,
-                )
-                if cost_item_col != NOT_AVAILABLE and cost_value_col != NOT_AVAILABLE:
-                    canonical_df, cost_warnings = merge_cost_reference(
-                        canonical_df, raw_cost_df, cost_item_col, cost_value_col
-                    )
-                    cost_basis = "separate_menu_cost_csv"
-                    for warning in cost_warnings:
-                        st.warning(warning)
-            except Exception as exc:
-                st.error(f"Could not use the cost CSV: {exc}")
+    if not canonical_df["unit_cost"].notna().all():
 
-    elif cost_option == "Scenario analysis using estimated cost percentage":
-        estimated_pct = st.slider("Estimated cost as % of price", 5, 95, 30, 1)
-        canonical_df = apply_estimated_cost_percentage(canonical_df, estimated_pct / 100)
-        cost_basis = f"assumption_{estimated_pct}_percent_of_price"
-        cost_is_assumption = True
-        st.warning(
-            f"Scenario assumption enabled: unit cost is modeled as {estimated_pct}% of selling price. "
-            "These are not actual business costs."
+        st.write(
+            "Unit cost is not fully available. "
+            "Only provide real cost data or explicitly choose "
+            "a scenario assumption."
         )
 
+        cost_option = st.radio(
+            "Cost handling",
+            [
+                "Continue without unit cost",
+                "Upload a separate menu-cost CSV",
+                "Scenario analysis using estimated cost percentage",
+            ],
+        )
+
+        if cost_option == "Upload a separate menu-cost CSV":
+
+            cost_upload = st.file_uploader(
+                "Upload menu-cost CSV",
+                type=["csv"],
+                key="cost_upload",
+            )
+
+            if cost_upload is not None:
+                try:
+                    cost_upload.seek(0)
+
+                    raw_cost_df = read_delimited_csv(
+                        cost_upload
+                    )
+
+                    cost_detected = detect_column_mapping(
+                        raw_cost_df.columns
+                    )
+
+                    cost_options = [
+                        NOT_AVAILABLE,
+                        *[str(c) for c in raw_cost_df.columns],
+                    ]
+
+                    c1, c2 = st.columns(2)
+
+                    item_default = (
+                        cost_detected.get("item")
+                        or NOT_AVAILABLE
+                    )
+
+                    cost_default = (
+                        cost_detected.get("unit_cost")
+                        or NOT_AVAILABLE
+                    )
+
+                    cost_item_col = c1.selectbox(
+                        "Cost file: Item",
+                        cost_options,
+                        index=(
+                            cost_options.index(item_default)
+                            if item_default in cost_options
+                            else 0
+                        ),
+                    )
+
+                    cost_value_col = c2.selectbox(
+                        "Cost file: Unit Cost",
+                        cost_options,
+                        index=(
+                            cost_options.index(cost_default)
+                            if cost_default in cost_options
+                            else 0
+                        ),
+                    )
+
+                    if (
+                        cost_item_col != NOT_AVAILABLE
+                        and cost_value_col != NOT_AVAILABLE
+                    ):
+
+                        canonical_df, cost_warnings = (
+                            merge_cost_reference(
+                                canonical_df,
+                                raw_cost_df,
+                                cost_item_col,
+                                cost_value_col,
+                            )
+                        )
+
+                        cost_basis = "separate_menu_cost_csv"
+
+                        for warning in cost_warnings:
+                            st.warning(warning)
+
+                except Exception as exc:
+                    st.error(
+                        f"Could not use the cost CSV: {exc}"
+                    )
+
+        elif (
+            cost_option
+            == "Scenario analysis using estimated cost percentage"
+        ):
+
+            estimated_pct = st.slider(
+                "Estimated cost as % of price",
+                5,
+                95,
+                30,
+                1,
+            )
+
+            canonical_df = apply_estimated_cost_percentage(
+                canonical_df,
+                estimated_pct / 100,
+            )
+
+            cost_basis = (
+                f"assumption_{estimated_pct}_percent_of_price"
+            )
+
+            cost_is_assumption = True
+
+            st.warning(
+                f"Scenario assumption enabled: unit cost is modeled "
+                f"as {estimated_pct}% of selling price. "
+                "These are not actual business costs."
+            )
+
+    else:
+        st.success(
+            "Complete unit cost data is available. "
+            "Profit-based analysis can use the provided costs."
+        )
+
+
 # --------------------------------------------------
-# Validate Dataset
+# Feature 3: Validate Dataset
 # --------------------------------------------------
 
-st.header("3. Validate dataset")
-df, errors, validation_warnings = validate_sales_df(canonical_df)
-for warning in validation_warnings:
-    st.warning(warning)
+st.subheader("Dataset Validation")
+
+# Validate the canonical dataframe.
+df, errors, validation_warnings = validate_sales_df(
+    canonical_df
+)
+
+# Blocking errors must always remain visible.
 if errors or df is None:
+    st.error(
+        "Dataset validation failed. "
+        "Please review the errors below."
+    )
+
     for error in errors:
         st.error(error)
+
     st.stop()
 
-
-st.success("Dataset validated in the canonical schema.")
-
+render_validation_overview(
+    df=df,
+    adapter_warnings=adapter_warnings,
+    validation_warnings=validation_warnings,
+)
 
 # --------------------------------------------------
 # Date range filtering
 # --------------------------------------------------
+with st.expander("⚙️ Sales Filters", expanded=False):
 
-st.header("Filter sales by date")
+    st.subheader("Filter sales by date")
 
-# Preserve validated data before filtering
-df = df.copy()
+    # Preserve validated data before filtering
+    df = df.copy()
 
-# Make sure dates are pandas datetime values
-df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    # Make sure dates are pandas datetime values
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
 
-if df["date"].isna().all():
-    st.error(
-        "No valid transaction dates were found in this dataset."
+    if df["date"].isna().all():
+        st.error(
+            "No valid transaction dates were found in this dataset."
+        )
+        st.stop()
+
+    if df["date"].isna().any():
+        missing_dates = int(df["date"].isna().sum())
+        st.warning(
+            f"{missing_dates:,} rows have invalid dates "
+            "and will be excluded from date-based analysis."
+        )
+        df = df.dropna(subset=["date"]).copy()
+
+    # Determine available dates from the uploaded dataset
+    min_date = df["date"].min().date()
+    max_date = df["date"].max().date()
+
+    # Date range selector
+    selected_date_range = st.date_input(
+        "Select a date range",
+        value=(min_date, max_date),
+        min_value=min_date,
+        max_value=max_date,
+        help="Choose the period you want to analyze.",
+        key="sales_date_range",
     )
-    st.stop()
 
-if df["date"].isna().any():
-    missing_dates = int(df["date"].isna().sum())
-    st.warning(
-        f"{missing_dates:,} rows have invalid dates "
-        "and will be excluded from date-based analysis."
+    # Streamlit may temporarily return only one date
+    # while the user is selecting a range.
+    if len(selected_date_range) != 2:
+        st.info("Please select both a start date and an end date.")
+        st.stop()
+
+    start_date, end_date = selected_date_range
+
+
+    # Apply the tested, inclusive date range filter.
+    df = filter_by_date_range(
+        df,
+        start_date,
+        end_date,
     )
-    df = df.dropna(subset=["date"]).copy()
 
-# Determine available dates from the uploaded dataset
-min_date = df["date"].min().date()
-max_date = df["date"].max().date()
+    if df.empty:
+        st.warning(
+            "No sales records exist for the selected date range."
+        )
+        st.stop()
 
-# Date range selector
-selected_date_range = st.date_input(
-    "Select a date range",
-    value=(min_date, max_date),
-    min_value=min_date,
-    max_value=max_date,
-    help="Choose the period you want to analyze.",
-    key="sales_date_range",
-)
-
-# Streamlit may temporarily return only one date
-# while the user is selecting a range.
-if len(selected_date_range) != 2:
-    st.info("Please select both a start date and an end date.")
-    st.stop()
-
-start_date, end_date = selected_date_range
-
-# Apply date filtering, inclusive of both selected dates
-date_mask = (
-    (df["date"].dt.date >= start_date)
-    & (df["date"].dt.date <= end_date)
-)
-
-df = df.loc[date_mask].copy()
-
-if df.empty:
-    st.warning(
-        "No sales records exist for the selected date range."
+    st.caption(
+        f"Selected period: {start_date:%B %d, %Y} "
+        f"to {end_date:%B %d, %Y} "
+        f"— {len(df):,} sales rows."
     )
-    st.stop()
-
-st.caption(
-    f"Selected period: {start_date:%B %d, %Y} "
-    f"to {end_date:%B %d, %Y} "
-    f"— {len(df):,} sales rows."
-)
 
 
-# --------------------------------------------------
-# Category Filters
-# --------------------------------------------------
+    # --------------------------------------------------
+    # Category Filters
+    # --------------------------------------------------
+    st.header("Filter menu by category")
 
-st.header("Filter menu by category")
+    # Make sure the category grouping is available
+    # after validation, even if validation removes
+    # extra columns.
+    df = df.copy()
 
-# Make sure the category grouping is available
-# after validation, even if validation removes
-# extra columns.
-df = df.copy()
+    df["category_group"] = [
+        classify_menu_item(category, item)
+        for category, item in zip(df["category"], df["item"])
+    ]
 
-df["category_group"] = [
-    classify_menu_item(category, item)
-    for category, item in zip(df["category"], df["item"])
-]
+    # Show the main category filter
+    available_groups = [
+        group
+        for group in CATEGORY_GROUPS
+        if group in df["category_group"].unique()
+    ]
 
-# Show the main category filter
-available_groups = [
-    group
-    for group in CATEGORY_GROUPS
-    if group in df["category_group"].unique()
-]
-
-selected_groups = st.multiselect(
-    "Select food categories",
-    options=available_groups,
-    default=available_groups,
-    help="Choose Savory, Dessert, Drinks, or Other.",
-)
-
-# Apply broad-category filtering
-filtered_df = df[
-    df["category_group"].isin(selected_groups)
-].copy()
-
-# Optional detailed category filter
-available_categories = sorted(
-    filtered_df["category"].dropna().astype(str).unique()
-)
-
-selected_categories = st.multiselect(
-    "Filter by detailed category (optional)",
-    options=available_categories,
-    default=available_categories,
-    help="For example: Coffee, Tea, Bakery, or Sandwich.",
-)
-
-filtered_df = filtered_df[
-    filtered_df["category"].isin(selected_categories)
-].copy()
-
-if filtered_df.empty:
-    st.warning(
-        "No menu items match your selected categories. "
-        "Please select at least one category."
+    selected_groups = st.multiselect(
+        "Select food categories",
+        options=available_groups,
+        default=available_groups,
+        help="Choose Savory, Dessert, Drinks, or Other.",
     )
-    st.stop()
 
-# Update the dataframe used by downstream analyses.
-df = filtered_df
+    # Apply broad-category filtering
+    filtered_df = df[
+        df["category_group"].isin(selected_groups)
+    ].copy()
 
-st.caption(
-    f"Showing {len(df):,} sales rows across "
-    f"{df['item'].nunique():,} unique menu items."
-)
+    # Optional detailed category filter
+    available_categories = sorted(
+        filtered_df["category"].dropna().astype(str).unique()
+    )
 
-# Recalculate capabilities and item summaries
-# using the selected categories.
-capabilities = determine_capabilities(df)
-summary = build_item_summary(df)
+    selected_categories = st.multiselect(
+        "Filter by detailed category (optional)",
+        options=available_categories,
+        default=available_categories,
+        help="For example: Coffee, Tea, Bakery, or Sandwich.",
+    )
 
-# This is stricter than simply seeing multiple prices: it reflects whether the
-# estimator actually accepted at least one item-level historical estimate.
-capabilities["historical_elasticity_estimation"] = bool(
-    not summary.empty and (summary["elasticity_source"] == "estimated").any()
-)
+    filtered_df = filtered_df[
+        filtered_df["category"].isin(selected_categories)
+    ].copy()
+
+    if filtered_df.empty:
+        st.warning(
+            "No menu items match your selected categories. "
+            "Please select at least one category."
+        )
+        st.stop()
+
+    # Update the dataframe used by downstream analyses.
+    df = filtered_df
+
+    st.caption(
+        f"Showing {len(df):,} sales rows across "
+        f"{df['item'].nunique():,} unique menu items."
+    )
+
+    # Recalculate capabilities and item summaries
+    # using the selected categories.
+    capabilities = determine_capabilities(df)
+    summary = build_item_summary(df)
+
+    # This is stricter than simply seeing multiple prices: it reflects whether the
+    # estimator actually accepted at least one item-level historical estimate.
+    capabilities["historical_elasticity_estimation"] = bool(
+        not summary.empty and (summary["elasticity_source"] == "estimated").any()
+    )
+
+    # -----------------------------------------------------------------
+    # Feature 7: Create transaction timestamps for hourly analysis.
+    # -----------------------------------------------------------------
+    df = add_transaction_datetime(df)
+
+    valid_timestamp_count = int(
+        df["transaction_datetime"].notna().sum()
+    )
+
+    if valid_timestamp_count > 0:
+        st.caption(
+            f"Transaction times available for "
+            f"{valid_timestamp_count:,} of {len(df):,} sales rows."
+        )
+    else:
+        st.info(
+            "This dataset does not contain usable transaction times. "
+            "Daily and category analysis remain available, "
+            "but hourly analysis will be unavailable."
+        )
 
 
 # --------------------------------------------------
 # Dataset capabilities
 # --------------------------------------------------
 
-st.subheader("Dataset capabilities")
-
-# Count how many items have historical elasticity estimates
+# Count how many items have historical elasticity estimates.
 estimated_count = int(
     (summary["elasticity_source"] == "estimated").sum()
 )
 
 total_items = len(summary)
 
-# Count items using assumed elasticity values
+# Count items using assumed elasticity values.
 category_prior_count = int(
     (summary["elasticity_source"] == "category_prior").sum()
 )
@@ -528,7 +721,7 @@ default_prior_count = int(
     (summary["elasticity_source"] == "default_prior").sum()
 )
 
-# Count low-confidence historical estimates
+# Count low-confidence historical estimates.
 low_confidence_count = int(
     (
         (summary["elasticity_source"] == "estimated")
@@ -540,6 +733,7 @@ low_confidence_count = int(
     ).sum()
 )
 
+# Build the complete dataset capability report.
 capability_text = [
     capability_line(
         capabilities["revenue_analysis"],
@@ -621,282 +815,890 @@ capability_text = [
     ),
 ]
 
-st.code(
-    "\n".join(capability_text),
-    language=None,
+# --------------------------------------------------
+# Modern Fintech — Active Filter Summary
+# --------------------------------------------------
+
+st.caption(
+    f"📅 {start_date:%b %d, %Y} – {end_date:%b %d, %Y}"
+    f"   |   🗂️ {len(selected_groups)} food groups"
+    f"   |   🧾 {len(df):,} sales records"
 )
+
+# --------------------------------------------------
+# Modern Fintech — Collapsible Dataset Capabilities
+# --------------------------------------------------
+
+with st.expander("View Dataset Capabilities", expanded=False):
+    st.caption(
+        "See which analyses are supported by your dataset "
+        "and why certain features may be unavailable."
+    )
+
+    st.code(
+        "\n".join(capability_text),
+        language=None,
+    )
+
 
 # --------------------------------------------------
 # Calculate Analytics
 # --------------------------------------------------
 
-st.header("4. Dataset overview")
-
-revenue_total = float((df["price"] * df["units_sold"]).sum())
-metric_cols = st.columns(5)
-metric_cols[0].metric("Rows", f"{len(df):,}")
-metric_cols[1].metric("Unique Items", f"{df['item'].nunique():,}")
-metric_cols[2].metric("Categories", f"{df['category'].nunique():,}")
-metric_cols[3].metric("Total Units", f"{df['units_sold'].sum():,.0f}")
-metric_cols[4].metric("Revenue", format_currency(revenue_total, currency))
-#metric_cols[5].metric("Date Range", f"{df['date'].min().date()} → {df['date'].max().date()}")
-
-st.caption(
-    f"Data period: "
-    f"{df['date'].min():%B %d, %Y} "
-    f"to {df['date'].max():%B %d, %Y}"
+render_business_header(
+    business_name=business_name,
+    start_date=start_date,
+    end_date=end_date,
+    menu_item_count=df["item"].nunique(),
 )
+
+# Reusable KPI cards from src/ui/components.py
+render_kpi_cards(df, currency)
 
 # --------------------------------------------------
 # Display Dashboard
 # --------------------------------------------------
 
-st.header("5. Run available analyses")
+st.header("Sales Analytics")
 analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
 
-
 with analysis_tabs[0]:
-    st.subheader("Sales Performance Over Time")
-
-    # Allow users to choose their preferred time grouping.
-    time_grouping = st.radio(
-        "Group sales by",
-        options=["Daily", "Weekly", "Monthly", "Yearly"],
-        index=2,
-        horizontal=True,
-        key="sales_time_grouping",
-    )
-
-    # Allow users to choose what to measure.
-    metric_choice = st.selectbox(
-        "Metric",
-        options=["Revenue", "Units Sold"],
-        key="sales_trend_metric",
-    )
-
-    # Use data already filtered by date and category.
-    trend_df = df[["date", "price", "units_sold"]].copy()
-
-    trend_df["date"] = pd.to_datetime(trend_df["date"])
-    trend_df["revenue"] = (
-        trend_df["price"] * trend_df["units_sold"]
-    )
-
-    # Group transactions by reporting period.
-    if time_grouping == "Daily":
-        trend_df["period"] = trend_df["date"].dt.normalize()
-
-    elif time_grouping == "Weekly":
-        # Weeks start Monday and end Sunday.
-        trend_df["period"] = (
-            trend_df["date"]
-            .dt.to_period("W-SUN")
-            .dt.start_time
-        )
-
-    elif time_grouping == "Monthly":
-        trend_df["period"] = (
-            trend_df["date"]
-            .dt.to_period("M")
-            .dt.start_time
-        )
-
-    else:
-        trend_df["period"] = (
-            trend_df["date"]
-            .dt.to_period("Y")
-            .dt.start_time
-        )
-
-    # Calculate total revenue and units by period.
-    grouped_sales = (
-        trend_df.groupby("period", as_index=False)
-        .agg(
-            revenue=("revenue", "sum"),
-            units_sold=("units_sold", "sum"),
-        )
-        .sort_values("period")
-    )
-
-    # Select the metric to display.
-    if metric_choice == "Revenue":
-        y_column = "revenue"
-        y_label = f"Revenue ({currency})"
-    else:
-        y_column = "units_sold"
-        y_label = "Units Sold"
-
-    # Display the time-series chart.
-    fig = px.line(
-        grouped_sales,
-        x="period",
-        y=y_column,
-        markers=True,
-        title=f"{time_grouping} {metric_choice} Trend",
-        labels={
-            "period": "Period Starting",
-            y_column: y_label,
-        },
-    )
-
-    fig.update_layout(
-        hovermode="x unified",
-        xaxis_title="Date",
-        yaxis_title=y_label,
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-    )
-
-    # Display the aggregated data.
-    with st.expander("View sales data by period"):
-        display_sales = grouped_sales.copy()
-        display_sales["period"] = (
-            display_sales["period"].dt.strftime("%Y-%m-%d")
-        )
-        display_sales["revenue"] = display_sales[
-            "revenue"
-        ].map(lambda x: format_currency(x, currency))
-
-        st.dataframe(
-            display_sales,
-            use_container_width=True,
-            hide_index=True,
-        )
-
-    # Preserve the existing popularity chart.
-    st.subheader("Top Selling Menu Items")
-
-    top_volume = summary.nlargest(
-        min(15, len(summary)),
-        "total_units_sold",
-    )
-
-    st.plotly_chart(
-        px.bar(
-            top_volume,
-            x="total_units_sold",
-            y="item",
-            orientation="h",
-            title="Top Items by Units Sold",
-        ),
-        use_container_width=True,
-    )
+    revenue_tabs = st.tabs([
+        "Sales Trends",
+        "Day Analysis",
+        "Hourly Analysis",
+        "Popular Items",
+    ])
 
 
+    # -----------------------------------------------------------------
+    # Feature 9: Sales Trends navigation tab
+    # -----------------------------------------------------------------
+    with revenue_tabs[0]:
+
+        # Modern Fintech — complete Sales Trends card
+        with st.container(border=True):
+
+            render_chart_header(
+                "Sales Performance Over Time",
+                "Explore revenue and sales volume across different time periods.",
+            )
+
+            # Dashboard controls
+            control_col1, control_col2 = st.columns(
+                [3, 1],
+                gap="medium",
+                vertical_alignment="bottom",
+            )
+
+            with control_col1:
+                time_grouping = st.radio(
+                    "Group sales by",
+                    options=[
+                        "Daily",
+                        "Weekly",
+                        "Monthly",
+                        "Yearly",
+                    ],
+                    index=2,
+                    horizontal=True,
+                    key="sales_time_grouping",
+                )
+
+            with control_col2:
+                metric_choice = st.selectbox(
+                    "Metric",
+                    options=["Revenue", "Units Sold"],
+                    key="sales_trend_metric",
+                )
+
+            # Preserve the existing aggregation.
+            grouped_sales = aggregate_sales_by_period(
+                df,
+                time_grouping,
+            )
+
+            # Select the metric.
+            if metric_choice == "Revenue":
+                y_column = "revenue"
+                y_label = f"Revenue ({currency})"
+            else:
+                y_column = "units_sold"
+                y_label = "Units Sold"
+
+            # Create the time-series chart.
+            fig = px.line(
+                grouped_sales,
+                x="period",
+                y=y_column,
+                markers=True,
+                title=f"{time_grouping} {metric_choice} Trend",
+                labels={
+                    "period": "Period Starting",
+                    y_column: y_label,
+                },
+            )
+
+            fig.update_layout(
+                hovermode="x unified",
+                xaxis_title="Date",
+                yaxis_title=y_label,
+            )
+
+            # Apply styling once.
+            fig = style_chart(
+                fig,
+                title=f"{time_grouping} {metric_choice} Trend",
+            )
+
+            with st.container(border=True):
+                st.plotly_chart(
+                    fig,
+                    width="stretch",
+                    config={"displayModeBar": False},
+                )
+
+
+            # Display the aggregated data.
+            with st.expander("View sales data by period"):
+                display_sales = grouped_sales.copy()
+                
+                display_sales["period"] = (
+                    display_sales["period"].dt.strftime("%Y-%m-%d")
+                )
+                
+                display_sales["revenue"] = display_sales[
+                    "revenue"
+                ].map(lambda x: format_currency(x, currency))
+
+                st.dataframe(
+                    display_sales,
+                    width="stretch",
+                    hide_index=True,
+                )
+
+    # -----------------------------------------------------------------
+    # Feature 9: Popular Items navigation tab
+    # -----------------------------------------------------------------
+    with revenue_tabs[3]:
+
+        # Outer card — entire Popular Items section
+        with st.container(border=True):
+
+            render_chart_header(
+                "Top Selling Menu Items",
+                "Discover which menu items sell the most units.",
+            )
+
+            # Preserve existing top-selling item calculations.
+            top_volume = summary.nlargest(
+                min(15, len(summary)),
+                "total_units_sold",
+            )
+
+            popular_items_chart = px.bar(
+                top_volume,
+                x="total_units_sold",
+                y="item",
+                orientation="h",
+                title="Top Items by Units Sold",
+                labels={
+                    "total_units_sold": "Units Sold",
+                    "item": "Menu Item",
+                },
+            )
+
+            # Apply reusable Modern Fintech chart styling.
+            popular_items_chart = style_chart(
+                popular_items_chart,
+                title="Top Items by Units Sold",
+            )
+
+            # Inner card — chart only
+            with st.container(border=True):
+                st.plotly_chart(
+                    popular_items_chart,
+                    width="stretch",
+                    config={"displayModeBar": False},
+                )
+
+
+    # -----------------------------------------------------------------
+    # Feature 9: Day Analysis navigation tab
+    # -----------------------------------------------------------------
+    with revenue_tabs[1]:
+
+        # =============================================================
+        # CARD 1 — Weekday vs. Weekend Performance
+        # =============================================================
+        with st.container(border=True):
+
+            render_chart_header(
+                "Weekday vs. Weekend Performance",
+                "Compare Monday–Friday with Saturday–Sunday. "
+                "Averages use days with recorded sales.",
+            )
+
+            # Preserve the existing analysis calculation.
+            day_type_summary = compare_weekday_weekend(df)
+
+            # Display metrics for each day type.
+            comparison_cols = st.columns(2, gap="medium")
+
+            for index, day_type in enumerate(["Weekday", "Weekend"]):
+                result = day_type_summary[
+                    day_type_summary["day_type"] == day_type
+                ]
+
+                with comparison_cols[index]:
+                    st.markdown(f"#### {day_type}s")
+
+                    if result.empty:
+                        st.info(
+                            "No sales recorded for this day type."
+                        )
+                        continue
+
+                    row = result.iloc[0]
+
+                    st.metric(
+                        "Total Revenue",
+                        format_currency(
+                            row["total_revenue"],
+                            currency,
+                        ),
+                    )
+
+                    st.metric(
+                        "Total Units Sold",
+                        f"{row['total_units']:,.0f}",
+                    )
+
+                    st.metric(
+                        "Average Revenue per Sales Day",
+                        format_currency(
+                            row["avg_daily_revenue"],
+                            currency,
+                        ),
+                    )
+
+                    st.caption(
+                        "Days with recorded sales: "
+                        f"{int(row['days_with_sales'])}"
+                    )
+
+            # Weekday vs. weekend chart.
+            fig_weekend = px.bar(
+                day_type_summary,
+                x="day_type",
+                y="avg_daily_revenue",
+                color="day_type",
+                title="Average Revenue per Sales Day",
+                labels={
+                    "day_type": "Day Type",
+                    "avg_daily_revenue": (
+                        f"Average Revenue ({currency})"
+                    ),
+                },
+                category_orders={
+                    "day_type": ["Weekday", "Weekend"],
+                },
+            )
+
+            fig_weekend.update_layout(
+                showlegend=False,
+            )
+
+            fig_weekend = style_chart(
+                fig_weekend,
+                title="Average Revenue per Sales Day",
+            )
+
+            with st.container(border=True):
+                st.plotly_chart(
+                    fig_weekend,
+                    width="stretch",
+                    config={"displayModeBar": False},
+                )
+
+            # Keep data table inside the card.
+            with st.expander(
+                "View weekday vs. weekend data",
+                expanded=False,
+            ):
+                comparison_table = day_type_summary.copy()
+
+                for column in [
+                    "total_revenue",
+                    "avg_daily_revenue",
+                ]:
+                    comparison_table[column] = (
+                        comparison_table[column].map(
+                            lambda value: format_currency(
+                                value,
+                                currency,
+                            )
+                        )
+                    )
+
+                st.dataframe(
+                    comparison_table,
+                    width="stretch",
+                    hide_index=True,
+                )
+
+        # =============================================================
+        # CARD 2 — Monday–Sunday Performance
+        # =============================================================
+        with st.container(border=True):
+
+            render_chart_header(
+                "Sales Performance by Day of Week",
+                "Compare Monday through Sunday using your selected "
+                "date range and menu categories. Averages use days "
+                "with recorded sales.",
+            )
+
+            # Preserve the existing day-of-week calculation.
+            day_summary = analyze_day_of_week(df)
+
+            day_metric = st.selectbox(
+                "Compare days by",
+                options=[
+                    "Total Revenue",
+                    "Total Units Sold",
+                    "Average Daily Revenue",
+                    "Average Daily Units",
+                ],
+                key="day_of_week_metric",
+            )
+
+            day_metric_columns = {
+                "Total Revenue": "total_revenue",
+                "Total Units Sold": "total_units",
+                "Average Daily Revenue": "avg_daily_revenue",
+                "Average Daily Units": "avg_daily_units",
+            }
+
+            selected_column = day_metric_columns[day_metric]
+
+            day_chart = px.bar(
+                day_summary,
+                x="day_name",
+                y=selected_column,
+                category_orders={
+                    "day_name": [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday",
+                    ],
+                },
+                labels={
+                    "day_name": "Day of Week",
+                    selected_column: day_metric,
+                },
+                title=f"{day_metric} by Day of Week",
+            )
+
+            day_chart.update_layout(
+                xaxis_title="Day of Week",
+                yaxis_title=(
+                    f"{day_metric} ({currency})"
+                    if "Revenue" in day_metric
+                    else day_metric
+                ),
+            )
+
+            day_chart = style_chart(
+                day_chart,
+                title=f"{day_metric} by Day of Week",
+            )
+
+            with st.container(border=True):
+                st.plotly_chart(
+                    day_chart,
+                    width="stretch",
+                    config={"displayModeBar": False},
+                )
+
+            # Highlight strongest and weakest days using
+            # average daily revenue, not total revenue.
+            best_day = day_summary.loc[
+                day_summary["avg_daily_revenue"].idxmax()
+            ]
+
+            slowest_day = day_summary.loc[
+                day_summary["avg_daily_revenue"].idxmin()
+            ]
+
+            best_col, slowest_col = st.columns(
+                2,
+                gap="medium",
+            )
+
+            with best_col:
+                st.metric(
+                    "Highest Avg. Revenue Day",
+                    best_day["day_name"],
+                    (
+                        f"{currency}"
+                        f"{best_day['avg_daily_revenue']:,.2f}/day"
+                    ),
+                )
+
+            with slowest_col:
+                st.metric(
+                    "Lowest Avg. Revenue Day",
+                    slowest_day["day_name"],
+                    (
+                        f"{currency}"
+                        f"{slowest_day['avg_daily_revenue']:,.2f}/day"
+                    ),
+                )
+
+            # Keep the Monday–Sunday data table inside the card.
+            with st.expander(
+                "View Monday–Sunday Sales Data",
+                expanded=False,
+            ):
+                display_days = day_summary[
+                    [
+                        "day_name",
+                        "total_revenue",
+                        "total_units",
+                        "days_with_sales",
+                        "avg_daily_revenue",
+                        "avg_daily_units",
+                    ]
+                ].copy()
+
+                display_days.columns = [
+                    "Day",
+                    "Total Revenue",
+                    "Total Units",
+                    "Days With Sales",
+                    "Avg. Daily Revenue",
+                    "Avg. Daily Units",
+                ]
+
+                st.dataframe(
+                    display_days,
+                    width="stretch",
+                    hide_index=True,
+                )
+
+
+
+    # ================================================================
+    # HOURLY ANALYSIS TAB
+    # ================================================================
+    with revenue_tabs[2]:
+
+        # ------------------------------------------------------------
+        # CARD 1 — Peak-Hour Analysis
+        # ------------------------------------------------------------
+        with st.container(border=True):
+
+            render_chart_header(
+                "Peak-Hour Analysis",
+                "Identify busy hours using transaction timestamps. "
+                "Results reflect your selected date range and categories.",
+            )
+
+            if df["transaction_datetime"].notna().any():
+
+                hourly_summary = analyze_peak_hours(df)
+
+                hour_metric = st.selectbox(
+                    "Analyze peak hours by",
+                    options=[
+                        "Revenue",
+                        "Units Sold",
+                        "Sales Records",
+                    ],
+                    key="peak_hour_metric",
+                )
+
+                hour_columns = {
+                    "Revenue": "total_revenue",
+                    "Units Sold": "total_units",
+                    "Sales Records": "sales_rows",
+                }
+
+                selected_hour_column = hour_columns[hour_metric]
+
+                hourly_summary["hour_label"] = (
+                    hourly_summary["hour"]
+                    .map(lambda hour: f"{hour:02d}:00")
+                )
+
+                peak_chart = px.bar(
+                    hourly_summary,
+                    x="hour_label",
+                    y=selected_hour_column,
+                    labels={
+                        "hour_label": "Hour of Day",
+                        selected_hour_column: hour_metric,
+                    },
+                    title=f"{hour_metric} by Hour of Day",
+                )
+
+                peak_chart.update_layout(
+                    xaxis_title="Hour of Day",
+                    yaxis_title=(
+                        f"Revenue ({currency})"
+                        if hour_metric == "Revenue"
+                        else hour_metric
+                    ),
+                )
+
+                peak_chart = style_chart(
+                    peak_chart,
+                    title=f"{hour_metric} by Hour of Day",
+                )
+
+                # Inner chart card
+                with st.container(border=True):
+                    st.plotly_chart(
+                        peak_chart,
+                        width="stretch",
+                        config={"displayModeBar": False},
+                    )
+
+                if not hourly_summary.empty:
+                    busiest_hour = hourly_summary.loc[
+                        hourly_summary[selected_hour_column].idxmax()
+                    ]
+
+                    st.metric(
+                        f"Peak Hour by {hour_metric}",
+                        busiest_hour["hour_label"],
+                    )
+
+                with st.expander(
+                    "View Hourly Sales Data",
+                    expanded=False,
+                ):
+                    display_hourly = hourly_summary[
+                        [
+                            "hour_label",
+                            "total_revenue",
+                            "total_units",
+                            "sales_rows",
+                        ]
+                    ].rename(
+                        columns={
+                            "hour_label": "Hour",
+                            "total_revenue": "Revenue",
+                            "total_units": "Units Sold",
+                            "sales_rows": "Sales Records",
+                        }
+                    )
+
+                    st.dataframe(
+                        display_hourly,
+                        width="stretch",
+                        hide_index=True,
+                    )
+
+            else:
+                st.info(
+                    "Peak-hour analysis is unavailable because "
+                    "the dataset does not contain usable transaction times."
+                )
+
+        # ------------------------------------------------------------
+        # CARD 2 — Hourly Revenue Analysis
+        # ------------------------------------------------------------
+        with st.container(border=True):
+
+            render_chart_header(
+                "Hourly Revenue Analysis",
+                "Compare average hourly revenue across days with "
+                "recorded sales in that hour. Days without recorded "
+                "sales for an hour are excluded from that hour's average.",
+            )
+
+            if df["transaction_datetime"].notna().any():
+
+                hourly_revenue = analyze_hourly_revenue(df)
+
+                hourly_revenue["hour_label"] = (
+                    hourly_revenue["hour"]
+                    .map(lambda hour: f"{hour:02d}:00")
+                )
+
+                revenue_chart = px.line(
+                    hourly_revenue,
+                    x="hour_label",
+                    y="avg_daily_revenue",
+                    markers=True,
+                    labels={
+                        "hour_label": "Hour of Day",
+                        "avg_daily_revenue": (
+                            f"Average Revenue ({currency})"
+                        ),
+                    },
+                    title="Average Revenue by Hour",
+                )
+
+                revenue_chart.update_layout(
+                    xaxis_title="Hour of Day",
+                    yaxis_title=f"Average Revenue ({currency})",
+                )
+
+                revenue_chart = style_chart(
+                    revenue_chart,
+                    title="Average Revenue by Hour",
+                )
+
+                # Inner chart card
+                with st.container(border=True):
+                    st.plotly_chart(
+                        revenue_chart,
+                        width="stretch",
+                        config={"displayModeBar": False},
+                    )
+
+                if not hourly_revenue.empty:
+                    highest_hour = hourly_revenue.loc[
+                        hourly_revenue["avg_daily_revenue"].idxmax()
+                    ]
+
+                    st.metric(
+                        "Highest Average Revenue Hour",
+                        highest_hour["hour_label"],
+                    )
+
+                with st.expander(
+                    "View Hourly Revenue Data",
+                    expanded=False,
+                ):
+                    display_hourly_revenue = hourly_revenue[
+                        [
+                            "hour_label",
+                            "total_revenue",
+                            "days_with_sales",
+                            "avg_daily_revenue",
+                        ]
+                    ].rename(
+                        columns={
+                            "hour_label": "Hour",
+                            "total_revenue": "Total Revenue",
+                            "days_with_sales": "Days With Sales",
+                            "avg_daily_revenue": (
+                                "Avg. Revenue per Active Day"
+                            ),
+                        }
+                    )
+
+                    st.dataframe(
+                        display_hourly_revenue,
+                        width="stretch",
+                        hide_index=True,
+                    )
+
+            else:
+                st.info(
+                    "Hourly revenue analysis is unavailable because "
+                    "the dataset does not contain usable transaction times."
+                )
+
+
+# ================================================================
+# ELASTICITY RELIABILITY TAB
+# ================================================================
 with analysis_tabs[1]:
-    st.caption(
-        "'estimated' means the item had enough historical price/quantity variation for an item-level log-log estimate. "
-        "'category_prior' and 'default_prior' are labeled assumptions, not measured demand curves."
-    )
-    st.dataframe(
-        summary[[
-            "item", "category", "elasticity", "elasticity_source", "elasticity_confidence",
-            "price_points", "observations", "price_variation_%",
-        ]],
-        use_container_width=True,
-        hide_index=True,
-    )
 
-with analysis_tabs[2]:
-    if capabilities["menu_engineering_quadrants"]:
-        fig = px.scatter(
-            summary,
-            x="avg_daily_units",
-            y="contribution_margin_%",
-            color="quadrant",
-            size="total_profit",
-            hover_name="item",
-            hover_data=["category", "price", "elasticity_source", "elasticity_confidence"],
-            labels={"avg_daily_units": "Avg Daily Units Sold", "contribution_margin_%": "Contribution Margin %"},
+    with st.container(border=True):
+
+        render_chart_header(
+            "Elasticity Reliability",
+            "Review how each item's demand elasticity was determined "
+            "and assess the reliability of those estimates.",
         )
-        fig.add_vline(x=summary["avg_daily_units"].median(), line_dash="dash", line_color="gray")
-        fig.add_hline(y=summary["contribution_margin_%"].median(), line_dash="dash", line_color="gray")
-        st.plotly_chart(fig, use_container_width=True)
-        if cost_is_assumption:
-            st.warning("Quadrants use the estimated cost-percentage scenario, not actual unit costs.")
-    else:
-        st.info("Menu quadrants require complete unit cost data because margin is one axis of the classification.")
+
+        st.info(
+            "'estimated' means the item had enough historical "
+            "price/quantity variation for an item-level log-log estimate. "
+            "'category_prior' and 'default_prior' are labeled assumptions, "
+            "not measured demand curves."
+        )
+
+        # Inner table card
+        with st.container(border=True):
+
+            st.dataframe(
+                summary[
+                    [
+                        "item",
+                        "category",
+                        "elasticity",
+                        "elasticity_source",
+                        "elasticity_confidence",
+                        "price_points",
+                        "observations",
+                        "price_variation_%",
+                    ]
+                ],
+                width="stretch",
+                hide_index=True,
+            )
 
 
+# ================================================================
+# MENU ENGINEERING QUADRANTS TAB
+# ================================================================
+with analysis_tabs[2]:
+
+    with st.container(border=True):
+
+        render_chart_header(
+            "Menu Engineering Quadrants",
+            "Evaluate menu performance using popularity "
+            "and contribution margin.",
+        )
+
+        if capabilities["menu_engineering_quadrants"]:
+
+            quadrant_chart = px.scatter(
+                summary,
+                x="avg_daily_units",
+                y="contribution_margin_%",
+                color="quadrant",
+                size="total_profit",
+                hover_name="item",
+                hover_data=[
+                    "category",
+                    "price",
+                    "elasticity_source",
+                    "elasticity_confidence",
+                ],
+                labels={
+                    "avg_daily_units": "Avg Daily Units Sold",
+                    "contribution_margin_%": (
+                        "Contribution Margin %"
+                    ),
+                },
+            )
+
+            quadrant_chart.add_vline(
+                x=summary["avg_daily_units"].median(),
+                line_dash="dash",
+                line_color="gray",
+            )
+
+            quadrant_chart.add_hline(
+                y=summary["contribution_margin_%"].median(),
+                line_dash="dash",
+                line_color="gray",
+            )
+
+            quadrant_chart = style_chart(
+                quadrant_chart,
+                title="Menu Engineering Quadrants",
+            )
+
+            # Inner chart card
+            with st.container(border=True):
+
+                st.plotly_chart(
+                    quadrant_chart,
+                    width="stretch",
+                    config={"displayModeBar": False},
+                )
+
+            if cost_is_assumption:
+                st.warning(
+                    "Quadrants use the estimated cost-percentage "
+                    "scenario, not actual unit costs."
+                )
+
+        else:
+            st.info(
+                "Menu quadrants require complete unit cost data "
+                "because margin is one axis of the classification."
+            )
+
+
+# ================================================================
+# MENU ITEM EXPLORER TAB
+# ================================================================
 with analysis_tabs[3]:
-    st.subheader("Menu Item Explorer")
 
-    st.caption(
-        "Explore menu items by revenue, sales volume, or name. "
-        "Category filters are applied automatically."
-    )
+    with st.container(border=True):
 
-    # Sorting options
-    sorting_options = {
-        "Highest revenue": ("total_revenue", False),
-        "Lowest revenue": ("total_revenue", True),
-        "Best-selling (units)": ("total_units_sold", False),
-        "Lowest-selling (units)": ("total_units_sold", True),
-        "Alphabetical (A-Z)": ("item", True),
-        "Alphabetical (Z-A)": ("item", False),
-    }
+        render_chart_header(
+            "Menu Item Explorer",
+            "Explore menu items by revenue, sales volume, or name. "
+            "Category filters are applied automatically.",
+        )
 
-    selected_sort = st.selectbox(
-        "Sort menu items by",
-        options=list(sorting_options.keys()),
-        index=0,
-        key="menu_item_sort",
-    )
+        # Sorting options from dashboard_utils.py
+        selected_sort = st.selectbox(
+            "Sort menu items by",
+            options=list(SORTING_OPTIONS.keys()),
+            index=0,
+            key="menu_item_sort",
+        )
 
-    sort_column, ascending = sorting_options[selected_sort]
+        # Preserve the tested sorting function.
+        sorted_summary = sort_menu_items(
+            summary,
+            selected_sort,
+        )
 
-    # Sort a copy so the original summary is unchanged.
-    sorted_summary = summary.sort_values(
-        by=sort_column,
-        ascending=ascending,
-        kind="stable",
-    ).copy()
+        has_cost = capabilities["profit_analysis"]
 
-    has_cost = capabilities["profit_analysis"]
-
-    columns = [
-        "item",
-        "category",
-        "price",
-        "avg_daily_units",
-        "total_units_sold",
-        "total_revenue",
-    ]
-
-    if has_cost:
-        columns += [
-            "unit_cost",
-            "contribution_margin_amount",
-            "contribution_margin_%",
-            "total_profit",
-            "quadrant",
+        columns = [
+            "item",
+            "category",
+            "price",
+            "avg_daily_units",
+            "total_units_sold",
+            "total_revenue",
         ]
 
-    columns += [
-        "elasticity",
-        "elasticity_source",
-        "elasticity_confidence",
-    ]
+        if has_cost:
+            columns += [
+                "unit_cost",
+                "contribution_margin_amount",
+                "contribution_margin_%",
+                "total_profit",
+                "quadrant",
+            ]
 
-    st.dataframe(
-        display_item_table(
-            sorted_summary[columns],
-            currency,
-            has_cost,
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
+        columns += [
+            "elasticity",
+            "elasticity_source",
+            "elasticity_confidence",
+        ]
 
-    st.caption(
-        f"Displaying {len(sorted_summary):,} menu items. "
-        f"Sorted by: {selected_sort}."
-    )
+        # Inner table card
+        with st.container(border=True):
 
-st.header("6. Price recommendations")
+            st.dataframe(
+                display_item_table(
+                    sorted_summary[columns],
+                    currency,
+                    has_cost,
+                ),
+                width="stretch",
+                hide_index=True,
+            )
+
+        st.caption(
+            f"Displaying {len(sorted_summary):,} menu items. "
+            f"Sorted by: {selected_sort}."
+        )
+
+
+
+st.header("Pricing Recommendations")
 price_changes = [value / 100 for value in range(-max_decrease, max_increase + 1, 5)]
 if 0.0 not in price_changes:
     price_changes.append(0.0)
@@ -937,7 +1739,7 @@ else:
             moves[display_columns],
             currency,
         ),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={
             "pricing_reliability": st.column_config.TextColumn(
@@ -955,12 +1757,11 @@ with st.expander("View pricing reliability explanations"):
         st.divider()
 
 
-
 # --------------------------------------------------
 # 7. Generate AI decision memo
 # --------------------------------------------------
 
-st.header("7. Generate AI decision memo")
+st.header("AI Decision Memo")
 
 metadata = {
     "business_name": business_name,
@@ -1101,7 +1902,7 @@ if (
             data=memo.encode("utf-8"),
             file_name=f"{safe_business_name}_decision_memo.md",
             mime="text/markdown",
-            use_container_width=True,
+            width="stretch",
         )
 
     # Download Plain text
@@ -1111,7 +1912,7 @@ if (
             data=memo.encode("utf-8"),
             file_name=f"{safe_business_name}_decision_memo.txt",
             mime="text/plain",
-            use_container_width=True,
+            width="stretch",
         )
 
     # Download PDF
@@ -1128,7 +1929,7 @@ if (
                 data=pdf_bytes,
                 file_name=f"{safe_business_name}_decision_memo.pdf",
                 mime="application/pdf",
-                use_container_width=True,
+                width="stretch",
             )
 
         except Exception as exc:

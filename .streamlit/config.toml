@@ -1,3 +1,29 @@
+
 [server]
 maxUploadSize = 1024
 maxMessageSize = 1024
+
+[theme]
+font = "sans serif"
+
+[theme.dark]
+primaryColor = "#3B82F6"
+backgroundColor = "#0B1220"
+secondaryBackgroundColor = "#111C30"
+textColor = "#F8FAFC"
+
+[theme.light]
+primaryColor = "#2563EB"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F5F9"
+textColor = "#0F172A"
+
+[theme.dark.sidebar]
+backgroundColor = "#111C30"
+secondaryBackgroundColor = "#0B1220"
+textColor = "#F8FAFC"
+
+[theme.light.sidebar]
+backgroundColor = "#F1F5F9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"

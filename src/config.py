@@ -5,9 +5,9 @@ from __future__ import annotations
 import re
 from typing import Mapping
 
-CANONICAL_FIELDS = ["date", "item", "category", "price", "unit_cost", "units_sold"]
+CANONICAL_FIELDS = ["date", "item", "category", "price", "unit_cost", "units_sold", "transaction_time"]
 CORE_FIELDS = ["date", "item", "price", "units_sold"]
-OPTIONAL_FIELDS = ["category", "unit_cost"]
+OPTIONAL_FIELDS = ["category", "unit_cost", "transaction_time"]
 
 COLUMN_ALIASES: dict[str, list[str]] = {
     "date": [
@@ -37,6 +37,11 @@ COLUMN_ALIASES: dict[str, list[str]] = {
         "transaction_quantity", "order_quantity", "quantity_sold", "sold_qty",
         "item_quantity", "count",
     ],
+    "transaction_time": [
+        "transaction_time", "order_time", "sale_time", "sales_time", "time",
+        "time_of_sale", "purchase_time", "checkout_time",
+    ],
+
 }
 
 

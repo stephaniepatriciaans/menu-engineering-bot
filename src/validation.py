@@ -25,8 +25,13 @@ def validate_sales_df(df: pd.DataFrame) -> tuple[pd.DataFrame | None, list[str],
     if "category" not in df.columns:
         df["category"] = "Uncategorized"
         warnings.append("Category was not available, so all rows were labeled 'Uncategorized'.")
+    
     if "unit_cost" not in df.columns:
         df["unit_cost"] = pd.NA
+
+    # Transaction time is optional.
+    if "transaction_time" not in df.columns:
+        df["transaction_time"] = pd.NA
 
     df = df[CANONICAL_FIELDS].copy()
 
@@ -41,14 +46,51 @@ def validate_sales_df(df: pd.DataFrame) -> tuple[pd.DataFrame | None, list[str],
         df.loc[blank_categories, "category"] = "Uncategorized"
         warnings.append(f"{int(blank_categories.sum())} blank categories were set to 'Uncategorized'.")
 
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    
+    # Parse dates, including combined date-and-time values.
+    original_dates = df["date"].copy()
+
+    df["date"] = pd.to_datetime(
+        df["date"],
+        errors="coerce",
+    )
+
     bad_dates = df["date"].isna()
+
     if bad_dates.any():
-        errors.append(f"{int(bad_dates.sum())} rows have invalid dates.")
+        errors.append(
+            f"{int(bad_dates.sum())} rows have invalid dates."
+        )
     else:
-        # Transaction timestamps are normalized to calendar date so daily sales
-        # velocity and elasticity aggregation are not distorted by time-of-day.
+        # Detect explicitly supplied times in combined timestamps.
+        # Date-only values must not create artificial times.
+        has_embedded_time = (
+            original_dates.astype("string")
+            .str.contains(
+                r"(?:T|\s)\d{1,2}:\d{2}",
+                regex=True,
+                na=False,
+            )
+        )
+
+        missing_time = (
+            df["transaction_time"].isna()
+            | df["transaction_time"]
+                .astype("string")
+                .str.strip()
+                .isin(["", "nan", "None"])
+        ).fillna(True)
+
+        fill_time = has_embedded_time & missing_time
+
+        df.loc[fill_time, "transaction_time"] = (
+            df.loc[fill_time, "date"]
+            .dt.strftime("%H:%M:%S")
+        )
+
+        # Keep dates normalized for existing daily analyses.
         df["date"] = df["date"].dt.normalize()
+
 
     for col in ["price", "units_sold"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")

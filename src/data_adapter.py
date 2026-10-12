@@ -222,6 +222,11 @@ def adapt_to_canonical(
         warnings.append(
             "Unit cost was not mapped. Revenue/popularity analysis can run, but profit-based analysis needs cost data."
         )
+    
+    # Transaction time is optional.
+    # Preserve it when available and leave it missing otherwise.
+    if "transaction_time" not in out:
+        out["transaction_time"] = pd.NA
 
     # Preserve existing canonical columns and their order.
     out = out[CANONICAL_FIELDS].copy()

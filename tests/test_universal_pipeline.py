@@ -65,12 +65,13 @@ class UniversalPipelineTests(unittest.TestCase):
             "price": "unit_price",
             "unit_cost": "cost",
             "units_sold": "transaction_qty",
+            "transaction_time": None,
         }
         self.assertEqual(mapping, expected)
         canonical, _warnings = adapt_to_canonical(raw, mapping)
         cleaned, errors, _warnings = validate_sales_df(canonical)
         self.assertFalse(errors)
-        self.assertEqual(list(cleaned.columns), ["date", "item", "category", "price", "unit_cost", "units_sold"])
+        self.assertEqual(list(cleaned.columns), ["date", "item", "category", "price", "unit_cost", "units_sold", "transaction_time"])
 
     def test_dataset_c_no_unit_cost_disables_profit_gracefully(self) -> None:
         raw = self._original_format().drop(columns="unit_cost").rename(columns={
@@ -117,6 +118,111 @@ class UniversalPipelineTests(unittest.TestCase):
         cleaned, errors, _warnings = validate_sales_df(scenario)
         self.assertFalse(errors)
         self.assertTrue(determine_capabilities(cleaned)["profit_analysis"])
+
+    
+    def test_adapter_preserves_transaction_time(self):
+        raw = pd.DataFrame({
+            "transaction_date": ["2023-03-06"],
+            "transaction_time": ["14:35:20"],
+            "product_detail": ["Latte"],
+            "product_category": ["Coffee"],
+            "unit_price": [5.0],
+            "transaction_qty": [2],
+        })
+
+        adapted, warnings = adapt_to_canonical(raw)
+
+        assert "transaction_time" in adapted.columns
+        assert adapted["transaction_time"].iloc[0] == "14:35:20"
+        assert adapted["date"].iloc[0] == "2023-03-06"
+
+
+    def test_adapter_without_transaction_time(self):
+        raw = pd.DataFrame({
+            "date": ["2023-03-06"],
+            "item": ["Latte"],
+            "price": [5.0],
+            "units_sold": [2],
+        })
+
+        adapted, warnings = adapt_to_canonical(raw)
+
+        assert "transaction_time" in adapted.columns
+        assert pd.isna(adapted["transaction_time"].iloc[0])
+    
+
+    def test_combined_datetime_preserves_time(self):
+        raw = pd.DataFrame({
+            "date": ["2023-03-06 14:35:20"],
+            "item": ["Latte"],
+            "price": [5.0],
+            "units_sold": [2],
+        })
+
+        adapted, _ = adapt_to_canonical(raw)
+        cleaned, errors, _ = validate_sales_df(adapted)
+
+        self.assertFalse(errors)
+        self.assertEqual(
+            str(cleaned["date"].iloc[0]),
+            "2023-03-06 00:00:00",
+        )
+        self.assertEqual(
+            cleaned["transaction_time"].iloc[0],
+            "14:35:20",
+        )
+
+    def test_midnight_transaction_time(self):
+        raw = pd.DataFrame({
+            "date": ["2023-03-06 00:00:00"],
+            "item": ["Latte"],
+            "price": [5.0],
+            "units_sold": [2],
+        })
+
+        adapted, _ = adapt_to_canonical(raw)
+        cleaned, errors, _ = validate_sales_df(adapted)
+
+        self.assertFalse(errors)
+        self.assertEqual(
+            cleaned["transaction_time"].iloc[0],
+            "00:00:00",
+        )
+
+    def test_date_only_has_no_transaction_time(self):
+        raw = pd.DataFrame({
+            "date": ["2023-03-06"],
+            "item": ["Latte"],
+            "price": [5.0],
+            "units_sold": [2],
+        })
+
+        adapted, _ = adapt_to_canonical(raw)
+        cleaned, errors, _ = validate_sales_df(adapted)
+
+        self.assertFalse(errors)
+        self.assertTrue(
+            pd.isna(cleaned["transaction_time"].iloc[0])
+        )
+
+    def test_separate_transaction_time_preserved(self):
+        raw = pd.DataFrame({
+            "transaction_date": ["2023-03-06"],
+            "transaction_time": ["09:15:30"],
+            "product_detail": ["Latte"],
+            "unit_price": [5.0],
+            "transaction_qty": [2],
+        })
+
+        adapted, _ = adapt_to_canonical(raw)
+        cleaned, errors, _ = validate_sales_df(adapted)
+
+        self.assertFalse(errors)
+        self.assertEqual(
+            cleaned["transaction_time"].iloc[0],
+            "09:15:30",
+        )
+
 
 
 if __name__ == "__main__":
