@@ -75,6 +75,7 @@ from ui.sections.sales_trends import render_sales_trends
 from ui.sections.popular_items import render_popular_items
 from ui.sections.day_analysis import render_day_analysis
 from ui.sections.hourly_analysis import render_hourly_analysis
+from ui.sections.elasticity_reliability import render_elasticity_reliability
 
 from ui.data_upload import (
     load_uploaded_sales,
@@ -652,42 +653,7 @@ with analysis_tabs[0]:
 # ELASTICITY RELIABILITY TAB
 # ================================================================
 with analysis_tabs[1]:
-
-    with st.container(border=True):
-
-        render_chart_header(
-            "Elasticity Reliability",
-            "Review how each item's demand elasticity was determined "
-            "and assess the reliability of those estimates.",
-        )
-
-        st.info(
-            "'estimated' means the item had enough historical "
-            "price/quantity variation for an item-level log-log estimate. "
-            "'category_prior' and 'default_prior' are labeled assumptions, "
-            "not measured demand curves."
-        )
-
-        # Inner table card
-        with st.container(border=True):
-
-            st.dataframe(
-                summary[
-                    [
-                        "item",
-                        "category",
-                        "elasticity",
-                        "elasticity_source",
-                        "elasticity_confidence",
-                        "price_points",
-                        "observations",
-                        "price_variation_%",
-                    ]
-                ],
-                width="stretch",
-                hide_index=True,
-            )
-
+    render_elasticity_reliability(summary)
 
 # ================================================================
 # MENU ENGINEERING QUADRANTS TAB
@@ -834,8 +800,6 @@ with analysis_tabs[3]:
             f"Displaying {len(sorted_summary):,} menu items. "
             f"Sorted by: {selected_sort}."
         )
-
-
 
 st.header("Pricing Recommendations")
 price_changes = [value / 100 for value in range(-max_decrease, max_increase + 1, 5)]
