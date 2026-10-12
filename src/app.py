@@ -77,6 +77,8 @@ from ui.sections.day_analysis import render_day_analysis
 from ui.sections.hourly_analysis import render_hourly_analysis
 from ui.sections.elasticity_reliability import render_elasticity_reliability
 from ui.sections.menu_quadrants import render_menu_quadrants
+from ui.sections.menu_item_explorer import render_menu_item_explorer
+from ui.sections.pricing_recommendations import render_pricing_recommendations
 
 from ui.data_upload import (
     load_uploaded_sales,
@@ -632,164 +634,60 @@ with analysis_tabs[0]:
     with revenue_tabs[0]:
         render_sales_trends(df, currency)
         
+        
     # -----------------------------------------------------------------
     # Feature 9: Popular Items navigation tab
     # -----------------------------------------------------------------
     with revenue_tabs[3]:
         render_popular_items(summary)
 
+
     # -----------------------------------------------------------------
     # Feature 9: Day Analysis navigation tab
     # -----------------------------------------------------------------
     with revenue_tabs[1]:
         render_day_analysis(df, currency)
+        
 
     # ================================================================
     # HOURLY ANALYSIS TAB
     # ================================================================
     with revenue_tabs[2]:
         render_hourly_analysis(df, currency)
+        
 
 # ================================================================
 # ELASTICITY RELIABILITY TAB
 # ================================================================
 with analysis_tabs[1]:
     render_elasticity_reliability(summary)
+    
 
 # ================================================================
 # MENU ENGINEERING QUADRANTS TAB
 # ================================================================
 with analysis_tabs[2]:
     render_menu_quadrants(summary, capabilities, cost_is_assumption)
+    
 
 # ================================================================
 # MENU ITEM EXPLORER TAB
 # ================================================================
 with analysis_tabs[3]:
-
-    with st.container(border=True):
-
-        render_chart_header(
-            "Menu Item Explorer",
-            "Explore menu items by revenue, sales volume, or name. "
-            "Category filters are applied automatically.",
-        )
-
-        # Sorting options from dashboard_utils.py
-        selected_sort = st.selectbox(
-            "Sort menu items by",
-            options=list(SORTING_OPTIONS.keys()),
-            index=0,
-            key="menu_item_sort",
-        )
-
-        # Preserve the tested sorting function.
-        sorted_summary = sort_menu_items(
-            summary,
-            selected_sort,
-        )
-
-        has_cost = capabilities["profit_analysis"]
-
-        columns = [
-            "item",
-            "category",
-            "price",
-            "avg_daily_units",
-            "total_units_sold",
-            "total_revenue",
-        ]
-
-        if has_cost:
-            columns += [
-                "unit_cost",
-                "contribution_margin_amount",
-                "contribution_margin_%",
-                "total_profit",
-                "quadrant",
-            ]
-
-        columns += [
-            "elasticity",
-            "elasticity_source",
-            "elasticity_confidence",
-        ]
-
-        # Inner table card
-        with st.container(border=True):
-
-            st.dataframe(
-                display_item_table(
-                    sorted_summary[columns],
-                    currency,
-                    has_cost,
-                ),
-                width="stretch",
-                hide_index=True,
-            )
-
-        st.caption(
-            f"Displaying {len(sorted_summary):,} menu items. "
-            f"Sorted by: {selected_sort}."
-        )
-
-st.header("Pricing Recommendations")
-price_changes = [value / 100 for value in range(-max_decrease, max_increase + 1, 5)]
-if 0.0 not in price_changes:
-    price_changes.append(0.0)
-moves = recommend_price_moves(summary, price_changes) if capabilities["price_optimization"] else pd.DataFrame()
-
-if moves.empty:
-    st.info(
-        "Profit-based price recommendations are disabled because complete unit cost data is unavailable. "
-        "The app will not fabricate cost or profit figures."
-    )
-else:
-    st.caption(
-        f"Candidate moves are tested from -{max_decrease}% to +{max_increase}% in 5% steps. "
-        "Demand response uses historical estimates when reliable enough, otherwise a clearly labeled prior."
-    )
-    if cost_is_assumption:
-        st.warning("These price/profit recommendations are scenario results based on your estimated cost percentage.")
-    move_columns = [
-        "item", "old_price", "new_price", "pct_change_recommended", "daily_profit_delta",
-        "quadrant", "elasticity_source", "elasticity_confidence", "pricing_reliability",
-        "reliability_reason",
-    ]
-    st.warning(
-        "Pricing results are exploratory simulations, "
-        "not validated pricing decisions. "
-        "Low-confidence historical estimates and assumed "
-        "elasticities require additional review."
-    )
+    render_menu_item_explorer(summary, capabilities, currency)
     
-    # Main pricing recommendations table
-    display_columns = [
-        col for col in move_columns
-        if col != "reliability_reason"
-    ]
 
-    st.dataframe(
-        display_moves_table(
-            moves[display_columns],
-            currency,
-        ),
-        width="stretch",
-        hide_index=True,
-        column_config={
-            "pricing_reliability": st.column_config.TextColumn(
-                "Pricing Reliability",
-                width="large",
-            ),
-        },
-    )
-
-# Detailed explanations shown separately
-with st.expander("View pricing reliability explanations"):
-    for _, row in moves.iterrows():
-        st.markdown(f"**{row['item']}**")
-        st.write(row["reliability_reason"])
-        st.divider()
+# ================================================================
+# Pricing Recommendations
+# ================================================================
+moves = render_pricing_recommendations(
+    summary=summary,
+    capabilities=capabilities,
+    currency=currency,
+    max_decrease=max_decrease,
+    max_increase=max_increase,
+    cost_is_assumption=cost_is_assumption,
+)
 
 
 # --------------------------------------------------
