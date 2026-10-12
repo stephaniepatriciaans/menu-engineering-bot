@@ -68,6 +68,7 @@ from ui.components import (
 from ui.styles import apply_dashboard_styles
 from ui.charts import style_chart
 from ui.mapping import mapping_selectors
+from ui.sidebar import render_sidebar
 
 from ui.table_formatters import (
     display_item_table,
@@ -95,24 +96,17 @@ st.caption(
     "The numerical engine never delegates calculations to the LLM."
 )
 
-with st.sidebar:
-    st.header("Business settings")
-    business_name = st.text_input("Business name", value="My Food-Service Business")
-    dataset_name = st.text_input("Dataset name", value="Menu Sales Dataset")
-    currency = st.selectbox("Currency", list(CURRENCY_CONFIG.keys()), index=0)
+settings = render_sidebar()
 
-    st.header("Price simulation")
-    max_decrease = st.slider("Maximum price decrease", 0, 30, 10, 5, format="-%d%%")
-    max_increase = st.slider("Maximum price increase", 0, 30, 15, 5, format="+%d%%")
+business_name = settings.business_name
+dataset_name = settings.dataset_name
+currency = settings.currency
 
-    st.header("1. Load dataset")
-    source = st.radio(
-        "Data source",
-        ["Full Demo Dataset — Synthetic Cafe", "Upload my own CSV"],
-    )
-    uploaded = None
-    if source == "Upload my own CSV":
-        uploaded = st.file_uploader("Upload sales/POS CSV", type=["csv"])
+max_decrease = settings.max_decrease
+max_increase = settings.max_increase
+
+source = settings.source
+uploaded = settings.uploaded
 
 
 # --------------------------------------------------
