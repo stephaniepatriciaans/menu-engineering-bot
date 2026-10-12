@@ -71,6 +71,7 @@ from ui.charts import style_chart
 from ui.table_formatters import (
     display_item_table,
     display_moves_table,
+    safe_format_currency,
 )
 
 st.set_page_config(
@@ -204,6 +205,10 @@ with st.sidebar:
 # --------------------------------------------------
 
 raw_df: pd.DataFrame | None = None
+
+mapping: dict[str, str | None] = {
+    field: None for field in CANONICAL_FIELDS
+}
 
 if source == "Full Demo Dataset — Synthetic Cafe":
     demo_path = os.path.join(
@@ -953,7 +958,7 @@ with analysis_tabs[0]:
                 
                 display_sales["revenue"] = display_sales[
                     "revenue"
-                ].map(lambda x: format_currency(x, currency))
+                ].map(lambda x: safe_format_currency(x, currency))
 
                 st.dataframe(
                     display_sales,
@@ -1118,7 +1123,7 @@ with analysis_tabs[0]:
                 ]:
                     comparison_table[column] = (
                         comparison_table[column].map(
-                            lambda value: format_currency(
+                            lambda value: safe_format_currency(
                                 value,
                                 currency,
                             )
@@ -1211,12 +1216,12 @@ with analysis_tabs[0]:
 
             # Highlight strongest and weakest days using
             # average daily revenue, not total revenue.
-            best_day = day_summary.loc[
-                day_summary["avg_daily_revenue"].idxmax()
+            best_day = day_summary.iloc[
+                day_summary["avg_daily_revenue"].argmax()
             ]
 
-            slowest_day = day_summary.loc[
-                day_summary["avg_daily_revenue"].idxmin()
+            slowest_day = day_summary.iloc[
+                day_summary["avg_daily_revenue"].argmin()
             ]
 
             best_col, slowest_col = st.columns(
@@ -1354,8 +1359,8 @@ with analysis_tabs[0]:
                     )
 
                 if not hourly_summary.empty:
-                    busiest_hour = hourly_summary.loc[
-                        hourly_summary[selected_hour_column].idxmax()
+                    busiest_hour = hourly_summary.iloc[
+                        hourly_summary[selected_hour_column].argmax()
                     ]
 
                     st.metric(
@@ -1449,8 +1454,8 @@ with analysis_tabs[0]:
                     )
 
                 if not hourly_revenue.empty:
-                    highest_hour = hourly_revenue.loc[
-                        hourly_revenue["avg_daily_revenue"].idxmax()
+                    highest_hour = hourly_revenue.iloc[
+                        hourly_revenue["avg_daily_revenue"].argmax()
                     ]
 
                     st.metric(

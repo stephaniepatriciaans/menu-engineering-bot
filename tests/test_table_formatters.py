@@ -54,8 +54,16 @@ def test_item_table_with_cost():
         "contribution_margin_amount",
         "total_profit",
     ]:
+        expected_amounts = {
+            "price": 5.5,
+            "total_revenue": 110.0,
+            "unit_cost": 2.0,
+            "contribution_margin_amount": 3.5,
+            "total_profit": 70.0,
+        }
+
         assert result.loc[0, col] == format_currency(
-            original.loc[0, col], "USD"
+            expected_amounts[col], "USD"
         )
 
 

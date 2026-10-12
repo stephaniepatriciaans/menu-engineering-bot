@@ -1,12 +1,29 @@
-"""Format analytics tables for Streamlit display.
+"""Format analytics tables for Streamlit display."""
 
-These helpers return formatted copies of DataFrames.
-Financial calculations remain in analysis.py.
-"""
+from numbers import Real
 
 import pandas as pd
 
 from config import format_currency
+
+
+def safe_format_currency(value: object, currency: str) -> str:
+    """Format numeric values while handling missing data safely."""
+    if value is None or value is pd.NA:
+        return "—"
+
+    if isinstance(value, bool):
+        return "—"
+
+    if not isinstance(value, (int, float, str)):
+        return "—"
+
+    try:
+        number = float(value)
+    except (TypeError, ValueError, OverflowError):
+        return "—"
+
+    return format_currency(number, currency)
 
 
 def display_item_table(
@@ -17,24 +34,21 @@ def display_item_table(
     """Format menu item financial values for display."""
     table = summary.copy()
 
-    table["price"] = table["price"].map(
-        lambda x: format_currency(x, currency)
-    )
-    table["total_revenue"] = table["total_revenue"].map(
-        lambda x: format_currency(x, currency)
-    )
+    currency_columns = [
+        "price",
+        "total_revenue",
+    ]
 
     if has_cost:
-        table["unit_cost"] = table["unit_cost"].map(
-            lambda x: format_currency(x, currency)
-        )
-        table["contribution_margin_amount"] = (
-            table["contribution_margin_amount"].map(
-                lambda x: format_currency(x, currency)
-            )
-        )
-        table["total_profit"] = table["total_profit"].map(
-            lambda x: format_currency(x, currency)
+        currency_columns.extend([
+            "unit_cost",
+            "contribution_margin_amount",
+            "total_profit",
+        ])
+
+    for col in currency_columns:
+        table[col] = table[col].map(
+            lambda value: safe_format_currency(value, currency)
         )
 
     return table
@@ -56,9 +70,9 @@ def display_moves_table(
     ]
 
     for col in currency_columns:
-        if col in table:
+        if col in table.columns:
             table[col] = table[col].map(
-                lambda x: format_currency(x, currency)
+                lambda value: safe_format_currency(value, currency)
             )
 
     return table
