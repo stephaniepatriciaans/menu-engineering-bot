@@ -52,7 +52,7 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
 
     detected_delimiter = max(
         delimiter_counts,
-        key=delimiter_counts.get,
+        key=lambda delimiter: delimiter_counts[delimiter],
     )
 
     if delimiter_counts[detected_delimiter] == 0:
