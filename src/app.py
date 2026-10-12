@@ -71,6 +71,7 @@ from ui.mapping import mapping_selectors
 from ui.sidebar import render_sidebar
 from ui.cost_settings import render_cost_settings
 from ui.sections.sales_trends import render_sales_trends
+from ui.sections.popular_items import render_popular_items
 
 from ui.data_upload import (
     load_uploaded_sales,
@@ -630,47 +631,7 @@ with analysis_tabs[0]:
     # Feature 9: Popular Items navigation tab
     # -----------------------------------------------------------------
     with revenue_tabs[3]:
-
-        # Outer card — entire Popular Items section
-        with st.container(border=True):
-
-            render_chart_header(
-                "Top Selling Menu Items",
-                "Discover which menu items sell the most units.",
-            )
-
-            # Preserve existing top-selling item calculations.
-            top_volume = summary.nlargest(
-                min(15, len(summary)),
-                "total_units_sold",
-            )
-
-            popular_items_chart = px.bar(
-                top_volume,
-                x="total_units_sold",
-                y="item",
-                orientation="h",
-                title="Top Items by Units Sold",
-                labels={
-                    "total_units_sold": "Units Sold",
-                    "item": "Menu Item",
-                },
-            )
-
-            # Apply reusable Modern Fintech chart styling.
-            popular_items_chart = style_chart(
-                popular_items_chart,
-                title="Top Items by Units Sold",
-            )
-
-            # Inner card — chart only
-            with st.container(border=True):
-                st.plotly_chart(
-                    popular_items_chart,
-                    width="stretch",
-                    config={"displayModeBar": False},
-                )
-
+        render_popular_items(df)
 
     # -----------------------------------------------------------------
     # Feature 9: Day Analysis navigation tab
