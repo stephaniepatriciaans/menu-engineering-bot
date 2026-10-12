@@ -8,12 +8,10 @@ from unittest.mock import Mock
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from ui.sections import menu_item_explorer
-
 
 BASE_COLUMNS = [
     "item",

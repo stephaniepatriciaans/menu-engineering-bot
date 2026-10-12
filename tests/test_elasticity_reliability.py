@@ -13,7 +13,6 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from ui.sections import elasticity_reliability
 
-
 EXPECTED_COLUMNS = [
     "item",
     "category",

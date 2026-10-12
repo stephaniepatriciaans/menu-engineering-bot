@@ -1,32 +1,31 @@
 """Tests for chronological model evaluation"""
 
+import json
 import sys
 from pathlib import Path
 
 import pandas as pd
 import pytest
-import json
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-
-from model_evaluation import (
-    chronological_split,
-    calculate_forecast_metrics,
-    predict_historical_average,
-    evaluate_historical_average,
-    predict_elasticity_demand,
-    compare_demand_forecasts,
-    evaluate_all_items,
-    summarize_model_coverage,
-    build_model_evaluation_report,
-    export_model_evaluation_report,
-)
 
 from config import (
     MIN_ELASTICITY_OBSERVATIONS,
     MIN_ELASTICITY_PRICE_POINTS,
     MIN_RELATIVE_PRICE_RANGE,
+)
+from model_evaluation import (
+    build_model_evaluation_report,
+    calculate_forecast_metrics,
+    chronological_split,
+    compare_demand_forecasts,
+    evaluate_all_items,
+    evaluate_historical_average,
+    export_model_evaluation_report,
+    predict_elasticity_demand,
+    predict_historical_average,
+    summarize_model_coverage,
 )
 
 

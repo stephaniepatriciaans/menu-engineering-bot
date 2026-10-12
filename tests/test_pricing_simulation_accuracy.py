@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from analysis import(
+from analysis import (
     recommend_price_moves,
     simulate_price_change,
     simulate_pricing_scenarios,
