@@ -129,19 +129,41 @@ The elasticity-based model achieved lower held-out MAE than the historical-avera
 
 > **Important:** The synthetic dataset intentionally contains a simulated price–demand relationship. These results demonstrate the evaluation workflow under controlled conditions. They do not establish real-world forecasting accuracy, causal pricing effects, or guaranteed business outcomes.
 
-#### Current Limitations and Planned Improvements
 
-The current implementation requires sufficient historical evidence for the elasticity model before marking an item as successfully evaluated.
+#### Universal Model Evaluation — Baseline-Only Support
 
-For real-world datasets with constant selling prices, historical-average forecasting may still be possible even when elasticity-based forecasting is unsupported.
+The application supports three evaluation outcomes:
 
-A planned improvement will support three independent evaluation states:
+1. **Both Models Evaluated:** Historical-average and elasticity-based forecasts can be evaluated and compared.
+2. **Baseline Only:** Historical-average forecasting can be evaluated, but insufficient pricing evidence prevents elasticity evaluation.
+3. **Insufficient Evidence:** Neither model has sufficient evidence for reliable evaluation.
 
-1. **Baseline + Elasticity:** Both models can be evaluated and compared.
-2. **Baseline Only:** Historical-average forecasting is supported, but elasticity evaluation lacks sufficient evidence.
-3. **Insufficient Data:** Neither model has sufficient evidence for evaluation.
+Model eligibility is handled independently, allowing baseline metrics to remain available even when historical prices are constant.
 
-This improvement will make the forecasting evaluation more useful across real-world POS datasets without weakening its reliability safeguards.
+The dashboard reports:
+
+- Baseline Coverage
+- Two-Model Comparison Coverage
+- Baseline-Only Item Count
+- Mean Baseline MAE, RMSE, and WAPE
+- Item-Level Evaluation Status
+
+Missing elasticity metrics are reported as unavailable rather than zero.
+
+**Example — Synthetic Cafe Dataset**
+
+Using a chronological 70/30 training/test split:
+
+- Total menu items: 15
+- Baseline evaluated: 15
+- Baseline coverage: 100%
+- Two-model comparisons: 0
+- Comparison coverage: 0%
+
+These results demonstrate evaluation coverage, not forecasting accuracy or causal pricing effects.
+
+Regression tests verify baseline-only eligibility, coverage calculations, report output, and key Streamlit dashboard metrics.
+
 
 ### 5. AI-generated decision memo
 
@@ -303,7 +325,6 @@ PYTHONPATH=src python3 -m pytest --cov=src --cov-report=term-missing -q
 - **No causal price-optimization claim.** Observational elasticity can be confounded by marketing, seasonality, geography and product substitution.
 - **No invented costs.** Actual costs and estimated-cost scenarios are clearly distinguished.
 - **No invented model accuracy.** The two-model evaluation currently requires eligible price histories; unsupported items are flagged instead of receiving made-up scores.
-- **Baseline-only evaluation is not implemented yet.** Without sufficient elasticity evidence, the existing item comparison may omit baseline metrics that could otherwise be calculable.
 - **Scenario outputs are conditional.** Modeled best/base/worst cases are not prediction intervals, guarantees or real-world safety certifications.
 - **Memo checks have limited scope.** The AI memo still needs human review.
 - **Upload performance depends on available memory and environment.** The app has not been presented as a production-hosted service.
