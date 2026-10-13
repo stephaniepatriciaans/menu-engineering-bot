@@ -67,42 +67,81 @@ In the illustrated **external coffee-shop / 30%-of-price assumed-cost scenario**
 
 The model displays sensitivity to elasticity uncertainty and labels low-confidence historical estimates and prior-based assumptions. Historical correlations can be affected by promotions, seasonality, store differences, and other factors.
 
-### 4. Model Evaluation — backtesting with eligibility safeguards
+### 4. Model Evaluation — Backtesting with Eligibility Safeguards
 
-The **Model Evaluation** tab compares a simple historical-average daily-demand forecast against a log-log elasticity-based forecast on **later recorded dates**. Test-period prices are supplied as known inputs, while test-period sales quantities are excluded from model fitting.
+The **Model Evaluation** tab evaluates historical demand forecasting performance by comparing a **historical-average baseline** against a **log-log elasticity-based forecasting model**.
 
-The evaluation reports **MAE, RMSE, and WAPE** only where the required evidence exists. It does not assume missing transaction dates represent zero sales.
+The evaluation uses a chronological train/test split, training on earlier recorded dates and testing on later dates. Test-period prices are treated as known inputs, while test-period sales quantities are excluded from model fitting.
 
-![Model Evaluation displaying insufficient historical pricing evidence](assets/model_evaluation.png)
+The evaluation reports three metrics when sufficient evidence is available:
 
-*Original Synthetic Cafe: 15 items, 0 eligible for the **two-model comparison** because historical training prices do not vary sufficiently. This is a meaningful limitation, not a prediction of zero accuracy.*
+- **MAE (Mean Absolute Error):** Average absolute difference between predicted and actual demand.
+- **RMSE (Root Mean Squared Error):** Measures forecast errors while placing greater weight on larger errors.
+- **WAPE (Weighted Absolute Percentage Error):** Measures absolute forecast error relative to total actual demand.
 
-![Evaluation methodology and JSON/CSV exports](assets/model_evaluation_methodology.png)
+Missing transaction dates are not automatically assumed to represent zero sales.
 
-**Evaluation-ready synthetic example:** A separately generated, clearly labeled test dataset contains 8 menu items over 240 simulated sales days with controlled historical price variation. In a local evaluation run, **8/8 items were eligible**, and the elasticity-based model had lower holdout MAE than the historical-average baseline for all 8. Because the generating process intentionally includes a price–demand relationship, these results demonstrate the evaluation workflow **on synthetic data only**; they do not establish real-business generalization or causal performance.
+#### Data Eligibility and Reliability Safeguards
 
-The currently implemented comparison requires sufficient evidence for the elasticity model before marking an item `evaluated`. **Baseline-only reporting for constant-price datasets is a planned improvement**, not an existing capability.
+The system requires sufficient historical observations, distinct training prices, and meaningful price variation before evaluating the elasticity model.
+
+When these requirements are not met, the application reports **insufficient evidence** instead of generating unsupported accuracy metrics.
+
+![Model Evaluation — Insufficient Historical Evidence](assets/model_evaluation.png)
+
+*Original Synthetic Cafe dataset: 15 menu items, with 0 eligible for the two-model comparison due to insufficient historical training-price variation. This represents a data limitation, not zero predictive accuracy.*
+
+The dashboard also provides evaluation methodology details and downloadable JSON/CSV reports.
+
+![Model Evaluation Methodology and Downloads](assets/model_evaluation_methodology.png)
 
 #### Successful Model Evaluation — Synthetic Backtesting Results
 
-To demonstrate the forecasting evaluation pipeline, a separate evaluation-ready synthetic dataset was generated with 8 menu items, 240 days of simulated sales, and controlled historical price variation.
+A separate **evaluation-ready synthetic dataset** was created to demonstrate the complete forecasting evaluation workflow.
 
-Using a chronological 70/30 train/test split, the evaluation produced:
+The dataset contains:
+
+- **8 menu items**
+- **240 simulated sales days**
+- Multiple historical selling prices
+- Simulated demand fluctuations and price–demand relationships
+
+Using a chronological **70/30 train/test split**, the following results were obtained:
 
 | Evaluation Metric | Result |
 |---|---|
 | Total menu items | 8 |
 | Successfully evaluated | 8 |
 | Insufficient evidence | 0 |
-| Evaluation coverage | 100% |
-| Items where elasticity model had lower MAE | 8 of 8 |
+| Evaluation coverage | **100%** |
+| Items where the elasticity model achieved lower MAE | **8 of 8** |
 
 ![Successful Model Evaluation Results](assets/model_evaluation_results.png)
 
-The dashboard compares historical-average and elasticity-based forecasts using MAE, RMSE, and WAPE, with item-level results and downloadable JSON/CSV reports.
+**Example: Latte Demand Forecasting**
 
-> **Important:** This evaluation uses synthetic data with an intentionally simulated price-demand relationship. These results demonstrate the evaluation workflow, not validated real-world predictive accuracy or causal effects.
+| Metric | Historical-Average Baseline | Elasticity-Based Model |
+|---|---:|---:|
+| MAE | 13.61 | **7.60** |
+| RMSE | 16.88 | **9.63** |
 
+The elasticity-based model achieved lower held-out MAE than the historical-average baseline for all eight simulated menu items.
+
+> **Important:** The synthetic dataset intentionally contains a simulated price–demand relationship. These results demonstrate the evaluation workflow under controlled conditions. They do not establish real-world forecasting accuracy, causal pricing effects, or guaranteed business outcomes.
+
+#### Current Limitations and Planned Improvements
+
+The current implementation requires sufficient historical evidence for the elasticity model before marking an item as successfully evaluated.
+
+For real-world datasets with constant selling prices, historical-average forecasting may still be possible even when elasticity-based forecasting is unsupported.
+
+A planned improvement will support three independent evaluation states:
+
+1. **Baseline + Elasticity:** Both models can be evaluated and compared.
+2. **Baseline Only:** Historical-average forecasting is supported, but elasticity evaluation lacks sufficient evidence.
+3. **Insufficient Data:** Neither model has sufficient evidence for evaluation.
+
+This improvement will make the forecasting evaluation more useful across real-world POS datasets without weakening its reliability safeguards.
 
 ### 5. AI-generated decision memo
 
