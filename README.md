@@ -83,6 +83,27 @@ The evaluation reports **MAE, RMSE, and WAPE** only where the required evidence 
 
 The currently implemented comparison requires sufficient evidence for the elasticity model before marking an item `evaluated`. **Baseline-only reporting for constant-price datasets is a planned improvement**, not an existing capability.
 
+#### Successful Model Evaluation — Synthetic Backtesting Results
+
+To demonstrate the forecasting evaluation pipeline, a separate evaluation-ready synthetic dataset was generated with 8 menu items, 240 days of simulated sales, and controlled historical price variation.
+
+Using a chronological 70/30 train/test split, the evaluation produced:
+
+| Evaluation Metric | Result |
+|---|---|
+| Total menu items | 8 |
+| Successfully evaluated | 8 |
+| Insufficient evidence | 0 |
+| Evaluation coverage | 100% |
+| Items where elasticity model had lower MAE | 8 of 8 |
+
+![Successful Model Evaluation Results](assets/model_evaluation_results.png)
+
+The dashboard compares historical-average and elasticity-based forecasts using MAE, RMSE, and WAPE, with item-level results and downloadable JSON/CSV reports.
+
+> **Important:** This evaluation uses synthetic data with an intentionally simulated price-demand relationship. These results demonstrate the evaluation workflow, not validated real-world predictive accuracy or causal effects.
+
+
 ### 5. AI-generated decision memo
 
 The app sends structured, deterministic results to Anthropic Claude for a management-oriented narrative. It performs limited pattern-based checks on selected financial statements and invalidates a memo when its underlying inputs or pricing scenario changes. Human review is still required.
