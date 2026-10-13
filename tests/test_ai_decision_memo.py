@@ -3,7 +3,6 @@
 import sys
 from contextlib import nullcontext
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any, cast
 from unittest.mock import Mock
 

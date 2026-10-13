@@ -14,6 +14,7 @@ from data_adapter import (
     validate_mapping,
 )
 
+
 @pytest.mark.parametrize("delimiter", [",", "|", ";", "\t"])
 def test_read_delimited_csv_supported_delimiters(delimiter):
     text = (

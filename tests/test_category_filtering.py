@@ -76,7 +76,7 @@ def test_category_group_added_to_uploaded_data():
         "units_sold": [10, 5, 8],
     })
 
-    result, warnings = adapt_to_canonical(raw_df)
+    result, _warnings = adapt_to_canonical(raw_df)
 
     assert "category_group" in result.columns
 

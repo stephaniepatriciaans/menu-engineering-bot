@@ -10,7 +10,6 @@ import pandas as pd
 import pytest
 from pandas.testing import assert_frame_equal
 
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
