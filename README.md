@@ -254,6 +254,6 @@ PYTHONPATH=src python3 -m pytest --cov=src --cov-report=term-missing -q
 
 ## About
 
-Created by **Stephanie Anshell** · [Portfolio](https://stephaniepatriciaans.github.io/portfolio/)
+Created by **Stephanie Patricia Anshell** · [Portfolio](https://stephaniepatriciaans.github.io/portfolio/)
 
 This project demonstrates data engineering, applied analytics, conservative statistical evaluation, scenario-based pricing, AI integration with deterministic numerical safeguards, and tested Streamlit application development.
