@@ -5,10 +5,10 @@ import streamlit as st
 
 from data_adapter import (
     NOT_AVAILABLE,
-    read_delimited_csv,
+    apply_estimated_cost_percentage,
     detect_column_mapping,
     merge_cost_reference,
-    apply_estimated_cost_percentage,
+    read_delimited_csv,
 )
 
 
@@ -126,10 +126,13 @@ def render_cost_settings(
                             for warning in cost_warnings:
                                 st.warning(warning)
 
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001
+                        # Cost CSV processing may fail during parsing,
+                        # validation, or merging. Keep the dashboard usable.
                         st.error(
                             f"Could not use the cost CSV: {exc}"
                         )
+
 
             elif (
                 cost_option

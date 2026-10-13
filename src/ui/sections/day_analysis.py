@@ -6,8 +6,8 @@ import streamlit as st
 
 from config import format_currency
 from dashboard_utils import (
-    compare_weekday_weekend,
     analyze_day_of_week,
+    compare_weekday_weekend,
 )
 from ui.charts import style_chart
 from ui.components import render_chart_header

@@ -5,8 +5,8 @@ import plotly.express as px
 import streamlit as st
 
 from dashboard_utils import (
-    analyze_peak_hours,
     analyze_hourly_revenue,
+    analyze_peak_hours,
 )
 from ui.charts import style_chart
 from ui.components import render_chart_header

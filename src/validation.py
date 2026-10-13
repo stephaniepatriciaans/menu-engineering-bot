@@ -92,16 +92,38 @@ def validate_sales_df(df: pd.DataFrame) -> tuple[pd.DataFrame | None, list[str],
         df["date"] = df["date"].dt.normalize()
 
 
+    # Validate prices and quantities, including infinity.
     for col in ["price", "units_sold"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
-        bad = df[col].isna()
-        if bad.any():
-            errors.append(f"{int(bad.sum())} rows have invalid values in `{col}`.")
 
-    df["unit_cost"] = pd.to_numeric(df["unit_cost"], errors="coerce")
+        bad = (
+            df[col].isna()
+            | df[col].isin([float("inf"), float("-inf")])
+        )
+
+        if bad.any():
+            errors.append(
+                f"{int(bad.sum())} rows have invalid values in `{col}`."
+            )
+
+    # Unit cost is optional, but infinity is invalid.
+    df["unit_cost"] = pd.to_numeric(
+        df["unit_cost"],
+        errors="coerce",
+    )
+
+    invalid_cost = df["unit_cost"].isin(
+        [float("inf"), float("-inf")]
+    )
+
+    if invalid_cost.any():
+        errors.append(
+            f"{int(invalid_cost.sum())} rows have non-finite unit costs."
+        )
 
     if errors:
         return None, errors, warnings
+
 
     if (df["price"] <= 0).any():
         errors.append("Price must be greater than 0.")

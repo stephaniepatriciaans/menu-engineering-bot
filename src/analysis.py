@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping, Sequence
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
+from typing import cast
 
 import numpy as np
 import pandas as pd
@@ -54,7 +56,7 @@ def estimate_elasticity(
 
     # Aggregate transaction-level exports to daily item demand at each observed price.
     daily = work.groupby(["date", "price"], as_index=False)["units_sold"].sum()
-    observations = int(len(daily))
+    observations = len(daily)
     price_points = int(daily["price"].nunique())
     if daily.empty:
         fallback = _fallback_elasticity(category, category_priors)
@@ -157,12 +159,12 @@ def build_item_summary(
             "contribution_margin_%": np.nan,
             "total_profit": np.nan,
             "quadrant": None,
-            "elasticity": round(float(elasticity_info["elasticity"]), 2),
+            "elasticity": round(float(cast(float, elasticity_info["elasticity"])), 2),
             "elasticity_source": elasticity_info["elasticity_source"],
             "elasticity_confidence": elasticity_info["elasticity_confidence"],
-            "price_points": int(elasticity_info["price_points"]),
-            "observations": int(elasticity_info["observations"]),
-            "price_variation_%": float(elasticity_info["price_variation_pct"]),
+            "price_points": int(cast(int, elasticity_info["price_points"])),
+            "observations": int(cast(int, elasticity_info["observations"])),
+            "price_variation_%": float(cast(float, elasticity_info["price_variation_pct"])),
         }
 
         if full_cost_available:
@@ -201,7 +203,6 @@ def build_item_summary(
     return summary.sort_values("total_revenue", ascending=False).reset_index(drop=True)
 
 
-
 def simulate_price_change(
     row: pd.Series,
     pct_change: float,
@@ -219,6 +220,11 @@ def simulate_price_change(
     if pd.isna(row.get("unit_cost")):
         raise ValueError(
             "Price/profit simulation requires unit cost data."
+        )
+
+    if not math.isfinite(pct_change):
+        raise ValueError(
+            "Price change must be finite."
         )
 
     if not -1.0 < pct_change:
@@ -247,8 +253,13 @@ def simulate_price_change(
         rounding=ROUND_HALF_UP,
     )
 
+    if old_price_dec <= 0:
+        raise ValueError(
+            "Original price must round to a positive selling price."
+        )
+
     new_price_dec = (
-        old_price_dec * (Decimal("1") + requested_change_dec)
+        old_price_dec * (Decimal(1) + requested_change_dec)
     ).quantize(
         cent,
         rounding=ROUND_HALF_UP,
@@ -270,6 +281,19 @@ def simulate_price_change(
 
     old_daily_units = float(row["avg_daily_units"])
     elasticity = float(row["elasticity"])
+
+    if (
+        not math.isfinite(old_daily_units)
+        or old_daily_units < 0
+    ):
+        raise ValueError(
+            "Average daily units must be nonnegative and finite."
+        )
+
+    if not math.isfinite(elasticity):
+        raise ValueError(
+            "Elasticity must be finite."
+        )
 
     # Calculate demand response using the actual change.
     pct_qty_change = elasticity * actual_pct_change
@@ -334,44 +358,136 @@ def assess_pricing_reliability(
         if confidence == "high":
             return (
                 "Historical estimate — review required",
-                "Historical estimate with higher model confidence. "
-                "Validate against promotions, seasonality, and "
-                "store differences before changing prices.",
+                (
+                    "Historical estimate with higher model confidence. "
+                    "Validate against promotions, seasonality, and "
+                    "store differences before changing prices."
+                ),
             )
 
         return (
             "Exploratory — low-confidence estimate",
-            "Historical elasticity is low or uncertain confidence. "
-            "Do not implement the suggested price change "
-            "without additional validation.",
+            (
+                "Historical elasticity is low or uncertain confidence. "
+                "Do not implement the suggested price change "
+                "without additional validation."
+            ),
         )
 
     if source == "category_prior":
         return (
             "Exploratory — category assumption",
-            "Elasticity is assumed from the product category, "
-            "not estimated from this item's price history.",
+            (
+                "Elasticity is assumed from the product category, "
+                "not estimated from this item's price history."
+            ),
         )
 
     if source == "default_prior":
         return (
             "Exploratory — default assumption",
-            "Elasticity is a general assumption. "
-            "No reliable item-specific elasticity estimate "
-            "is available.",
+            (
+                "Elasticity is a general assumption. "
+                "No reliable item-specific elasticity estimate "
+                "is available."
+            ),
         )
 
     return (
         "Exploratory — unknown reliability",
-        "Elasticity reliability is unknown. "
-        "Review the source data before using this result.",
+        (
+            "Elasticity reliability is unknown. "
+            "Review the source data before using this result."
+        ),
     )
 
+
+def simulate_pricing_scenarios(
+    row: pd.Series,
+    pct_change: float,
+    elasticity_uncertainty: float = 0.25,
+) -> pd.DataFrame:
+    """Simulate optimistic, central, and pessimistic outcomes.
+
+    Best and worst cases are ranked by simulated contribution
+    profit, regardless of price-change direction.
+
+    Sensitivity assumptions are not statistical confidence
+    intervals or guaranteed outcomes.
+    """
+    if (
+        not math.isfinite(elasticity_uncertainty)
+        or not 0 <= elasticity_uncertainty <= 1
+    ):
+        raise ValueError(
+            "Elasticity uncertainty must be between 0 and 1."
+        )
+
+    base_elasticity = float(row["elasticity"])
+
+    if not math.isfinite(base_elasticity):
+        raise ValueError("Elasticity must be finite.")
+
+    assumed_elasticities = [
+        base_elasticity * (1 - elasticity_uncertainty),
+        base_elasticity,
+        base_elasticity * (1 + elasticity_uncertainty),
+    ]
+
+    simulations: list[dict[str, object]] = []
+
+    for assumed_elasticity in assumed_elasticities:
+        scenario_row = row.copy()
+        scenario_row["elasticity"] = assumed_elasticity
+
+        simulation = simulate_price_change(
+            scenario_row,
+            pct_change,
+        )
+
+        simulation["assumed_elasticity"] = assumed_elasticity
+        simulation["uncertainty_assumption_pct"] = (
+            elasticity_uncertainty * 100
+        )
+
+        simulations.append(simulation)
+
+    # The central assumption remains the base case.
+    base = simulations[1]
+
+    # Order optimistic/pessimistic outcomes by profit.
+    alternatives = [
+        simulations[0],
+        simulations[2],
+    ]
+
+    alternatives.sort(
+        key=lambda result: float(
+            cast(float, result["daily_profit_delta"])
+        ),
+        reverse=True,
+    )
+
+    best, worst = alternatives
+
+    best["scenario"] = "best_case"
+    base["scenario"] = "base_case"
+    worst["scenario"] = "worst_case"
+
+    return pd.DataFrame([
+        best,
+        base,
+        worst,
+    ])
 
 
 def recommend_price_moves(
     summary: pd.DataFrame,
     price_changes: Sequence[float] | None = None,
+    max_price_increase: float | None = None,
+    min_margin_pct: float | None = None,
+    elasticity_uncertainty: float = 0.25,
+    selection_mode: str = "base_case",
 ) -> pd.DataFrame:
     """
     Select the highest-profit simulated price scenario.
@@ -382,6 +498,45 @@ def recommend_price_moves(
     These are scenarios, not automatically approved price changes.
     """
 
+    if selection_mode not in {"base_case", "conservative"}:
+        raise ValueError(
+            "Selection mode must be 'base_case' or 'conservative'."
+        )
+
+    if (
+        not math.isfinite(elasticity_uncertainty)
+        or not 0 <= elasticity_uncertainty <= 1
+    ):
+        raise ValueError(
+            "Elasticity uncertainty must be between 0 and 1."
+        )
+
+    # Validate maximum permitted price increase
+    if (
+        max_price_increase is not None
+        and (
+            not math.isfinite(max_price_increase)
+            or max_price_increase < 0
+        )
+    ):
+        raise ValueError(
+            "Maximum price increase must be finite and nonnegative."
+        )
+
+
+    # Validate minimum contribution margin
+    if (
+        min_margin_pct is not None
+        and (
+            not math.isfinite(min_margin_pct)
+            or not 0 <= min_margin_pct <= 100
+        )
+    ):
+        raise ValueError(
+            "Minimum margin must be between 0 and 100 percent."
+        )
+
+    # Existing code continues here.
     if summary is None or summary.empty:
         return pd.DataFrame()
 
@@ -414,19 +569,102 @@ def recommend_price_moves(
 
     for _, row in summary.iterrows():
 
-        # Preserve your existing rounded-price simulation.
+        # Generate candidate price simulations.
         sims = [
             simulate_price_change(row, pct)
             for pct in candidates
         ]
 
+        # Enforce maximum permitted price increase.
+        # Compare actual cent-rounded selling prices.
+        if max_price_increase is not None:
+            old_price = float(row["price"])
+            max_allowed_price = old_price * (
+                1.0 + max_price_increase
+            )
+
+        # Generate candidate price simulations.
+        sims = [
+            simulate_price_change(row, pct)
+            for pct in candidates
+        ]
+
+        # Maximum price increase based on rounded selling prices.
+        if max_price_increase is not None:
+            old_price = float(row["price"])
+
+            max_allowed_price = old_price * (
+                1.0 + max_price_increase
+            )
+
+            sims = [
+                sim
+                for sim in sims
+                if float(cast(float, sim["new_price"]))
+                <= max_allowed_price + 1e-9
+            ]
+
+        # Minimum contribution margin.
+        if min_margin_pct is not None:
+            unit_cost = float(row["unit_cost"])
+
+            sims = [
+                sim
+                for sim in sims
+                if (
+                    (
+                        float(cast(float, sim["new_price"]))
+                        - unit_cost
+                    )
+                    / float(cast(float, sim["new_price"]))
+                    * 100
+                ) >= min_margin_pct - 1e-9
+            ]
+
         if not sims:
             continue
 
-        best = max(
-            sims,
-            key=lambda s: float(s["daily_profit_delta"])
-        )
+
+        if selection_mode == "base_case":
+            best = max(
+                sims,
+                key=lambda s: float(
+                    cast(float, s["daily_profit_delta"])
+                ),
+            )
+        else:
+            # Conservative mode evaluates every feasible candidate.
+            scored_candidates = []
+
+            for sim in sims:
+                candidate_change = (
+                    float(cast(float, sim["new_price"]))
+                    / float(cast(float, sim["old_price"]))
+                    - 1.0
+                )
+
+                scenario_df = simulate_pricing_scenarios(
+                    row,
+                    pct_change=candidate_change,
+                    elasticity_uncertainty=elasticity_uncertainty,
+                )
+
+                worst_delta = float(
+                    scenario_df.loc[
+                        scenario_df["scenario"] == "worst_case",
+                        "daily_profit_delta",
+                    ].iloc[0]
+                )
+
+                scored_candidates.append(
+                    (worst_delta, sim)
+                )
+
+            best = max(
+                scored_candidates,
+                key=lambda pair: pair[0],
+            )[1]
+
 
         # Retrieve elasticity information.
         source = str(
@@ -455,10 +693,48 @@ def recommend_price_moves(
         best["pricing_reliability"] = reliability
         best["reliability_reason"] = reliability_reason
 
-        # All simulations require review.
-        best["requires_review"] = True
+        # All simulations require review
+        recommended_change = (
+            float(cast(float, best["new_price"]))
+            / float(cast(float, best["old_price"]))
+            - 1.0
+        )
 
+        scenario_results = simulate_pricing_scenarios(
+            row,
+            pct_change=recommended_change,
+            elasticity_uncertainty=elasticity_uncertainty,
+        )
+
+        scenario_by_name = (
+            scenario_results.set_index("scenario")
+            .to_dict(orient="index")
+        )
+
+        best_case_delta = float(
+            scenario_by_name["best_case"]["daily_profit_delta"]
+        )
+        base_case_delta = float(
+            scenario_by_name["base_case"]["daily_profit_delta"]
+        )
+        worst_case_delta = float(
+            scenario_by_name["worst_case"]["daily_profit_delta"]
+        )
+
+        # Explicitly label these as sensitivity scenarios.
+        best["best_case_daily_profit_delta"] = best_case_delta
+        best["base_case_daily_profit_delta"] = base_case_delta
+        best["worst_case_daily_profit_delta"] = worst_case_delta
+        best["scenario_uncertainty_pct"] = (elasticity_uncertainty * 100)
+
+        # A worst-case loss requires additional caution, but
+        # recommendations are never automatically approved.
+        best["worst_case_loss"] = worst_case_delta < 0
+
+        best["requires_review"] = True
         best_moves.append(best)
+
+        best["selection_mode"] = selection_mode
 
     if not best_moves:
         return pd.DataFrame()

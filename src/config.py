@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Mapping
+from collections.abc import Mapping
 
 CANONICAL_FIELDS = ["date", "item", "category", "price", "unit_cost", "units_sold", "transaction_time"]
 CORE_FIELDS = ["date", "item", "price", "units_sold"]
@@ -204,7 +204,7 @@ def category_prior(category: object, priors: Mapping[str, float] | None = None) 
     return float(DEFAULT_ELASTICITY_PRIOR), "default_prior"
 
 
-def format_currency(value: float | int | None, currency: str = "USD") -> str:
+def format_currency(value: float | None, currency: str = "USD") -> str:
     """Format money without hardcoding a single currency symbol in the UI."""
     if value is None:
         return "—"

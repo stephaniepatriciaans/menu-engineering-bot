@@ -2,9 +2,8 @@
 
 from collections.abc import Iterable
 
-import streamlit as st
-
 import pandas as pd
+import streamlit as st
 
 from data_adapter import read_delimited_csv
 from validation import audit_source_transactions

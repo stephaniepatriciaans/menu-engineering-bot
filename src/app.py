@@ -7,8 +7,8 @@ import sys
 
 import pandas as pd
 import streamlit as st
-
 from dotenv import load_dotenv
+
 from pdf_report import generate_memo_pdf
 
 load_dotenv()
@@ -19,16 +19,8 @@ sys.path.append(os.path.dirname(__file__))
 # FROM ANALYSIS
 # ================================================================
 from analysis import (
-    build_item_summary, 
+    build_item_summary,
     load_sales,
-)
-
-# ================================================================
-# FROM DASHBOARD UTILS
-# ================================================================
-from dashboard_utils import (
-    filter_by_date_range,
-    add_transaction_datetime,
 )
 
 # ================================================================
@@ -36,8 +28,13 @@ from dashboard_utils import (
 # ================================================================
 from config import (
     CANONICAL_FIELDS,
-    CATEGORY_GROUPS,
-    classify_menu_item,
+)
+
+# ================================================================
+# FROM DASHBOARD UTILS
+# ================================================================
+from dashboard_utils import (
+    add_transaction_datetime,
 )
 
 # ================================================================
@@ -47,6 +44,41 @@ from data_adapter import (
     adapt_to_canonical,
     validate_mapping,
 )
+from ui.capabilities import build_capability_report
+
+# ================================================================
+# FROM UI
+# ================================================================
+from ui.components import (
+    render_business_header,
+    render_kpi_cards,
+    render_validation_overview,
+)
+from ui.cost_settings import render_cost_settings
+from ui.data_upload import (
+    load_uploaded_sales,
+    render_source_audit,
+)
+from ui.filters import render_category_filter, render_date_filter
+from ui.mapping import mapping_selectors
+
+# ================================================================
+# FROM UI SECTIONS
+# ================================================================
+from ui.sections.ai_decision_memo import render_ai_decision_memo
+from ui.sections.day_analysis import render_day_analysis
+from ui.sections.elasticity_reliability import render_elasticity_reliability
+from ui.sections.hourly_analysis import render_hourly_analysis
+from ui.sections.menu_item_explorer import render_menu_item_explorer
+from ui.sections.menu_quadrants import render_menu_quadrants
+from ui.sections.model_evaluation import render_model_evaluation
+from ui.sections.popular_items import render_popular_items
+from ui.sections.pricing_recommendations import render_pricing_recommendations
+from ui.sections.sales_trends import render_sales_trends
+
+# ================================================================
+from ui.sidebar import render_sidebar
+from ui.styles import apply_dashboard_styles
 
 # ================================================================
 # FROM VALIDATION
@@ -57,40 +89,6 @@ from validation import (
 )
 
 # ================================================================
-# FROM UI
-# ================================================================
-from ui.components import (
-    render_kpi_cards,
-    render_business_header,
-    render_validation_overview,
-)
-
-from ui.styles import apply_dashboard_styles
-from ui.mapping import mapping_selectors
-from ui.sidebar import render_sidebar
-from ui.cost_settings import render_cost_settings
-
-from ui.data_upload import (
-    load_uploaded_sales,
-    render_source_audit,
-)
-
-
-# ================================================================
-# FROM UI SECTIONS
-# ================================================================
-from ui.sections.sales_trends import render_sales_trends
-from ui.sections.popular_items import render_popular_items
-from ui.sections.day_analysis import render_day_analysis
-from ui.sections.hourly_analysis import render_hourly_analysis
-from ui.sections.elasticity_reliability import render_elasticity_reliability
-from ui.sections.menu_quadrants import render_menu_quadrants
-from ui.sections.menu_item_explorer import render_menu_item_explorer
-from ui.sections.pricing_recommendations import render_pricing_recommendations
-from ui.sections.ai_decision_memo import render_ai_decision_memo
-
-
-# ================================================================
 st.set_page_config(
     page_title="Menu Engineering Bot",
     page_icon="📊",
@@ -99,12 +97,6 @@ st.set_page_config(
 )
 apply_dashboard_styles()
 
-
-def capability_line(ok: bool, label: str, reason: str = "") -> str:
-    icon = "✓" if ok else "✗"
-    suffix = f" — {reason}" if reason else ""
-    return f"{icon} {label}{suffix}"
-    
 st.title("Menu Engineering Bot")
 st.caption(
     "Universal menu/POS data adapter + deterministic pricing analytics + AI explanation. "
@@ -176,7 +168,9 @@ elif uploaded is not None:
 
         render_source_audit(source_audit_messages)
 
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
+        # CSV uploads can fail during parsing, decoding, or source auditing.
+        # Show a user-friendly error instead of crashing the dashboard.
         st.error(
             f"Could not read or audit the CSV: {exc}"
         )
@@ -297,133 +291,11 @@ with st.expander("⚙️ Sales Filters", expanded=False):
 
     st.subheader("Filter sales by date")
 
-    # Preserve validated data before filtering
-    df = df.copy()
+    # Date filtering is handled by the reusable UI module.
+    df, start_date, end_date = render_date_filter(df)
 
-    # Make sure dates are pandas datetime values
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")
-
-    if df["date"].isna().all():
-        st.error(
-            "No valid transaction dates were found in this dataset."
-        )
-        st.stop()
-
-    if df["date"].isna().any():
-        missing_dates = int(df["date"].isna().sum())
-        st.warning(
-            f"{missing_dates:,} rows have invalid dates "
-            "and will be excluded from date-based analysis."
-        )
-        df = df.dropna(subset=["date"]).copy()
-
-    # Determine available dates from the uploaded dataset
-    min_date = df["date"].min().date()
-    max_date = df["date"].max().date()
-
-    # Date range selector
-    selected_date_range = st.date_input(
-        "Select a date range",
-        value=(min_date, max_date),
-        min_value=min_date,
-        max_value=max_date,
-        help="Choose the period you want to analyze.",
-        key="sales_date_range",
-    )
-
-    # Streamlit may temporarily return only one date
-    # while the user is selecting a range.
-    if len(selected_date_range) != 2:
-        st.info("Please select both a start date and an end date.")
-        st.stop()
-
-    start_date, end_date = selected_date_range
-
-
-    # Apply the tested, inclusive date range filter.
-    df = filter_by_date_range(
-        df,
-        start_date,
-        end_date,
-    )
-
-    if df.empty:
-        st.warning(
-            "No sales records exist for the selected date range."
-        )
-        st.stop()
-
-    st.caption(
-        f"Selected period: {start_date:%B %d, %Y} "
-        f"to {end_date:%B %d, %Y} "
-        f"— {len(df):,} sales rows."
-    )
-
-
-    # ================================================================
     # Category Filters
-    # ================================================================
-    st.header("Filter menu by category")
-
-    # Make sure the category grouping is available
-    # after validation, even if validation removes
-    # extra columns.
-    df = df.copy()
-
-    df["category_group"] = [
-        classify_menu_item(category, item)
-        for category, item in zip(df["category"], df["item"])
-    ]
-
-    # Show the main category filter
-    available_groups = [
-        group
-        for group in CATEGORY_GROUPS
-        if group in df["category_group"].unique()
-    ]
-
-    selected_groups = st.multiselect(
-        "Select food categories",
-        options=available_groups,
-        default=available_groups,
-        help="Choose Savory, Dessert, Drinks, or Other.",
-    )
-
-    # Apply broad-category filtering
-    filtered_df = df[
-        df["category_group"].isin(selected_groups)
-    ].copy()
-
-    # Optional detailed category filter
-    available_categories = sorted(
-        filtered_df["category"].dropna().astype(str).unique()
-    )
-
-    selected_categories = st.multiselect(
-        "Filter by detailed category (optional)",
-        options=available_categories,
-        default=available_categories,
-        help="For example: Coffee, Tea, Bakery, or Sandwich.",
-    )
-
-    filtered_df = filtered_df[
-        filtered_df["category"].isin(selected_categories)
-    ].copy()
-
-    if filtered_df.empty:
-        st.warning(
-            "No menu items match your selected categories. "
-            "Please select at least one category."
-        )
-        st.stop()
-
-    # Update the dataframe used by downstream analyses.
-    df = filtered_df
-
-    st.caption(
-        f"Showing {len(df):,} sales rows across "
-        f"{df['item'].nunique():,} unique menu items."
-    )
+    df = render_category_filter(df)
 
     # Recalculate capabilities and item summaries
     # using the selected categories.
@@ -435,6 +307,7 @@ with st.expander("⚙️ Sales Filters", expanded=False):
     capabilities["historical_elasticity_estimation"] = bool(
         not summary.empty and (summary["elasticity_source"] == "estimated").any()
     )
+
 
     # ================================================================
     # Feature 7: Create transaction timestamps for hourly analysis.
@@ -461,126 +334,28 @@ with st.expander("⚙️ Sales Filters", expanded=False):
 # ================================================================
 # Dataset capabilities
 # ================================================================
+# Build the dataset capability report from the filtered summary
+# Reporting logic lives in ui/capabilities.py
 
-# Count how many items have historical elasticity estimates.
-estimated_count = int(
-    (summary["elasticity_source"] == "estimated").sum()
+capability_text = build_capability_report(
+    summary=summary,
+    capabilities=capabilities,
+    cost_is_assumption=cost_is_assumption,
 )
 
-total_items = len(summary)
-
-# Count items using assumed elasticity values.
-category_prior_count = int(
-    (summary["elasticity_source"] == "category_prior").sum()
-)
-
-default_prior_count = int(
-    (summary["elasticity_source"] == "default_prior").sum()
-)
-
-# Count low-confidence historical estimates.
-low_confidence_count = int(
-    (
-        (summary["elasticity_source"] == "estimated")
-        & (
-            summary["elasticity_confidence"]
-            .astype(str)
-            .str.lower() == "low"
-        )
-    ).sum()
-)
-
-# Build the complete dataset capability report.
-capability_text = [
-    capability_line(
-        capabilities["revenue_analysis"],
-        "Revenue analysis",
-    ),
-
-    capability_line(
-        capabilities["popularity_analysis"],
-        "Popularity analysis",
-    ),
-
-    capability_line(
-        capabilities["sales_trend_analysis"],
-        "Sales trend analysis",
-    ),
-
-    capability_line(
-        capabilities["price_variation_analysis"],
-        "Price variation analysis",
-    ),
-
-    capability_line(
-        estimated_count > 0,
-        "Historical elasticity estimation",
-        (
-            f"{estimated_count} of {total_items} items estimated "
-            f"({low_confidence_count} low confidence); "
-            f"{category_prior_count} category priors, "
-            f"{default_prior_count} default priors"
-            if estimated_count > 0
-            else (
-                f"No historical estimates among {total_items} items; "
-                f"{category_prior_count} category priors, "
-                f"{default_prior_count} default priors"
-            )
-        ),
-    ),
-
-    capability_line(
-        capabilities["profit_analysis"],
-        "Profit analysis",
-        (
-            "unit cost missing or incomplete"
-            if not capabilities["profit_analysis"]
-            else (
-                "cost is a scenario assumption"
-                if cost_is_assumption
-                else ""
-            )
-        ),
-    ),
-
-    capability_line(
-        capabilities["menu_engineering_quadrants"],
-        "Menu Engineering Quadrants",
-        (
-            "unit cost missing or incomplete"
-            if not capabilities["menu_engineering_quadrants"]
-            else (
-                "based on assumed costs"
-                if cost_is_assumption
-                else ""
-            )
-        ),
-    ),
-
-    capability_line(
-        capabilities["price_optimization"],
-        "Profit-based price recommendations",
-        (
-            "unit cost missing or incomplete"
-            if not capabilities["price_optimization"]
-            else (
-                "scenario only"
-                if cost_is_assumption
-                else ""
-            )
-        ),
-    ),
-]
 
 # ================================================================
-# Modern Fintech — Active Filter Summary
+# Active Filter Summary
 # ================================================================
+# Count the food groups remaining after category filtering
+active_group_count = df["category_group"].nunique()
 
 st.caption(
     f"📅 {start_date:%b %d, %Y} – {end_date:%b %d, %Y}"
-    f"   |   🗂️ {len(selected_groups)} food groups"
+    f"   |   🗂️ {active_group_count} food groups"
     f"   |   🧾 {len(df):,} sales records"
 )
+
 
 # ================================================================
 # Modern Fintech — Collapsible Dataset Capabilities
@@ -592,10 +367,38 @@ with st.expander("View Dataset Capabilities", expanded=False):
         "and why certain features may be unavailable."
     )
 
-    st.code(
-        "\n".join(capability_text),
-        language=None,
-    )
+    for capability in capability_text:
+        if capability.startswith("✓ "):
+            available = True
+            description = capability[2:]
+        elif capability.startswith("✗ "):
+            available = False
+            description = capability[2:]
+        else:
+            available = False
+            description = capability
+
+        # Separate the capability name from its explanation.
+        name, separator, reason = description.partition(" — ")
+
+        with st.container(border=True):
+            status_col, content_col = st.columns(
+                [1, 12],
+                gap="small",
+                vertical_alignment="center",
+            )
+
+            with status_col:
+                if available:
+                    st.markdown("🟢")
+                else:
+                    st.markdown("🟠")
+
+            with content_col:
+                st.markdown(f"**{name}**")
+
+                if separator and reason:
+                    st.caption(reason)
 
 
 # ================================================================
@@ -617,7 +420,15 @@ render_kpi_cards(df, currency)
 # ================================================================
 
 st.header("Sales Analytics")
-analysis_tabs = st.tabs(["Revenue & Popularity", "Elasticity Reliability", "Menu Quadrants", "Item Detail"])
+analysis_tabs = st.tabs(
+    [
+        "Revenue & Popularity",
+        "Elasticity Reliability",
+        "Menu Quadrants",
+        "Item Detail",
+        "Model Evaluation",
+    ]
+)
 
 with analysis_tabs[0]:
     revenue_tabs = st.tabs([
@@ -633,8 +444,8 @@ with analysis_tabs[0]:
     # ================================================================
     with revenue_tabs[0]:
         render_sales_trends(df, currency)
-        
-        
+
+
     # ================================================================
     # Feature 9: Popular Items navigation tab
     # ================================================================
@@ -647,35 +458,42 @@ with analysis_tabs[0]:
     # ================================================================
     with revenue_tabs[1]:
         render_day_analysis(df, currency)
-        
+
 
     # ================================================================
     # HOURLY ANALYSIS TAB
     # ================================================================
     with revenue_tabs[2]:
         render_hourly_analysis(df, currency)
-        
+
 
 # ================================================================
 # ELASTICITY RELIABILITY TAB
 # ================================================================
 with analysis_tabs[1]:
     render_elasticity_reliability(summary)
-    
+
 
 # ================================================================
 # MENU ENGINEERING QUADRANTS TAB
 # ================================================================
 with analysis_tabs[2]:
     render_menu_quadrants(summary, capabilities, cost_is_assumption)
-    
+
 
 # ================================================================
 # MENU ITEM EXPLORER TAB
 # ================================================================
 with analysis_tabs[3]:
     render_menu_item_explorer(summary, capabilities, currency)
-    
+
+
+# ================================================================
+# MODEL EVALUATION TAB
+# ================================================================
+with analysis_tabs[4]:
+    render_model_evaluation(df)
+
 
 # ================================================================
 # Pricing Recommendations

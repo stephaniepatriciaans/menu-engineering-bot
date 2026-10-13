@@ -1,6 +1,5 @@
 """Format analytics tables for Streamlit display."""
 
-from numbers import Real
 
 import pandas as pd
 
@@ -54,11 +53,12 @@ def display_item_table(
     return table
 
 
+
 def display_moves_table(
     moves: pd.DataFrame,
     currency: str,
 ) -> pd.DataFrame:
-    """Format pricing recommendation values for display."""
+    """Format pricing recommendations without modifying source data."""
     table = moves.copy()
 
     currency_columns = [
@@ -67,6 +67,9 @@ def display_moves_table(
         "old_daily_profit_est",
         "new_daily_profit_est",
         "daily_profit_delta",
+        "base_case_daily_profit_delta",
+        "best_case_daily_profit_delta",
+        "worst_case_daily_profit_delta",
     ]
 
     for col in currency_columns:
@@ -74,5 +77,34 @@ def display_moves_table(
             table[col] = table[col].map(
                 lambda value: safe_format_currency(value, currency)
             )
+
+
+    if "pct_change_recommended" in table.columns:
+
+        def format_percentage(value: object) -> str:
+            """Format percentage points safely."""
+            if value is None or value is pd.NA:
+                return "—"
+
+            if isinstance(value, bool):
+                return "—"
+
+            if not isinstance(value, (int, float, str)):
+                return "—"
+
+            try:
+                number = float(value)
+            except (TypeError, ValueError, OverflowError):
+                return "—"
+
+            if not pd.notna(number):
+                return "—"
+
+            return f"{number:+.1f}%"
+
+        table["pct_change_recommended"] = (
+            table["pct_change_recommended"].map(format_percentage)
+        )
+
 
     return table

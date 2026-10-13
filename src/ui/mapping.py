@@ -4,14 +4,14 @@ import pandas as pd
 import streamlit as st
 
 from config import CANONICAL_FIELDS
-
 from data_adapter import (
-    NOT_AVAILABLE,
     KNOWN_MAPPING_PRESETS,
+    NOT_AVAILABLE,
     apply_known_preset,
     detect_column_mapping,
     mapping_confidence,
 )
+
 
 def mapping_selectors(
     raw_df: pd.DataFrame,

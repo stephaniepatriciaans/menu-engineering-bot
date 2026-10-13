@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -21,6 +21,16 @@ Rules:
 - Do NOT invent, alter, recompute, or extrapolate numbers.
 - Use only analyses and fields supplied in the prompt.
 - Never imply unit cost, margin, profit, or profit optimization exists when profit analysis is unavailable.
+- The field "total_profit" represents historical contribution profit:
+  sales revenue minus recorded unit costs. It is NOT net profit,
+  because overhead, rent, salaries, taxes, and other operating
+  expenses may not be included.
+- Describe "daily_profit_delta" as a simulated change in daily
+  contribution profit, not a guaranteed increase in actual profit.
+- Respect the supplied "pricing_reliability", "reliability_reason",
+  and "requires_review" fields when discussing pricing recommendations.
+- If the recommended percentage change is zero, explain that keeping
+  the current price was the best option among the tested scenarios.
 - If cost data is an explicit scenario assumption, call it an assumption rather than actual cost.
 - "estimated" means an elasticity estimate calculated from historical
   price and quantity observations. It does not prove causality.
@@ -44,6 +54,25 @@ Rules:
 - Never concatenate item names, currency amounts, or Markdown markers.
 - Avoid unnecessary bold formatting for individual numbers.
 - Use numbered recommendations only when they improve readability.
+- Pricing recommendations may contain best-case, base-case, and
+  worst-case simulated changes in daily contribution profit.
+- These scenarios are sensitivity analyses based on assumed
+  elasticity variation, not statistical confidence intervals
+  or guaranteed business outcomes.
+- When "worst_case_loss" is true, clearly state that the
+  pessimistic scenario indicates a possible contribution-profit
+  decrease under the specified assumptions.
+- Never claim that the conservative selection mode eliminates
+  business risk or guarantees a profitable outcome.
+- Do not describe "scenario_uncertainty_pct" as a measured
+  prediction error or a statistical confidence level.
+- The "selection_mode" field explains how the proposed price was selected.
+- "base_case" means the selected candidate maximized simulated
+  contribution-profit improvement under the central elasticity assumption.
+- "conservative" means the selected candidate maximized the worst-case
+  simulated contribution-profit improvement among tested alternatives.
+- Never describe conservative mode as risk-free or guaranteed profitable.
+- If selection_mode is missing, do not assume which mode was used.
 
 Formatting rules:
 - Write clean, valid Markdown.
@@ -57,16 +86,44 @@ Formatting rules:
 - Prefer short paragraphs and concise numbered recommendations.
 - Do not use HTML, code blocks, tables, or footnotes.
 - Before responding, check that all Markdown markers are balanced.
+
+FINANCIAL PRECISION RULES:
+- Preserve all monetary values exactly as provided in the
+  deterministic analysis results.
+- Display USD monetary amounts with two decimal places.
+- Never round monetary totals to whole dollars.
+- Never truncate or approximate financial values.
+- Do not invent, recalculate, or modify financial results.
+- When discussing an item's revenue, use that item's exact
+  total_revenue value from the supplied data.
+- If the exact item-level value is unavailable, omit the
+  number rather than estimating it.
+- Never assign one item's financial values to another item.
 """
 
 
-def _safe_records(df: pd.DataFrame, columns: list[str]) -> list[dict[str, Any]]:
-    present = [column for column in columns if column in df.columns]
+def _safe_records(
+    df: pd.DataFrame,
+    columns: list[str],
+) -> list[dict[str, Any]]:
+    """Convert selected DataFrame columns into JSON-ready records."""
+
+    present = [
+        column
+        for column in columns
+        if column in df.columns
+    ]
+
     if not present:
         return []
+
     clean = df[present].copy()
     clean = clean.astype(object).where(pd.notna(clean), None)
-    return clean.to_dict(orient="records")
+
+    return cast(
+        list[dict[str, Any]],
+        clean.to_dict(orient="records"),
+    )
 
 
 def clean_memo_markdown(memo: str) -> str:
@@ -141,7 +198,7 @@ def build_elasticity_summary(
     estimated = sources.eq("estimated")
 
     return {
-        "total_items": int(len(summary_df)),
+        "total_items": len(summary_df),
 
         "historically_estimated_items": int(
             estimated.sum()
@@ -182,7 +239,8 @@ def build_user_prompt(
             "item", "category", "price", "avg_daily_units", "total_units_sold",
             "total_revenue", "unit_cost", "contribution_margin_%", "total_profit",
             "quadrant", "elasticity", "elasticity_source", "elasticity_confidence",
-            "price_points", "observations", "price_variation_%",
+            "price_points", "observations", "price_variation_%","pricing_reliability",
+            "reliability_reason","requires_review",
         ],
     )
     for record in summary_records:
@@ -200,13 +258,35 @@ def build_user_prompt(
         moves_records = _safe_records(
             moves_df,
             [
-                "item", "old_price", "new_price", "pct_change_recommended",
-                "daily_profit_delta", "quadrant", "elasticity",
-                "elasticity_source", "elasticity_confidence",
+                "item",
+                "old_price",
+                "new_price",
+                "pct_change_recommended",
+                "daily_profit_delta",
+                "quadrant",
+                "elasticity",
+                "elasticity_source",
+                "elasticity_confidence",
+                "pricing_reliability",
+                "reliability_reason",
+                "requires_review",
+                "best_case_daily_profit_delta",
+                "base_case_daily_profit_delta",
+                "worst_case_daily_profit_delta",
+                "scenario_uncertainty_pct",
+                "worst_case_loss",
+                "selection_mode",
             ],
         )
         for record in moves_records:
-            for field in ["old_price", "new_price", "daily_profit_delta"]:
+            for field in [
+                "old_price",
+                "new_price",
+                "daily_profit_delta",
+                "best_case_daily_profit_delta",
+                "base_case_daily_profit_delta",
+                "worst_case_daily_profit_delta",
+            ]:
                 if record.get(field) is not None:
                     record[f"{field}_display"] = format_currency(record[field], currency)
 
@@ -271,7 +351,50 @@ def generate_menu_memo(
         if block.type == "text"
     )
 
-    return clean_memo_markdown(memo)
+    cleaned_memo = clean_memo_markdown(memo)
+
+    if not cleaned_memo.strip():
+        raise RuntimeError(
+            "Claude returned an empty decision memo. "
+            "Please try generating it again."
+        )
+
+    return cleaned_memo
+
+
+def generate_menu_memo_with_audit(
+    summary_df: pd.DataFrame,
+    moves_df: pd.DataFrame | None = None,
+    metadata: dict[str, Any] | None = None,
+    capabilities: dict[str, bool] | None = None,
+    model: str = "claude-sonnet-4-6",
+) -> dict[str, Any]:
+    """Generate a Claude memo and audit its financial claims.
+
+    Returns the cleaned memo and a separate diagnostic audit.
+    The audit does not modify the generated memo.
+    """
+    from memo_validation import audit_generated_memo
+
+    memo = generate_menu_memo(
+        summary_df=summary_df,
+        moves_df=moves_df,
+        metadata=metadata,
+        capabilities=capabilities,
+        model=model,
+    )
+
+    audit_report = audit_generated_memo(
+        memo=memo,
+        summary_df=summary_df,
+        moves_df=moves_df,
+    )
+
+    return {
+        "memo": memo,
+        "audit": audit_report,
+        "requires_review": audit_report["requires_review"],
+    }
 
 
 if __name__ == "__main__":

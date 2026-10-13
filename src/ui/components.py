@@ -1,5 +1,6 @@
 """Reusable Streamlit dashboard components."""
 
+
 import pandas as pd
 import streamlit as st
 
@@ -10,7 +11,7 @@ def render_kpi_cards(
     df: pd.DataFrame,
     currency: str,
 ) -> None:
-    """Display Modern Fintech KPI cards with colored icons."""
+    """Display the original four-column Modern Fintech KPI cards."""
 
     total_revenue = float(
         (df["price"] * df["units_sold"]).sum()
@@ -47,42 +48,33 @@ def render_kpi_cards(
         },
     ]
 
-    columns = st.columns(4, gap="medium")
+    columns = st.columns(4, gap="small")
 
     for index, (column, card) in enumerate(zip(columns, cards)):
-        with column:
-            with st.container(border=True):
+        with (
+            column,
+            st.container(border=True),
+            st.container(key=f"kpi_card_{index}"),
+        ):
+            st.markdown(
+                f"<div class='fintech-kpi-icon'>"
+                f"{card['icon']}</div>",
+                unsafe_allow_html=True,
+            )
 
-                icon_col, metric_col = st.columns(
-                    [1, 4],
-                    gap="small",
-                    vertical_alignment="center",
-                )
+            st.markdown(
+                f"""
+                <div class="fintech-kpi-label">
+                    {card["label"]}
+                </div>
+                <div class="fintech-kpi-value">
+                    {card["value"]}
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-                with icon_col:
-                    with st.container(key=f"kpi_icon_{index}"):
-                        st.markdown(
-                            f"<div class='fintech-kpi-icon'>"
-                            f"{card['icon']}"
-                            f"</div>",
-                            unsafe_allow_html=True,
-                        )
-
-                with metric_col:
-                    st.markdown(
-                        f"""
-                        <div class="fintech-kpi-label">
-                            {card["label"]}
-                        </div>
-                        <div class="fintech-kpi-value">
-                            {card["value"]}
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
-
-                st.caption(card["caption"])
-
+            st.caption(card["caption"])
 
 
 def render_business_header(
@@ -163,7 +155,6 @@ def render_validation_overview(
 
     notice_count = len(warnings)
 
-    # Compact validation status
     with st.container(border=True):
         status_col, date_col, notice_col = st.columns(
             [2.5, 2, 1.5],
@@ -186,7 +177,6 @@ def render_validation_overview(
             else:
                 st.caption("✅ No quality notices")
 
-    # Keep every warning available for review.
     if warnings:
         with st.expander(
             "View Data Quality Details",
@@ -194,6 +184,7 @@ def render_validation_overview(
         ):
             for warning in warnings:
                 st.warning(warning)
+
 
 def render_chart_header(
     title: str,

@@ -2,7 +2,6 @@
 
 import plotly.graph_objects as go
 
-
 FINTECH_COLORS = {
     "blue": "#60A5FA",
     "accent": "#3B82F6",
@@ -24,22 +23,27 @@ def style_chart(
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(
-            family="Arial, sans-serif",
-            size=18,
-        ),
+        font={
+            "family": "Arial, sans-serif",
+            "size": 18,
+        },
         colorway=[
             FINTECH_COLORS["blue"],
             FINTECH_COLORS["cyan"],
             FINTECH_COLORS["purple"],
             FINTECH_COLORS["green"],
         ],
-        margin=dict(l=20, r=20, t=65, b=30),
-        hoverlabel=dict(
-            bgcolor="#111C30",
-            font_color="#F8FAFC",
-            bordercolor="#334155",
-        ),
+        margin={
+            "l": 20,
+            "r": 20,
+            "t": 65,
+            "b": 30,
+        },
+        hoverlabel={
+            "bgcolor": "#111C30",
+            "font_color": "#F8FAFC",
+            "bordercolor": "#334155",
+        },
     )
 
     fig.update_xaxes(
@@ -55,38 +59,38 @@ def style_chart(
     )
 
     fig.update_traces(
-        selector=dict(type="scatter"),
-        line=dict(width=3),
-        marker=dict(size=7),
+        selector={"type": "scatter"},
+        line={"width": 3},
+        marker={"size": 7},
     )
 
-    # Only change the title when a new one is provided.
-    # Otherwise, preserve the chart's existing title.
+    # Preserve an existing chart title unless a new one is supplied.
     if title is not None:
         fig.update_layout(
-            title=dict(
-                text=title,
-                font=dict(size=18),
-                x=0,
-            )
+            title={
+                "text": title,
+                "font": {"size": 18},
+                "x": 0,
+            }
         )
 
-    # Improve readability across all Plotly charts.
     fig.update_xaxes(
-        tickfont=dict(size=13),
-        title_font=dict(size=15),
+        tickfont={"size": 13},
+        title_font={"size": 15},
     )
 
     fig.update_yaxes(
-        tickfont=dict(size=13),
-        title_font=dict(size=15),
+        tickfont={"size": 13},
+        title_font={"size": 15},
     )
 
-    title_info = fig.to_plotly_json().get("layout", {}).get("title", {})
+    title_info = fig.to_plotly_json().get(
+        "layout", {}
+    ).get("title", {})
 
     if isinstance(title_info, dict) and title_info.get("text"):
         fig.update_layout(
-            title_font=dict(size=19),
+            title_font={"size": 19},
         )
 
     return fig
