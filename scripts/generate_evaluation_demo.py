@@ -9,7 +9,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 OUTPUT_PATH = Path("data/evaluation_ready_cafe.csv")
 RANDOM_SEED = 42
 N_DAYS = 240

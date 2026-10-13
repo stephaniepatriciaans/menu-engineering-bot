@@ -493,14 +493,20 @@ def compare_demand_forecasts(
     }
     
 
+
 def evaluate_all_items(
     df: pd.DataFrame,
     train_fraction: float = 0.7,
 ) -> pd.DataFrame:
-    """Evaluate each item separately and report unsupported items.
+    """Evaluate each item's demand forecasting models independently.
 
-    No aggregate model accuracy is claimed when an item cannot be
-    evaluated reliably.
+    Possible statuses:
+    - evaluated: Both baseline and elasticity models were evaluated.
+    - baseline_only: Baseline was evaluated, but elasticity lacked
+      sufficient historical pricing evidence.
+    - insufficient_evidence: Neither evaluation was available.
+
+    Model accuracy is reported only when sufficient evidence exists.
     """
     columns = [
         "item",
@@ -528,6 +534,7 @@ def evaluate_all_items(
 
     for item, item_df in df.groupby("item", sort=False):
         try:
+            # Attempt the existing two-model comparison.
             result = compare_demand_forecasts(
                 item_df,
                 train_fraction=train_fraction,
@@ -556,21 +563,69 @@ def evaluate_all_items(
             })
 
         except ValueError as exc:
-            records.append({
-                "item": str(item),
-                "status": "insufficient_evidence",
-                "reason": str(exc),
-                "train_days": None,
-                "test_days": None,
-                "baseline_mae": None,
-                "elasticity_mae": None,
-                "baseline_rmse": None,
-                "elasticity_rmse": None,
-                "baseline_wape": None,
-                "elasticity_wape": None,
-                "elasticity_lower_mae": None,
-                "price_extrapolation": None,
-            })
+            reason = str(exc)
+
+            # Check whether elasticity failed specifically
+            # because of insufficient historical price variation.
+            elasticity_unavailable = (
+                "Insufficient historical evidence for elasticity" in reason
+                or "At least two distinct training prices" in reason
+            )
+
+            baseline_result = None
+
+            if elasticity_unavailable:
+                try:
+                    # Evaluate the historical-average baseline
+                    # independently of the elasticity model.
+                    baseline_result = evaluate_historical_average(
+                        item_df,
+                        train_fraction=train_fraction,
+                    )
+
+                except ValueError:
+                    # Baseline also lacks sufficient evidence.
+                    pass
+
+            if baseline_result is not None:
+                # Baseline succeeded, elasticity unavailable.
+                metrics = baseline_result["metrics"]
+
+                assert isinstance(metrics, dict)
+
+                records.append({
+                    "item": str(item),
+                    "status": "baseline_only",
+                    "reason": reason,
+                    "train_days": baseline_result["train_days"],
+                    "test_days": baseline_result["test_days"],
+                    "baseline_mae": metrics["mae"],
+                    "elasticity_mae": None,
+                    "baseline_rmse": metrics["rmse"],
+                    "elasticity_rmse": None,
+                    "baseline_wape": metrics["wape"],
+                    "elasticity_wape": None,
+                    "elasticity_lower_mae": None,
+                    "price_extrapolation": None,
+                })
+
+            else:
+                # Neither model produced a valid evaluation.
+                records.append({
+                    "item": str(item),
+                    "status": "insufficient_evidence",
+                    "reason": reason,
+                    "train_days": None,
+                    "test_days": None,
+                    "baseline_mae": None,
+                    "elasticity_mae": None,
+                    "baseline_rmse": None,
+                    "elasticity_rmse": None,
+                    "baseline_wape": None,
+                    "elasticity_wape": None,
+                    "elasticity_lower_mae": None,
+                    "price_extrapolation": None,
+                })
 
     return pd.DataFrame(records, columns=columns)
 
@@ -579,20 +634,25 @@ def evaluate_all_items(
 def summarize_model_coverage(
     evaluation_df: pd.DataFrame,
 ) -> dict[str, int | float | None]:
-    """Summarize evaluation coverage without overstating accuracy.
+    """Summarize baseline and two-model comparison coverage separately.
 
-    Only evaluated items count toward model comparisons.
-    A zero evaluated-item count produces unavailable rates.
+    Baseline coverage includes evaluated and baseline_only items.
+    Comparison coverage includes only fully evaluated items.
     """
+    empty_summary: dict[str, int | float | None] = {
+        "total_items": 0,
+        "evaluated_items": 0,
+        "baseline_only_items": 0,
+        "baseline_evaluated_items": 0,
+        "insufficient_evidence_items": 0,
+        "baseline_coverage_pct": None,
+        "evaluation_coverage_pct": None,
+        "elasticity_better_items": 0,
+        "elasticity_better_pct": None,
+    }
+
     if evaluation_df is None or evaluation_df.empty:
-        return {
-            "total_items": 0,
-            "evaluated_items": 0,
-            "insufficient_evidence_items": 0,
-            "evaluation_coverage_pct": None,
-            "elasticity_better_items": 0,
-            "elasticity_better_pct": None,
-        }
+        return empty_summary
 
     required = {
         "item",
@@ -605,15 +665,35 @@ def summarize_model_coverage(
             "Evaluation results are missing required columns."
         )
 
+    statuses = evaluation_df["status"]
+
+    valid_statuses = {
+        "evaluated",
+        "baseline_only",
+        "insufficient_evidence",
+    }
+
+    if not statuses.isin(valid_statuses).all():
+        raise ValueError(
+            "Evaluation results contain unknown statuses."
+        )
+
     total = len(evaluation_df)
 
-    evaluated = evaluation_df[
-        evaluation_df["status"] == "evaluated"
+    evaluated = evaluation_df.loc[
+        statuses == "evaluated"
     ]
 
     n_evaluated = len(evaluated)
+
+    n_baseline_only = int(
+        (statuses == "baseline_only").sum()
+    )
+
+    n_baseline = n_evaluated + n_baseline_only
+
     n_insufficient = int(
-        (evaluation_df["status"] == "insufficient_evidence").sum()
+        (statuses == "insufficient_evidence").sum()
     )
 
     n_better = int(
@@ -623,10 +703,14 @@ def summarize_model_coverage(
         .sum()
     )
 
-    coverage_pct = (
-        round(n_evaluated / total * 100, 1)
-        if total > 0
-        else None
+    baseline_coverage_pct = round(
+        n_baseline / total * 100,
+        1,
+    )
+
+    comparison_coverage_pct = round(
+        n_evaluated / total * 100,
+        1,
     )
 
     better_pct = (
@@ -638,8 +722,11 @@ def summarize_model_coverage(
     return {
         "total_items": total,
         "evaluated_items": n_evaluated,
+        "baseline_only_items": n_baseline_only,
+        "baseline_evaluated_items": n_baseline,
         "insufficient_evidence_items": n_insufficient,
-        "evaluation_coverage_pct": coverage_pct,
+        "baseline_coverage_pct": baseline_coverage_pct,
+        "evaluation_coverage_pct": comparison_coverage_pct,
         "elasticity_better_items": n_better,
         "elasticity_better_pct": better_pct,
     }

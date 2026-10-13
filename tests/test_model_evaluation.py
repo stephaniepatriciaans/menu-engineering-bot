@@ -702,7 +702,19 @@ def test_evaluate_all_items_reports_eligible_and_ineligible_items():
     )
 
     assert by_item["Latte"]["status"] == "evaluated"
-    assert by_item["Tea"]["status"] == "insufficient_evidence"
+    
+    assert by_item["Tea"]["status"] == "baseline_only"
+
+    # Tea has constant demand, so the historical average
+    # should predict demand perfectly.
+    assert by_item["Tea"]["baseline_mae"] == pytest.approx(0.0)
+    assert by_item["Tea"]["baseline_rmse"] == pytest.approx(0.0)
+    assert by_item["Tea"]["baseline_wape"] == pytest.approx(0.0)
+
+    # The elasticity model cannot be evaluated.
+    assert pd.isna(by_item["Tea"]["elasticity_mae"])
+    assert pd.isna(by_item["Tea"]["elasticity_rmse"])
+    assert pd.isna(by_item["Tea"]["elasticity_wape"])
 
     assert by_item["Latte"]["elasticity_mae"] == (
         pytest.approx(0.0, abs=1e-8)
@@ -833,8 +845,9 @@ def test_model_evaluation_report_contains_methodology():
     assert items[0]["status"] == "evaluated"
 
 
+
 def test_model_evaluation_report_handles_no_supported_items():
-    """A report should remain useful even without forecast metrics."""
+    """Constant prices allow baseline evaluation but not elasticity."""
 
     df = pd.DataFrame({
         "date": pd.date_range(
@@ -854,11 +867,28 @@ def test_model_evaluation_report_handles_no_supported_items():
     assert isinstance(coverage, dict)
     assert isinstance(items, list)
 
+    # No valid two-model comparison.
     assert coverage["evaluated_items"] == 0
     assert coverage["elasticity_better_pct"] is None
 
     assert len(items) == 1
-    assert items[0]["status"] == "insufficient_evidence"
+
+    tea = items[0]
+
+    # Historical-average baseline remains eligible.
+    assert tea["status"] == "baseline_only"
+    assert tea["baseline_mae"] is not None
+    assert tea["baseline_rmse"] is not None
+    assert tea["baseline_wape"] is not None
+
+    # Elasticity is unavailable.
+    assert pd.isna(tea["elasticity_mae"])
+    assert pd.isna(tea["elasticity_rmse"])
+    assert pd.isna(tea["elasticity_wape"])
+
+    # Comparison coverage is not overstated.
+    assert report["evaluated_items"] == 0
+
 
 
 def test_export_model_evaluation_report(tmp_path: Path):

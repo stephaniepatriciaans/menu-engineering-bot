@@ -11,19 +11,59 @@ def apply_dashboard_styles() -> None:
            1. DESIGN SYSTEM
            ============================================ */
         :root {
-            --fintech-bg: #0B1220;
-            --fintech-sidebar: #111D30;
-            --fintech-card: #152238;
-            --fintech-card-hover: #1A2A42;
-            --fintech-border: #293A52;
-            --fintech-text: #F1F5F9;
-            --fintech-muted: #94A3B8;
-            --fintech-blue: #60A5FA;
-            --fintech-green: #34D399;
-            --fintech-yellow: #FBBF24;
-            --fintech-red: #FB7185;
+            /* Streamlit theme colors with compatibility fallbacks */
+            --fintech-bg: var(
+                --st-background-color,
+                var(--background-color, #F8FAFC)
+            );
+
+            --fintech-sidebar: var(
+                --st-secondary-background-color,
+                var(--secondary-background-color, #FFFFFF)
+            );
+
+            --fintech-card: var(
+                --st-secondary-background-color,
+                var(--secondary-background-color, #FFFFFF)
+            );
+
+            --fintech-card-hover: color-mix(
+                in srgb,
+                var(--fintech-card) 92%,
+                var(--fintech-blue)
+            );
+
+            --fintech-border: var(
+                --st-border-color,
+                color-mix(
+                    in srgb,
+                    var(--fintech-text) 18%,
+                    transparent
+                )
+            );
+
+            --fintech-text: var(
+                --st-text-color,
+                var(--text-color, #0F172A)
+            );
+
+            --fintech-muted: color-mix(
+                in srgb,
+                var(--fintech-text) 62%,
+                var(--fintech-bg)
+            );
+
+            --fintech-blue: var(
+                --st-primary-color,
+                var(--primary-color, #2563EB)
+            );
+
+            --fintech-green: #10B981;
+            --fintech-yellow: #F59E0B;
+            --fintech-red: #F43F5E;
             --fintech-radius: 14px;
         }
+
         /* ============================================
            2. APP BACKGROUND AND CONTENT WIDTH
            ============================================ */
@@ -99,7 +139,7 @@ def apply_dashboard_styles() -> None:
         [data-testid="stWidgetLabel"] p {
             font-size: 0.87rem !important;
             font-weight: 600 !important;
-            color: #CBD5E1 !important;
+            color: var(--fintech-text) !important;
         }
         [data-testid="stSidebar"]
         [data-testid="stCaptionContainer"] p {
@@ -324,6 +364,7 @@ def apply_dashboard_styles() -> None:
             padding: 1rem;
             min-height: 155px;
         }
+        
         /* Avoid a second card border inside the outer card */
         .st-key-pricing_risk_assessed [data-testid="stMetric"],
         .st-key-pricing_risk_negative [data-testid="stMetric"],
@@ -332,30 +373,58 @@ def apply_dashboard_styles() -> None:
             border: none !important;
             padding: 0 !important;
         }
+        
         /* Blue: assessed items */
         .st-key-pricing_risk_assessed {
-            background: #15243B;
-            border: 1px solid #3B608C;
+            background: color-mix(
+                in srgb,
+                var(--fintech-card) 92%,
+                #60A5FA
+            );
+            border: 1px solid color-mix(
+                in srgb,
+                var(--fintech-border) 70%,
+                #60A5FA
+            );
         }
         .st-key-pricing_risk_assessed [data-testid="stMetricValue"] {
-            color: #93C5FD !important;
+            color: var(--st-blue-text-color, #2563EB) !important;
         }
+        
         /* Rose: negative worst-case */
         .st-key-pricing_risk_negative {
-            background: #2B1B2A;
-            border: 1px solid #8E3D58;
+            background: color-mix(
+                in srgb,
+                var(--fintech-card) 92%,
+                #FB7185
+            );
+            border: 1px solid color-mix(
+                in srgb,
+                var(--fintech-border) 70%,
+                #FB7185
+            );
         }
         .st-key-pricing_risk_negative [data-testid="stMetricValue"] {
-            color: #FDA4AF !important;
+            color: var(--st-red-text-color, #BE123C) !important;
         }
+        
         /* Teal: no loss in tested scenarios */
         .st-key-pricing_risk_nonnegative {
-            background: #102B2A;
-            border: 1px solid #2D806F;
+            background: color-mix(
+                in srgb,
+                var(--fintech-card) 92%,
+                #34D399
+            );
+            border: 1px solid color-mix(
+                in srgb,
+                var(--fintech-border) 70%,
+                #34D399
+            );
         }
         .st-key-pricing_risk_nonnegative [data-testid="stMetricValue"] {
-            color: #6EE7B7 !important;
+           color: var(--st-green-text-color, #047857) !important;
         }
+        
         /* Larger, more prominent KPI values */
         .st-key-pricing_risk_assessed [data-testid="stMetricValue"],
         .st-key-pricing_risk_negative [data-testid="stMetricValue"],
@@ -473,9 +542,9 @@ P
             min-width: 0;
             min-height: 145px;
             padding: 1.15rem;
-            border: 1px solid var(--fintech-border, #293A52);
+            border: 1px solid var(--fintech-border) !important;
             border-radius: 14px;
-            background: var(--fintech-card, #152238);
+            background: var(--fintech-card) !important;
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
@@ -502,7 +571,7 @@ P
 
         .fintech-overview-label {
             min-width: 0;
-            color: #94A3B8;
+            color: var(--fintech-muted);
             font-size: 0.86rem;
             font-weight: 600;
             line-height: 1.35;
@@ -511,7 +580,7 @@ P
         .fintech-overview-value {
             min-width: 0;
             max-width: 100%;
-            color: #F1F5F9;
+            color: var(--fintech-text);
             font-size: clamp(1.15rem, 2vw, 1.85rem);
             font-weight: 800;
             letter-spacing: -0.04em;
@@ -522,7 +591,7 @@ P
         }
 
         .fintech-overview-caption {
-            color: #94A3B8;
+            color: var(--fintech-muted);
             font-size: 0.82rem;
             line-height: 1.4;
             margin-top: auto;
@@ -572,7 +641,7 @@ P
                 font-size: 0.9rem !important;
             }
         }
-
+        
         </style>
         """,
         unsafe_allow_html=True,
