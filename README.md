@@ -1,41 +1,101 @@
 # Menu Engineering Bot
 
-**Universal POS Analytics · Menu Engineering · Pricing Intelligence · AI Decision Support**
+**Universal POS Analytics · Menu Engineering · Pricing Intelligence · Forecast Evaluation · AI Decision Support**
 
-A Streamlit application that turns restaurant and coffee-shop sales data into **revenue insights, menu performance analysis, exploratory pricing simulations, and AI-assisted decision memos**. It supports different point-of-sale (POS) CSV layouts and adapts its analyses to the information available in each dataset.
+A Streamlit application that transforms restaurant and coffee-shop sales exports into an interactive business-intelligence dashboard, menu-performance analysis, **exploratory** pricing scenarios, historical demand-model evaluation, and AI-assisted decision memos.
 
-**Design principle:** Financial calculations run in Python. The language model explains supplied results; it is not the source of financial arithmetic.
+Built for heterogeneous point-of-sale (POS) CSV files: it adapts source columns into a canonical schema, validates input quality, checks analytical capabilities, and clearly identifies assumptions when transaction-level cost or pricing evidence is incomplete.
 
-![Menu Engineering Dashboard](assets/dashboard.png)
+> **Principle:** Python computes the financial metrics and pricing scenarios. The language model explains structured results; it is not responsible for financial arithmetic. Simulated outcomes are not guaranteed profits or causal estimates.
 
-> **Project status:** The application and its core analytical workflows are implemented and tested locally. Public deployment has not yet been completed.
+> **Status:** Local application implemented and tested. Public deployment is not claimed here.
 
-## Why this project?
+## Dashboard preview
 
-Restaurant POS exports are rarely standardized. Different systems use different names for dates, products, quantities, and prices, while many datasets do not provide item-level costs. Applying a single rigid analysis to every export can produce invalid or misleading financial recommendations.
+![Menu Engineering Bot dashboard — KPI overview and monthly sales trend](assets/dashboard.png)
 
-Menu Engineering Bot addresses this with a **capability-aware pipeline**: standardize and validate the data, determine which analyses are supported, calculate results deterministically, then present recommendations together with their assumptions and limitations.
+*Dashboard using an external coffee-shop transaction dataset: 149,116 records, 80 items, and approximately $698.8K in observed revenue. The external dataset is not bundled in this repository.*
 
-## Key capabilities
+## What it does
 
-| Area | What it does |
-|---|---|
-| Universal CSV ingestion | Detects comma, semicolon, pipe, and tab delimiters; maps source fields into a canonical schema |
-| Mapping assistance | Suggests mappings using aliases and conservative fuzzy matches; provides example POS-style presets and manual correction |
-| Transaction audit | Flags identical source records, missing transaction IDs, and repeated IDs without deleting rows |
-| Data validation | Checks dates, prices, quantities, costs, and missing required fields |
-| Capability-aware dashboard | Keeps revenue and volume analytics available without cost data; gates profit-dependent functionality |
-| Sales exploration | Provides revenue trends, popularity, hourly/day-of-week views, product mix, and item exploration |
-| Menu engineering | Uses contribution-margin and popularity information to classify Stars, Plowhorses, Puzzles, and Dogs when cost data supports it |
-| Elasticity analysis | Separates observational historical estimates from category and default assumptions; reports reliability information |
-| Pricing simulation | Tests candidate price changes, rounded selling prices, and optimistic/central/pessimistic outcomes |
-| Pricing strategies | Offers **Base case** and **Conservative** optimization objectives and a pricing-risk overview |
-| AI decision memo | Uses Anthropic Claude to summarize computed results, with pattern-based financial claim checks and export options |
-| Automated verification | Includes unit, regression, and Streamlit application-interaction tests |
+| Capability | Description |
+| --- | --- |
+| **Universal CSV/POS ingestion** | Detects common delimiters, suggests mappings using aliases and conservative fuzzy matching, and allows manual corrections. |
+| **Validation and provenance** | Checks dates, quantities, prices, and optional costs; reports potential source duplicates and data-quality issues without silently removing transactions. |
+| **Capability-aware analysis** | Keeps sales and revenue features available when costs are missing; clearly distinguishes observed costs from assumed-cost scenarios. |
+| **Sales intelligence** | Revenue trends, item popularity, daily/hourly analysis, category filters, and item-level exploration. |
+| **Menu engineering** | Classifies items as Stars, Plowhorses, Puzzles, or Dogs using popularity and contribution margin when costs are available. |
+| **Elasticity and reliability** | Estimates observational price–demand relationships where evidence permits; otherwise discloses category or default priors and their limitations. |
+| **Pricing intelligence** | Tests bounded price moves with Base case and Conservative objectives, simulated contribution impacts, and downside-risk flags. |
+| **Historical model evaluation** | Compares a historical-average demand baseline against a log-log elasticity model using a chronological train/test split **when data eligibility requirements are met**. |
+| **AI decision memos** | Uses Anthropic Claude to explain computed findings, supported by limited numerical-claim checks and Markdown/TXT/PDF exports. |
+| **Testing** | Unit and regression tests plus Streamlit AppTest coverage for key interactions. |
+
+## Feature gallery
+
+### 1. Universal data ingestion and reliability checks
+
+The app supports different POS column layouts and maps them into the fields needed for analytics. A data audit and capability summary explain what is available before cost-dependent features run.
+
+| Column mapping | Data capabilities and cost assumptions |
+| --- | --- |
+| ![Column mapping](assets/column_mapping.png) | ![Data capabilities and optional cost settings](assets/capabilities.png) |
+
+**Costs are not inferred from selling prices.** When actual per-unit costs are unavailable, users may proceed with revenue-only analyses, upload a separate cost file, or explicitly choose an estimated-cost scenario. Profit and pricing outputs from assumed costs are labeled as simulations, not observed results.
+
+### 2. Sales analytics and menu engineering
+
+| Sales analytics | Menu engineering quadrants |
+| --- | --- |
+| ![Weekday vs weekend sales analysis](assets/sales_analytics.png) | ![Stars, Plowhorses, Puzzles and Dogs](assets/quadrant_chart.png) |
+
+The quadrants combine **average daily units sold** (popularity) with **contribution margin percentage** (profitability), using dataset-specific thresholds. The quadrant screenshot illustrates the synthetic-cafe demonstration; the external POS screenshots demonstrate a different dataset.
+
+### 3. Pricing simulation and risk
+
+Recommendations compare candidate prices using item economics and elasticity inputs. The **Base case** selects a candidate based on central simulated contribution; the **Conservative** strategy prioritizes the modeled worst-case contribution among tested candidates.
+
+![Recommended price moves with pricing reliability labels](assets/price_moves.png)
+
+| Base case risk view | Conservative risk view |
+| --- | --- |
+| ![Base-case pricing risk](assets/pricing_risk_base_case.png) | ![Conservative pricing risk](assets/pricing_risk_conservative.png) |
+
+In the illustrated **external coffee-shop / 30%-of-price assumed-cost scenario**, the Base case flagged **47 of 80 items** as having negative modeled worst-case outcomes; the Conservative run showed **0 of 80** within its tested assumptions. **These counts are model outputs, not probabilities, guarantees, or evidence that any price change is safe.** The scenarios and strategy differ, so the images should not be interpreted as a causal experimental comparison.
+
+![Best-case, base-case and worst-case simulated contribution impact](assets/scenario_comparison.png)
+
+The model displays sensitivity to elasticity uncertainty and labels low-confidence historical estimates and prior-based assumptions. Historical correlations can be affected by promotions, seasonality, store differences, and other factors.
+
+### 4. Model Evaluation — backtesting with eligibility safeguards
+
+The **Model Evaluation** tab compares a simple historical-average daily-demand forecast against a log-log elasticity-based forecast on **later recorded dates**. Test-period prices are supplied as known inputs, while test-period sales quantities are excluded from model fitting.
+
+The evaluation reports **MAE, RMSE, and WAPE** only where the required evidence exists. It does not assume missing transaction dates represent zero sales.
+
+![Model Evaluation displaying insufficient historical pricing evidence](assets/model_evaluation.png)
+
+*Original Synthetic Cafe: 15 items, 0 eligible for the **two-model comparison** because historical training prices do not vary sufficiently. This is a meaningful limitation, not a prediction of zero accuracy.*
+
+![Evaluation methodology and JSON/CSV exports](assets/model_evaluation_methodology.png)
+
+**Evaluation-ready synthetic example:** A separately generated, clearly labeled test dataset contains 8 menu items over 240 simulated sales days with controlled historical price variation. In a local evaluation run, **8/8 items were eligible**, and the elasticity-based model had lower holdout MAE than the historical-average baseline for all 8. Because the generating process intentionally includes a price–demand relationship, these results demonstrate the evaluation workflow **on synthetic data only**; they do not establish real-business generalization or causal performance.
+
+The currently implemented comparison requires sufficient evidence for the elasticity model before marking an item `evaluated`. **Baseline-only reporting for constant-price datasets is a planned improvement**, not an existing capability.
+
+### 5. AI-generated decision memo
+
+The app sends structured, deterministic results to Anthropic Claude for a management-oriented narrative. It performs limited pattern-based checks on selected financial statements and invalidates a memo when its underlying inputs or pricing scenario changes. Human review is still required.
+
+![AI-generated decision memo showing assumptions and recommended validations](assets/ai_memo.png)
+
+![Download decision memo in Markdown, TXT, or PDF](assets/report_download.png)
+
+The screenshots featuring an 80-item coffee-shop dataset use a **30% assumed cost** for exploratory profit scenarios. They do **not** represent validated actual item costs.
 
 ## Quick start
 
-**Requirements:** Python, pip, and a local terminal. Python 3.12 is used in the latest local test run. An Anthropic API key is **optional** and only needed for AI memo generation.
+**Prerequisites:** Python 3.12 recommended, pip, and a terminal.
 
 ```bash
 git clone https://github.com/stephaniepatriciaans/menu-engineering-bot.git
@@ -46,9 +106,9 @@ python3 -m pip install -r requirements.txt
 python3 -m streamlit run src/app.py
 ```
 
-Open **http://localhost:8501**. The sidebar defaults to the **Full Demo Dataset — Synthetic Cafe**, so the analytical dashboard can be explored without uploading data or configuring an AI key.
+Open **http://localhost:8501**. The sidebar defaults to the bundled **Full Demo Dataset — Synthetic Cafe**; no external CSV or API key is required for the deterministic analytics.
 
-On Windows, activate the virtual environment with `venv\Scripts\activate` instead.
+On Windows, activate with `venv\Scripts\activate` instead.
 
 ### Optional AI memo setup
 
@@ -56,175 +116,113 @@ On Windows, activate the virtual environment with `venv\Scripts\activate` instea
 cp .env.example .env
 ```
 
-Add your own key to `.env`:
+Add your own API key to `.env`:
 
 ```dotenv
 ANTHROPIC_API_KEY=your_api_key_here
 ```
 
-Restart Streamlit. Keep `.env` and other secrets out of version control. API use may incur provider charges. Without a configured key, deterministic analytics remain available and AI memo generation is disabled.
+Keep secrets out of Git. Without a configured key, sales, menu, elasticity, and pricing analytics remain usable; AI memo generation is unavailable. API usage may incur provider charges.
 
-## Typical workflow
+## How to use the app
 
-1. **Select the bundled synthetic cafe demo or upload a POS CSV.**
-2. **Review column mapping.** Automatic suggestions can be corrected manually; presets are illustrative, not verified official vendor formats.
-3. **Review data quality.** The source audit flags potential duplicates, and validation rejects unusable financial inputs.
-4. **Choose a cost basis.** Use recorded costs, optionally merge a separate item-cost CSV, run an explicitly labeled estimated-cost scenario, or continue with non-profit analyses.
-5. **Explore results.** Use date and category filters, sales trends, menu quadrants, and item-level views.
-6. **Test pricing assumptions.** Compare Base case and Conservative strategies and examine worst-case risk flags.
-7. **Generate an optional AI decision memo.** Review flagged numerical claims before exporting Markdown, text, or PDF.
+1. Choose the bundled demo or upload a POS CSV.
+2. Confirm the suggested date, item, quantity, price, and optional category/cost mappings.
+3. Read the transaction audit, validation notices, and capabilities summary.
+4. Select a cost basis: recorded cost, separate cost file, transparently assumed cost percentage, or revenue-only mode.
+5. Explore trends, item-level metrics, and menu quadrants.
+6. Compare pricing strategies and inspect modeled risk and scenario assumptions.
+7. Run Model Evaluation separately when the dataset contains usable dated item/price/quantity histories.
+8. Optionally generate and review an AI memo, then export the result.
 
-![Column Mapping Interface](assets/column_mapping.png)
+## Data schema
 
-## Supported dataset structure
+| Canonical field | Requirement | Description |
+| --- | --- | --- |
+| `date` | Required | Transaction/sale date |
+| `item` | Required | Product/menu-item name |
+| `price` | Required | Per-unit selling price |
+| `units_sold` | Required | Quantity sold |
+| `category` | Optional | Product category; may default to `Uncategorized` |
+| `unit_cost` | Optional | Per-unit cost for contribution and profit-based scenarios |
+| `transaction_time` | Optional | Time-of-day analytics where present |
 
-The adapter maps heterogeneous POS column names to these canonical fields:
+For example, POS fields `transaction_date`, `product_detail`, `transaction_qty`, and `unit_price` can be mapped to `date`, `item`, `units_sold`, and `price`. Users should check all suggested mappings before trusting results.
 
-| Canonical field | Purpose | Requirement |
-|---|---|---|
-| `date` | Transaction date | Required |
-| `item` | Menu item name | Required |
-| `price` | Selling price per item | Required |
-| `units_sold` | Quantity sold | Required |
-| `category` | Menu category | Optional; missing values become `Uncategorized` |
-| `unit_cost` | Per-unit cost | Optional; required for cost-based profit analyses |
-| `transaction_time` | Time of transaction | Optional; used in time-of-day analysis where available |
+## Methods and interpretation
 
-For example, a CSV with `transaction_date`, `product_detail`, `product_category`, `unit_price`, and `transaction_qty` can be mapped to `date`, `item`, `category`, `price`, and `units_sold`.
-
-The adapter recognizes aliases and uses conservative fuzzy matching. **Users should verify suggested mappings** before relying on any result. CSV upload processing is in-memory using pandas; supported input sizes depend on available memory and Streamlit configuration.
-
-### Missing costs and cost scenarios
-
-The app does **not** treat unit price as unit cost. If cost data is absent, revenue, quantity, popularity, and supported trend analyses can still run, but cost-based profit and pricing optimization are restricted. Alternatively, the user may supply a separate menu-cost file or apply an **estimated cost percentage**, which is explicitly labeled as an assumption.
-
-![Dataset Capabilities](assets/capabilities.png)
-
-## Analytical methods
-
-### Revenue and menu performance
-
-The deterministic engine calculates sales volume, revenue, average daily sales, and—where costs are complete—contribution margin and contribution profit. It groups items into four conventional menu-engineering quadrants:
-
-| Quadrant | Popularity | Contribution margin | Interpretation |
-|---|---|---|---|
-| Star | High | High | Strong performer |
-| Plowhorse | High | Low | Popular, but margin-constrained |
-| Puzzle | Low | High | Higher margin, lower popularity |
-| Dog | Low | Low | Requires further business review |
-
-Quadrant assignment is descriptive. It is **not** an automatic instruction to discontinue or reprice an item.
-
-![Menu Engineering Quadrants](assets/quadrant_chart.png)
-
-### Price elasticity and evidence quality
-
-When sufficient historical price variation exists, the application uses a log-log price–demand relationship to derive **observational** elasticity estimates. It also reports data sufficiency and confidence indicators. Items without adequate evidence use explicit `category_prior` or `default_prior` assumptions.
+**Contribution profit (where cost is supplied):**
 
 ```text
-log(quantity) ~ log(price)
+Unit contribution = unit selling price - unit cost
+Total contribution = unit contribution × units sold
 ```
 
-Observed correlation is **not** proof of a causal response to changing prices. Seasonality, promotions, store-level variation, and customer behavior can confound the relationship. Low-confidence estimates and priors should be treated as exploratory assumptions.
+**Menu quadrants:** Stars (high popularity / high contribution margin), Plowhorses (high / low), Puzzles (low / high), and Dogs (low / low). These categories are descriptive, not automatic instructions to change prices or remove items.
 
-### Pricing simulations
+**Price–demand relationship:** An observational log-log specification relates `log(demand)` to `log(price)`. Historical estimates are distinguished from `category_prior` and `default_prior` assumptions. Without enough training-price variation, an elasticity forecast is not reported as evaluated.
 
-The pricing engine calculates candidate price changes in Python using selling price, cost, volume, and elasticity inputs. Prices are rounded to currency cents before the simulated demand and contribution-profit impact are calculated.
+**Backtesting:** The existing model-evaluation module uses a chronological split (70% train by default) and compares forecasts on later sales dates. Item eligibility may require multiple distinct training prices, enough observations, and a minimum price range. **Lower MAE/RMSE indicates better fit on this holdout only; it is not causal pricing evidence.**
 
-The dashboard offers two optimization objectives:
+**Price optimization:** Candidate price moves are evaluated under an explicitly selected strategy and elasticity-uncertainty level. The worst-case calculation is a **tested scenario**, not a statistically calibrated downside probability or an assured result.
 
-- **Base case:** select the candidate with the highest simulated contribution-profit outcome under the central elasticity estimate.
-- **Conservative:** select the candidate with the strongest simulated worst-case result among tested candidates.
-
-Simulations include sensitivity to elasticity assumptions and a pricing-risk overview. **Optimistic, central, and pessimistic scenarios are modeled outcomes, not statistically validated prediction intervals or guaranteed business results.**
-
-![Price Recommendations](assets/price_moves.png)
-
-## AI Decision Memo and financial safeguards
-
-The optional Claude integration receives structured analytical outputs and supporting business metadata. Python remains responsible for calculations; the model provides explanatory narrative and suggested questions or actions for review.
-
-The memo workflow also includes a **limited, pattern-based audit** that flags some unsupported dollar amounts and mismatches in explicitly stated item prices, recommended prices, profit impacts, and scenario values. These are review flags, **not a guarantee that the memo is factually correct**. A memo is invalidated when its underlying inputs or relevant pricing results change, preventing a stale explanation from being reused inadvertently.
-
-Exports are available in **Markdown (`.md`)**, **plain text (`.txt`)**, and **PDF (`.pdf`)**.
-
-![AI Decision Memo](assets/ai_memo.png)
-
-![Downloadable Decision Reports](assets/report_download.png)
-
-## Architecture
+## Project architecture
 
 ```text
-POS CSV / Synthetic Demo
-         |
-         v
-CSV Parsing + Column Mapping
-         |
-         v
-Source Transaction Audit
-         |
-         v
-Canonical Data Adapter
-         |
-         v
-Validation + Capability Detection
-         |
-         +--------------------+
-         |                    |
-         v                    v
-Sales/Revenue Analytics   Cost-Aware Analytics
-         |                    |
-         |                    +--> Margins and Menu Quadrants
-         |                    +--> Elasticity / Assumptions
-         |                    +--> Pricing Scenarios / Risk
-         +--------------------+
-                              |
-                              v
-                  Structured Python Results
-                              |
-                              v
-                     Streamlit Dashboard
-                              |
-                       Optional Claude
-                              |
-                              v
-                   Memo + Financial Audit
-                              |
-                    Markdown / TXT / PDF
+POS CSV / Bundled synthetic cafe
+          │
+          ▼
+CSV reader + schema mapping + transaction audit
+          │
+          ▼
+Canonical adapter + validation + capability detection
+          │
+          ├──► Sales and revenue analytics
+          ├──► Contribution + menu quadrants (if costs supported)
+          ├──► Elasticity assumptions + pricing scenarios/risk
+          └──► Historical model evaluation + coverage report
+                          │
+                          ▼
+                Streamlit dashboard
+                          │
+                          ▼
+              Optional Claude AI memo
+                          │
+                          ▼
+             Memo audit + MD/TXT/PDF
 ```
 
-**Primary modules:**
+| Location | Role |
+| --- | --- |
+| `src/app.py` | Main Streamlit application |
+| `src/data_adapter.py` | CSV parsing, mapping, canonical schema and costs |
+| `src/validation.py` | Data validation, transaction audit and capabilities |
+| `src/analysis.py` | Menu analytics, margins, elasticity and pricing |
+| `src/model_evaluation.py` | Chronological forecast evaluation, eligibility and report building |
+| `src/ui/sections/model_evaluation.py` | Model Evaluation dashboard tab |
+| `src/dashboard_utils.py` | Sales aggregation and chart-ready metrics |
+| `src/agent.py` | Optional AI memo generation |
+| `src/memo_validation.py` | Limited financial-claim consistency checks |
+| `src/memo_export.py`, `src/pdf_report.py` | Memo exports |
+| `src/ui/` | Styling and modular dashboard sections |
+| `tests/` | Unit, regression and Streamlit AppTest checks |
+| `scripts/` | Optional local utilities and dataset evaluation scripts |
 
-| Path | Responsibility |
-|---|---|
-| `src/app.py` | Streamlit entry point and workflow orchestration |
-| `src/data_adapter.py` | CSV reading, column mapping, cost-file matching |
-| `src/validation.py` | Data-quality checks, transaction auditing, capability detection |
-| `src/analysis.py` | Item summaries, elasticity handling, pricing calculations |
-| `src/model_evaluation.py` | Chronological forecasting evaluation and reports |
-| `src/dashboard_utils.py` | Time-series and aggregated dashboard analytics |
-| `src/agent.py` | AI memo generation |
-| `src/memo_validation.py` | Pattern-based checks of memo financial claims |
-| `src/memo_export.py`, `src/pdf_report.py` | Memo formatting and PDF rendering |
-| `src/ui/` | Sidebar, filters, components, visual styling, and dashboard sections |
-| `tests/` | Automated unit, regression, and Streamlit interaction tests |
-| `data/cafe_sales.csv` | Bundled synthetic demonstration sales |
+## Demo data and reproducibility
 
-## Demonstration data
+- **Bundled Synthetic Cafe:** 15 menu items and 2,700 simulated sales records, with example unit costs; intended to demonstrate the main dashboard and pricing workflow.
+- **External coffee-shop transactions:** 149,116 records and 80 menu items (Jan–Jun 2023), used to test ingestion and analytical behavior. Its raw transaction CSV is **not included** here; the profit-related screenshots use a 30% assumed-cost scenario.
+- **Evaluation-ready synthetic cafe:** 8 items × 240 days, with simulated price changes and demand. Generated locally for forecast-evaluation demonstration; it should not be described as real validation data. The generator/output must be included separately if the README is intended to promise reproducibility from a fresh clone.
 
-**Bundled synthetic cafe.** The default dataset contains example selling prices, costs, and transaction quantities, allowing the full contribution-margin and pricing workflow to be demonstrated without disclosing private business data.
+## Testing and quality
 
-**External coffee-shop example.** The project has also been used with an external POS-style coffee-shop dataset to exercise schema adaptation and no-cost-data workflows. The raw external dataset is **not bundled in the repository**. Dataset-specific results should be interpreted as illustrative evaluations, not validated business performance claims.
-
-## Tests and code quality
-
-The project uses `pytest`, Streamlit's `AppTest`, and Ruff. For development dependencies, if the repository includes `requirements-dev.txt`, install it with:
+Install development dependencies:
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
 ```
 
-Run the test suite and lint checks:
+Run checks:
 
 ```bash
 PYTHONPATH=src python3 -m pytest -q
@@ -232,34 +230,30 @@ python3 -m ruff check src tests
 python3 -m compileall -q src tests
 ```
 
-For a coverage report (with `pytest-cov` installed):
+For coverage, with `pytest-cov` installed:
 
 ```bash
 PYTHONPATH=src python3 -m pytest --cov=src --cov-report=term-missing -q
 ```
 
-**Latest locally reported results:** **266 passing tests** and **89% overall statement coverage** (coverage measured at an earlier nearby test milestone; rerun for the latest exact figure). The test suite includes data ingestion, financial validations, pricing regression checks, AI memo auditing, dashboard startup, filter interactions, and memo invalidation when changing pricing strategies.
+**Last user-reported local verification:** 266 tests passed. Approximately 89% statement coverage was measured at an earlier milestone, so coverage should be rerun before claiming a newer exact percentage. Recently added Model Evaluation UI code and local scripts should receive dedicated regression/integration tests before being considered fully covered.
 
-Passing tests and high statement coverage do not establish production readiness, economic validity, or support for every possible vendor export.
+## Limitations and safeguards
 
-## Limitations and responsible use
+- **No causal price-optimization claim.** Observational elasticity can be confounded by marketing, seasonality, geography and product substitution.
+- **No invented costs.** Actual costs and estimated-cost scenarios are clearly distinguished.
+- **No invented model accuracy.** The two-model evaluation currently requires eligible price histories; unsupported items are flagged instead of receiving made-up scores.
+- **Baseline-only evaluation is not implemented yet.** Without sufficient elasticity evidence, the existing item comparison may omit baseline metrics that could otherwise be calculable.
+- **Scenario outputs are conditional.** Modeled best/base/worst cases are not prediction intervals, guarantees or real-world safety certifications.
+- **Memo checks have limited scope.** The AI memo still needs human review.
+- **Upload performance depends on available memory and environment.** The app has not been presented as a production-hosted service.
 
-- **Not a causal pricing model.** Historical elasticity estimates are observational and may be confounded by promotions, seasonality, and other changes.
-- **Missing costs are meaningful.** Without complete costs, the app does not present actual cost-based contribution-profit results; assumed-cost scenarios are labeled as such.
-- **Modeled risk is not real-world certainty.** Worst-case scenarios depend on configured uncertainty and assumptions, not a statistically certified forecast interval.
-- **Transaction auditing is conservative.** Duplicate-like records are flagged but not automatically removed, since repeated IDs can represent multi-item orders.
-- **AI claims still require review.** The memo audit only covers recognized claim patterns and does not verify every numerical or qualitative assertion.
-- **Large uploads consume memory.** Dataset size and processing speed depend on the runtime environment.
-- **Public deployment remains pending.** The latest results reflect local testing.
-
-## Tech stack
+## Technology
 
 **Python · pandas · NumPy · Streamlit · Plotly · Altair · Anthropic Claude API · ReportLab · pytest · pytest-cov · Ruff · Git/GitHub**
 
-## What this project demonstrates
+## About
 
-This project combines **data engineering** (heterogeneous POS ingestion), **data analytics** (revenue and product mix), **applied statistical modeling** (observational elasticity and forecast evaluation), **pricing analytics** (scenario-based optimization), **AI engineering** (LLM explanations grounded in deterministic outputs), and **software engineering** (modular code, defensive validation, integration tests, and report exports).
+Created by **Stephanie Anshell** · [Portfolio](https://stephaniepatriciaans.github.io/portfolio/)
 
-## Author
-
-Built by [Stephanie Anshell](https://github.com/stephaniepatriciaans) · [Portfolio](https://stephaniepatriciaans.github.io/portfolio/)
+This project demonstrates data engineering, applied analytics, conservative statistical evaluation, scenario-based pricing, AI integration with deterministic numerical safeguards, and tested Streamlit application development.
