@@ -227,3 +227,149 @@ def test_merge_cost_reference_rejects_missing_columns():
             "product",
             "cost",
         )
+
+
+# ================================================================
+# DEPLOYMENT SAFETY — CSV UPLOAD REGRESSION TESTS
+# ================================================================
+
+
+def test_read_delimited_csv_rejects_file_over_200mb(tmp_path):
+    """Reject oversized files without reading them into memory."""
+    oversized_path = tmp_path / "oversized.csv"
+
+    # Create a sparse file. This does not write 200 MB of CSV data.
+    with oversized_path.open("wb") as file:
+        file.write(b"item,price\n")
+        file.truncate(200 * 1024 * 1024 + 1)
+
+    with (
+        oversized_path.open("rb") as file,
+        pytest.raises(ValueError, match="200 MB"),
+    ):
+        read_delimited_csv(file)
+
+
+def test_read_delimited_csv_accepts_200_columns():
+    """Accept a CSV at the supported column-count boundary."""
+    headers = [f"column_{i}" for i in range(200)]
+    values = ["1"] * 200
+
+    csv_text = (
+        ",".join(headers)
+        + "\n"
+        + ",".join(values)
+        + "\n"
+    )
+
+    result = read_delimited_csv(
+        io.BytesIO(csv_text.encode("utf-8"))
+    )
+
+    assert len(result.columns) == 200
+    assert len(result) == 1
+
+
+def test_read_delimited_csv_rejects_more_than_200_columns():
+    """Reject datasets that exceed the column-count limit."""
+    headers = [f"column_{i}" for i in range(201)]
+    values = ["1"] * 201
+
+    csv_text = (
+        ",".join(headers)
+        + "\n"
+        + ",".join(values)
+        + "\n"
+    )
+
+    with pytest.raises(ValueError, match="too many columns"):
+        read_delimited_csv(
+            io.BytesIO(csv_text.encode("utf-8"))
+        )
+
+
+def test_read_delimited_csv_accepts_utf8_bom():
+    """Read UTF-8 CSVs containing a byte-order mark."""
+    csv_bytes = (
+        "item,price\n"
+        "Latte,5.50\n"
+    ).encode("utf-8-sig")
+
+    result = read_delimited_csv(io.BytesIO(csv_bytes))
+
+    assert result.columns.tolist() == ["item", "price"]
+    assert result.loc[0, "item"] == "Latte"
+
+
+def test_read_delimited_csv_rejects_invalid_utf8():
+    """Report an understandable error for invalid UTF-8 files."""
+    invalid_csv = b"item,price\nLatte,\xff\n"
+
+    with pytest.raises(ValueError, match="Unable to parse"):
+        read_delimited_csv(io.BytesIO(invalid_csv))
+
+
+def test_read_delimited_csv_rejects_more_than_500k_rows(
+    monkeypatch,
+):
+    """Stop processing once the cumulative row limit is exceeded."""
+    sample_chunk = pd.DataFrame(
+        {"item": ["Latte"] * 25_000}
+    )
+
+    def fake_read_csv(*args, **kwargs):
+        del args, kwargs
+
+        # 21 chunks * 25,000 rows = 525,000 rows.
+        for _ in range(21):
+            yield sample_chunk
+
+    monkeypatch.setattr(
+        pd,
+        "read_csv",
+        fake_read_csv,
+    )
+
+    with pytest.raises(ValueError, match="too many rows"):
+        read_delimited_csv(
+            io.BytesIO(b"item,price\nLatte,5.50\n")
+        )
+
+
+def test_read_delimited_csv_handles_multiple_chunks(
+    monkeypatch,
+):
+    """Concatenate parsed chunks in their original order."""
+    chunks = [
+        pd.DataFrame({
+            "item": ["Latte"],
+            "price": [5.50],
+        }),
+        pd.DataFrame({
+            "item": ["Mocha"],
+            "price": [6.00],
+        }),
+    ]
+
+    def fake_read_csv(*args, **kwargs):
+        del args, kwargs
+        return iter(chunks)
+
+    monkeypatch.setattr(
+        pd,
+        "read_csv",
+        fake_read_csv,
+    )
+
+    result = read_delimited_csv(
+        io.BytesIO(b"item,price\nLatte,5.50\n")
+    )
+
+    assert result["item"].tolist() == [
+        "Latte",
+        "Mocha",
+    ]
+    assert result["price"].tolist() == [
+        5.50,
+        6.00,
+    ]

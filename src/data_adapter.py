@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import io
 from collections.abc import Iterable, Mapping
 from difflib import SequenceMatcher
 
@@ -20,27 +19,50 @@ NOT_AVAILABLE = "Not available"
 
 
 def read_delimited_csv(file_obj) -> pd.DataFrame:
-    """
-    Read uploaded CSV-style files with automatic delimiter detection.
+    """Read CSV files with bounded parsing and delimiter detection.
 
-    Supports:
-    - comma: ,
-    - pipe: |
-    - semicolon: ;
-    - tab: \\t
+    Supports comma, pipe, semicolon, and tab delimiters.
+    Rejects excessive file sizes and row counts.
     """
+    max_file_bytes = 200 * 1024 * 1024
+    max_rows = 500_000
+    max_columns = 200
+    chunk_size = 25_000
+
+    # Check file size without loading the whole file into memory.
+    file_obj.seek(0, 2)
+    file_size = file_obj.tell()
     file_obj.seek(0)
-    raw = file_obj.read()
 
-    if isinstance(raw, bytes):
-        text = raw.decode("utf-8-sig")
-    else:
-        text = raw
-
-    if not text.strip():
+    if file_size == 0:
         raise ValueError("The uploaded file is empty.")
 
-    first_line = text.splitlines()[0]
+    if file_size > max_file_bytes:
+        raise ValueError(
+            "The uploaded CSV exceeds the 200 MB file limit."
+        )
+
+    # Read only a small sample for delimiter detection.
+    sample = file_obj.read(16_384)
+    file_obj.seek(0)
+
+    if isinstance(sample, bytes):
+        try:
+            sample_text = sample.decode(
+                "utf-8-sig",
+                errors="ignore",
+            )
+        except UnicodeError as exc:
+            raise ValueError(
+                "Unable to decode the uploaded CSV."
+            ) from exc
+    else:
+        sample_text = sample
+
+    if not sample_text.strip():
+        raise ValueError("The uploaded file is empty.")
+
+    first_line = sample_text.splitlines()[0]
 
     delimiters = [",", "|", ";", "\t"]
 
@@ -57,13 +79,55 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
     if delimiter_counts[detected_delimiter] == 0:
         raise ValueError(
             "Could not detect the file delimiter. "
-            "Supported delimiters are comma, pipe, semicolon, and tab."
+            "Supported delimiters are comma, pipe, "
+            "semicolon, and tab."
         )
 
-    return pd.read_csv(
-        io.StringIO(text),
-        sep=detected_delimiter,
+    chunks: list[pd.DataFrame] = []
+    total_rows = 0
+
+    try:
+        reader = pd.read_csv(
+            file_obj,
+            sep=detected_delimiter,
+            encoding="utf-8-sig",
+            chunksize=chunk_size,
+            low_memory=False,
+        )
+
+        for chunk in reader:
+            if len(chunk.columns) > max_columns:
+                raise ValueError(
+                    "The uploaded CSV has too many columns. "
+                    f"Maximum supported: {max_columns}."
+                )
+
+            total_rows += len(chunk)
+
+            if total_rows > max_rows:
+                raise ValueError(
+                    "The uploaded CSV has too many rows. "
+                    f"Maximum supported: {max_rows:,}."
+                )
+
+            chunks.append(chunk)
+
+    except (pd.errors.ParserError, UnicodeError) as exc:
+        raise ValueError(
+            "Unable to parse the uploaded CSV. "
+            "Check the file format and encoding."
+        ) from exc
+
+    if not chunks:
+        raise ValueError(
+            "The uploaded CSV contains no data rows."
+        )
+
+    return pd.concat(
+        chunks,
+        ignore_index=True,
     )
+
 
 # Convenience templates for common example POS export layouts.
 # These are examples, not verified official company export formats.

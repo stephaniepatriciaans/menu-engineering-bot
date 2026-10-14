@@ -83,13 +83,27 @@ def render_ai_decision_memo(
         st.session_state.generated_memo_context = None
 
     # Check Anthropic API configuration
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    live_ai_enabled = (
+        os.environ.get("ENABLE_LIVE_AI", "false").lower() == "true"
+    )
+
+    api_key_configured = bool(
+        os.environ.get("ANTHROPIC_API_KEY")
+    )
+
+    if not live_ai_enabled:
+        st.info(
+            "Live AI memo generation is disabled in this demo. "
+            "All deterministic analytics and pricing simulations "
+            "remain available."
+        )
+
+    elif not api_key_configured:
         st.warning(
             "No ANTHROPIC_API_KEY is configured. "
             "All deterministic analytics still work; "
             "only memo generation is disabled."
         )
-
 
     else:
         # Generate or regenerate the memo

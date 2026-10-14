@@ -318,6 +318,7 @@ def build_user_prompt(
     return "\n\n".join(sections) + "\n\nWrite the decision memo now."
 
 
+
 def generate_menu_memo(
     summary_df: pd.DataFrame,
     moves_df: pd.DataFrame | None = None,
@@ -326,7 +327,26 @@ def generate_menu_memo(
     model: str = "claude-sonnet-4-6",
 ) -> str:
     """Ask Claude to explain deterministic outputs; Claude never performs the calculations."""
+
+    # ================================================================
+    # SECURITY: DISABLE LIVE AI CALLS UNLESS EXPLICITLY ENABLED
+    # ================================================================
+    live_ai_enabled = (
+        os.environ.get("ENABLE_LIVE_AI", "false").strip().lower()
+        == "true"
+    )
+
+    if not live_ai_enabled:
+        raise RuntimeError(
+            "Live AI memo generation is disabled. "
+            "Set ENABLE_LIVE_AI=true to enable Claude requests."
+        )
+
+    # ================================================================
+    # VERIFY ANTHROPIC API KEY
+    # ================================================================
     api_key = os.environ.get("ANTHROPIC_API_KEY")
+
     if not api_key:
         raise RuntimeError(
             "ANTHROPIC_API_KEY environment variable not set. "
@@ -342,9 +362,15 @@ def generate_menu_memo(
         system=SYSTEM_PROMPT,
         messages=[{
             "role": "user",
-            "content": build_user_prompt(summary_df, moves_df, metadata, capabilities),
+            "content": build_user_prompt(
+                summary_df,
+                moves_df,
+                metadata,
+                capabilities,
+            ),
         }],
     )
+
     memo = "".join(
         block.text
         for block in response.content

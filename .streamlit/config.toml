@@ -1,6 +1,6 @@
 [server]
-maxUploadSize = 1024
-maxMessageSize = 1024
+maxUploadSize = 200
+maxMessageSize = 200
 
 [theme]
 font = "sans serif"
