@@ -8,9 +8,70 @@ import json
 import pandas as pd
 import streamlit as st
 
-from model_evaluation import build_model_evaluation_report
+from model_evaluation import (
+    build_model_evaluation_report,
+    evaluate_historical_average,
+)
 
 REQUIRED_COLUMNS = {"date", "item", "price", "units_sold"}
+
+
+def prepare_evaluation_table(item_df: pd.DataFrame) -> pd.DataFrame:
+    """Prepare readable evaluation results without changing source data.
+
+    Converts internal status codes into user-friendly labels,
+    preserves numeric metrics, and retains missing values.
+    """
+    display_df = item_df.copy()
+
+    status_labels = {
+        "evaluated": "Both Models Evaluated",
+        "baseline_only": "Baseline Only",
+        "insufficient_evidence": "Insufficient Data",
+    }
+
+    if "status" in display_df.columns:
+        display_df["status"] = (
+            display_df["status"]
+            .map(status_labels)
+            .fillna(display_df["status"])
+        )
+
+    display_df = display_df.rename(
+        columns={
+            "item": "Menu Item",
+            "status": "Evaluation Status",
+            "reason": "Reason",
+            "train_days": "Training Days",
+            "test_days": "Test Days",
+            "baseline_mae": "Baseline MAE",
+            "baseline_rmse": "Baseline RMSE",
+            "baseline_wape": "Baseline WAPE (%)",
+            "elasticity_mae": "Elasticity MAE",
+            "elasticity_rmse": "Elasticity RMSE",
+            "elasticity_wape": "Elasticity WAPE (%)",
+            "elasticity_lower_mae": "Elasticity Lower MAE",
+            "price_extrapolation": "Price Extrapolation",
+        }
+    )
+
+    numeric_columns = [
+        "Baseline MAE",
+        "Baseline RMSE",
+        "Baseline WAPE (%)",
+        "Elasticity MAE",
+        "Elasticity RMSE",
+        "Elasticity WAPE (%)",
+    ]
+
+    for column in numeric_columns:
+        if column in display_df.columns:
+            display_df[column] = pd.to_numeric(
+                display_df[column],
+                errors="coerce",
+            )
+
+    return display_df
 
 
 def _dataset_fingerprint(df: pd.DataFrame) -> str:
@@ -193,62 +254,14 @@ def render_model_evaluation(df: pd.DataFrame) -> None:
             f"compared items ({_percentage(better_pct)})."
         )
         
-        st.subheader("Item-Level Results")
+        
+    # ============================================================
+    # ITEM-LEVEL RESULTS
+    # ============================================================
+    st.subheader("Item-Level Results")
 
-        # Prepare a presentation-only copy.
-        # Keep item_df unchanged for CSV/JSON exports.
-        display_df = item_df.copy()
-
-        # Friendly status labels for restaurant owners.
-        status_labels = {
-            "evaluated": "Both Models Evaluated",
-            "baseline_only": "Baseline Only",
-            "insufficient_evidence": "Insufficient Data",
-        }
-
-        display_df["status"] = (
-            display_df["status"]
-            .map(status_labels)
-            .fillna(display_df["status"])
-        )
-
-        # Rename columns for easier reading.
-        display_df = display_df.rename(
-            columns={
-                "item": "Menu Item",
-                "status": "Evaluation Status",
-                "reason": "Reason",
-                "train_days": "Training Days",
-                "test_days": "Test Days",
-                "baseline_mae": "Baseline MAE",
-                "baseline_rmse": "Baseline RMSE",
-                "baseline_wape": "Baseline WAPE (%)",
-                "elasticity_mae": "Elasticity MAE",
-                "elasticity_rmse": "Elasticity RMSE",
-                "elasticity_wape": "Elasticity WAPE (%)",
-                "elasticity_lower_mae": "Elasticity Lower MAE",
-                "price_extrapolation": "Price Extrapolation",
-            }
-        )
-
-        # Convert unavailable numeric metrics to N/A for display.
-        # Streamlit's column configuration formats valid metrics
-        # and displays missing numeric values as empty cells.
-        numeric_columns = [
-            "Baseline MAE",
-            "Baseline RMSE",
-            "Baseline WAPE (%)",
-            "Elasticity MAE",
-            "Elasticity RMSE",
-            "Elasticity WAPE (%)",
-        ]
-
-        for column in numeric_columns:
-            if column in display_df.columns:
-                display_df[column] = pd.to_numeric(
-                    display_df[column],
-                    errors="coerce",
-                )
+    if not item_df.empty:
+        display_df = prepare_evaluation_table(item_df)
 
         st.dataframe(
             display_df,
@@ -295,18 +308,139 @@ def render_model_evaluation(df: pd.DataFrame) -> None:
         )
 
         st.caption(
-            "Baseline Only means that historical-average forecast "
-            "metrics are available, but elasticity evaluation is "
-            "unsupported. Blank metric cells mean unavailable, "
-            "not zero."
+            "Baseline Only means baseline forecast metrics are "
+            "available, but elasticity evaluation is unsupported. "
+            "Blank metric cells indicate unavailable values, not zero."
         )
 
-        st.caption(
-            "baseline_only means baseline metrics are valid but elasticity "
-            "metrics are unavailable; blank values are not zero error."
-        )
     else:
         st.info("No item-level results are available.")
+
+
+    # ============================================================
+    # ACTUAL VS. PREDICTED DEMAND
+    # ============================================================
+    if baseline_count > 0:
+        st.subheader("Actual vs. Predicted Demand")
+
+        st.caption(
+            "Compare recorded daily sales with the historical-average "
+            "forecast on held-out dates. Only earlier observations "
+            "are used to fit the baseline."
+        )
+
+        eligible_items = item_df.loc[
+            item_df["status"].isin(
+                ["evaluated", "baseline_only"]
+            ),
+            "item",
+        ].astype(str).tolist()
+
+        selected_item = st.selectbox(
+            "Select menu item",
+            options=eligible_items,
+            key="evaluation_chart_item",
+        )
+
+        selected_data = df.loc[
+            df["item"].astype(str) == selected_item
+        ].copy()
+
+        
+        try:
+            result = evaluate_historical_average(
+                selected_data,
+                train_fraction=train_pct / 100.0,
+            )
+
+            # Read the exact holdout results from the backend.
+            test_dates_value = result["test_dates"]
+            actual_values = result["actual"]
+            prediction_values = result["predictions"]
+
+            # Validate the returned types.
+            if not isinstance(test_dates_value, list):
+                raise TypeError(
+                    "Test dates must be returned as a list."
+                )
+
+            if not isinstance(actual_values, list):
+                raise TypeError(
+                    "Actual demand must be returned as a list."
+                )
+
+            if not isinstance(prediction_values, list):
+                raise TypeError(
+                    "Predictions must be returned as a list."
+                )
+
+            # Ensure date values are strings.
+            if not all(
+                isinstance(value, str)
+                for value in test_dates_value
+            ):
+                raise TypeError(
+                    "Test dates must contain strings."
+                )
+
+            # Convert the values into typed numeric arrays.
+            test_dates = pd.to_datetime(
+                [str(value) for value in test_dates_value],
+                format="%Y-%m-%d",
+                errors="raise",
+            )
+
+            actual = pd.to_numeric(
+                pd.Series(
+                    [float(value) for value in actual_values]
+                ),
+                errors="raise",
+            )
+
+            predicted = pd.to_numeric(
+                pd.Series(
+                    [float(value) for value in prediction_values]
+                ),
+                errors="raise",
+            )
+
+            # Verify that dates and predictions align.
+            if not (
+                len(test_dates) == len(actual) == len(predicted)
+            ):
+                raise ValueError(
+                    "Forecast dates and predictions do not align."
+                )
+
+            if len(test_dates) == 0:
+                raise ValueError(
+                    "No held-out dates are available."
+                )
+
+            chart_df = pd.DataFrame({
+                "Date": test_dates,
+                "Actual Demand": actual.to_numpy(),
+                "Baseline Prediction": predicted.to_numpy(),
+            })
+
+            st.line_chart(
+                chart_df.set_index("Date"),
+                height=350,
+            )
+
+            test_days = len(test_dates)
+
+            st.caption(
+                f"Showing {test_days} held-out recorded dates "
+                f"for {selected_item}. "
+                "Missing transaction dates are not treated "
+                "as zero sales."
+            )
+
+        except (ValueError, TypeError, KeyError, OverflowError) as exc:
+            st.warning(
+                f"Unable to display demand forecast: {exc}"
+            )
 
     with st.expander("Evaluation Methodology"):
         st.write(

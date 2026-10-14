@@ -248,6 +248,7 @@ def evaluate_historical_average(
         "item": str(items[0]),
         "train_days": len(train),
         "test_days": len(test),
+        "test_dates": test["date"].dt.strftime("%Y-%m-%d").tolist(),
         "train_end": str(train["date"].max().date()),
         "test_start": str(test["date"].min().date()),
         "predictions": predictions.tolist(),

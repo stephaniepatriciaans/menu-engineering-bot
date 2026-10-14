@@ -95,6 +95,50 @@ The dashboard also provides evaluation methodology details and downloadable JSON
 
 ![Model Evaluation Methodology and Downloads](assets/model_evaluation_methodology.png)
 
+
+#### Actual vs. Predicted Demand Visualization
+
+The Model Evaluation dashboard includes an interactive
+Actual vs. Predicted Demand chart for baseline-eligible menu items.
+
+Users can select an individual menu item and compare:
+
+- Actual daily units sold on held-out recorded dates
+- Historical-average baseline predictions
+- Chronologically aligned dates returned directly by the evaluation engine
+
+The visualization supports both fully evaluated and baseline-only
+items, including products without sufficient historical price variation
+for elasticity modeling.
+
+Missing transaction dates are not automatically treated as zero sales.
+
+#### Data Leakage and Reliability Safeguards
+
+The evaluation pipeline uses chronological training/test splits.
+
+- All transactions from the same calendar date remain in the same split.
+- Model training uses only training-period sales quantities.
+- Test-period sales quantities are used only for calculating errors.
+- Elasticity predictions may use observed test-period prices as known inputs.
+- Changing held-out sales quantities does not change fitted predictions.
+- Invalid dates are rejected rather than silently accepted.
+- Actual demand, predicted demand, and held-out dates are checked for alignment.
+
+These safeguards are verified through automated regression tests.
+
+Historical backtesting does not establish causal price effects or
+guarantee future forecasting performance.
+
+#### Automated Testing
+
+Latest locally verified results:
+
+- 285 passing tests
+- 0 failing tests
+- Clean Ruff checks
+- One non-failing Pandas date-parsing warning in an invalid-date test
+
 #### Successful Model Evaluation — Synthetic Backtesting Results
 
 A separate **evaluation-ready synthetic dataset** was created to demonstrate the complete forecasting evaluation workflow.
