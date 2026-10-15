@@ -8,61 +8,33 @@ def apply_dashboard_styles() -> None:
         """
         <style>
         /* ============================================
-           1. DESIGN SYSTEM
-           ============================================ */
+        1. DESIGN SYSTEM — THEME AWARE
+        ============================================ */
+
         :root {
-            /* Streamlit theme colors with compatibility fallbacks */
-            --fintech-bg: var(
-                --st-background-color,
-                var(--background-color, #F8FAFC)
-            );
-
-            --fintech-sidebar: var(
-                --st-secondary-background-color,
-                var(--secondary-background-color, #FFFFFF)
-            );
-
-            --fintech-card: var(
-                --st-secondary-background-color,
-                var(--secondary-background-color, #FFFFFF)
-            );
-
-            --fintech-card-hover: color-mix(
-                in srgb,
-                var(--fintech-card) 92%,
-                var(--fintech-blue)
-            );
-
-            --fintech-border: var(
-                --st-border-color,
-                color-mix(
-                    in srgb,
-                    var(--fintech-text) 18%,
-                    transparent
-                )
-            );
-
-            --fintech-text: var(
-                --st-text-color,
-                var(--text-color, #0F172A)
-            );
-
-            --fintech-muted: color-mix(
-                in srgb,
-                var(--fintech-text) 62%,
-                var(--fintech-bg)
-            );
-
-            --fintech-blue: var(
-                --st-primary-color,
-                var(--primary-color, #2563EB)
-            );
-
+            --fintech-bg: #F8FAFC;
+            --fintech-sidebar: #EFF4FA;
+            --fintech-card: #FFFFFF;
+            --fintech-text: #0F172A;
+            --fintech-blue: #2563EB;
+            --fintech-border: #CBD5E1;
+            --fintech-muted: #64748B;
             --fintech-green: #10B981;
             --fintech-yellow: #F59E0B;
             --fintech-red: #F43F5E;
             --fintech-radius: 14px;
         }
+
+        [data-theme="dark"] {
+            --fintech-bg: #0B1220;
+            --fintech-sidebar: #111D30;
+            --fintech-card: #152238;
+            --fintech-text: #F1F5F9;
+            --fintech-blue: #60A5FA;
+            --fintech-border: #293A52;
+            --fintech-muted: #94A3B8;
+        }
+
 
         /* ============================================
            2. APP BACKGROUND AND CONTENT WIDTH
@@ -525,7 +497,7 @@ def apply_dashboard_styles() -> None:
         }
 
         /* Responsive overview KPI cards */
-P
+        
         .fintech-overview-grid {
             display: grid;
             grid-template-columns: repeat(
