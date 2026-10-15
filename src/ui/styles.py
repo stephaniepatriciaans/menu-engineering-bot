@@ -173,42 +173,97 @@ def apply_dashboard_styles() -> None:
         }
 
         /* ============================================
-           6. PRICING RISK CARDS
-           ============================================ */
+        6. PRICING RISK CARDS
+        ============================================ */
 
+        /* Shared card styling */
         .st-key-pricing_risk_assessed,
         .st-key-pricing_risk_negative,
         .st-key-pricing_risk_nonnegative {
             border-radius: 14px;
             padding: 1rem;
             min-height: 155px;
+            box-sizing: border-box;
         }
 
+        /* Blue — Menu Items Assessed */
         .st-key-pricing_risk_assessed {
-            border: 1px solid #60A5FA;
+            background-color: rgba(96, 165, 250, 0.14);
+            border: 1px solid rgba(96, 165, 250, 0.60);
         }
 
+        /* Rose — Negative Worst-Case */
         .st-key-pricing_risk_negative {
-            border: 1px solid #FB7185;
+            background-color: rgba(251, 113, 133, 0.14);
+            border: 1px solid rgba(251, 113, 133, 0.60);
         }
 
+        /* Green — No Simulated Downside Loss */
         .st-key-pricing_risk_nonnegative {
-            border: 1px solid #34D399;
+            background-color: rgba(52, 211, 153, 0.14);
+            border: 1px solid rgba(52, 211, 153, 0.60);
         }
 
+        /* Prevent nested metric backgrounds from covering card colors */
         .st-key-pricing_risk_assessed [data-testid="stMetric"],
         .st-key-pricing_risk_negative [data-testid="stMetric"],
         .st-key-pricing_risk_nonnegative [data-testid="stMetric"] {
+            background: transparent !important;
             border: none !important;
             padding: 0 !important;
         }
 
+        /* Larger, prominent KPI values */
         .st-key-pricing_risk_assessed [data-testid="stMetricValue"],
         .st-key-pricing_risk_negative [data-testid="stMetricValue"],
         .st-key-pricing_risk_nonnegative [data-testid="stMetricValue"] {
             font-size: 2.5rem !important;
             font-weight: 800 !important;
+            letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums;
         }
+
+        /* Keep labels readable on smaller screens */
+        .st-key-pricing_risk_assessed [data-testid="stMetricLabel"] p,
+        .st-key-pricing_risk_negative [data-testid="stMetricLabel"] p,
+        .st-key-pricing_risk_nonnegative [data-testid="stMetricLabel"] p {
+            white-space: normal !important;
+            overflow-wrap: break-word;
+        }
+
+        /* Responsive card sizing */
+        @media (max-width: 900px) {
+            .st-key-pricing_risk_assessed,
+            .st-key-pricing_risk_negative,
+            .st-key-pricing_risk_nonnegative {
+                min-height: 130px;
+                padding: 0.85rem;
+            }
+
+            .st-key-pricing_risk_assessed [data-testid="stMetricValue"],
+            .st-key-pricing_risk_negative [data-testid="stMetricValue"],
+            .st-key-pricing_risk_nonnegative [data-testid="stMetricValue"] {
+                font-size: 2rem !important;
+            }
+        }
+        
+        /* Semantic KPI number colors */
+
+        /* Blue number — Menu Items Assessed */
+        .st-key-pricing_risk_assessed [data-testid="stMetricValue"] {
+            color: #3B82F6 !important;
+        }
+
+        /* Red number — Negative Worst-Case */
+        .st-key-pricing_risk_negative [data-testid="stMetricValue"] {
+            color: #E11D48 !important;
+        }
+
+        /* Green number — No Simulated Downside Loss */
+        .st-key-pricing_risk_nonnegative [data-testid="stMetricValue"] {
+            color: #059669 !important;
+        }
+
 
         /* ============================================
            7. EXPANDERS, TABLES, CHARTS
