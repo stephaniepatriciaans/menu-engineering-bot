@@ -246,7 +246,7 @@ def apply_dashboard_styles() -> None:
                 font-size: 2rem !important;
             }
         }
-        
+
         /* Semantic KPI number colors */
 
         /* Blue number — Menu Items Assessed */
