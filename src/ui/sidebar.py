@@ -11,7 +11,6 @@ from config import CURRENCY_CONFIG
 
 class SidebarSettings(NamedTuple):
     """Values returned by the sidebar controls."""
-
     business_name: str
     dataset_name: str
     currency: str
@@ -19,6 +18,7 @@ class SidebarSettings(NamedTuple):
     max_increase: int
     source: str
     uploaded: UploadedFile | None
+    encoding: str = "utf-8-sig"
 
 
 def render_sidebar() -> SidebarSettings:
@@ -68,8 +68,24 @@ def render_sidebar() -> SidebarSettings:
         )
 
         uploaded = None
+        encoding = "utf-8-sig"
 
         if source == "Upload my own CSV":
+            encoding = st.selectbox(
+                "CSV file encoding",
+                options=["utf-8-sig", "cp1252"],
+                format_func=lambda value: (
+                    "UTF-8 (Recommended)"
+                    if value == "utf-8-sig"
+                    else "Windows-1252 (Legacy POS)"
+                ),
+                help=(
+                    "Use UTF-8 for most CSV files. "
+                    "Select Windows-1252 only for legacy POS exports."
+                ),
+                key="sales_csv_encoding",
+            )
+
             uploaded = st.file_uploader(
                 "Upload sales/POS CSV",
                 type=["csv"],
@@ -83,4 +99,5 @@ def render_sidebar() -> SidebarSettings:
         max_increase=max_increase,
         source=source,
         uploaded=uploaded,
+        encoding=encoding,
     )

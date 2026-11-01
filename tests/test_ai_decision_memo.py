@@ -496,3 +496,71 @@ def test_failed_regeneration_clears_previous_memo(monkeypatch):
     assert session.generated_memo_context is None
 
     widgets["error"].assert_called()
+
+def test_ai_memo_displays_refund_candidate_warning(monkeypatch):
+    """Refund candidates must be disclosed in the memo UI."""
+    summary, moves = make_inputs()
+
+    widgets = setup_mocks(monkeypatch)
+
+    monkeypatch.setenv("ENABLE_LIVE_AI", "false")
+
+    ai_decision_memo.render_ai_decision_memo(
+        summary=summary,
+        moves=moves,
+        business_name="Test Cafe",
+        dataset_name="Refund Test",
+        currency="USD",
+        cost_basis="Actual",
+        cost_is_assumption=False,
+        capabilities={"revenue_analysis": True},
+        generate_memo_pdf=Mock(),
+        refund_candidate_count=1,
+    )
+
+    warning_messages = [
+        str(call.args[0])
+        for call in widgets["warning"].call_args_list
+    ]
+
+    assert any(
+        "1 negative-quantity refund-candidate" in message
+        for message in warning_messages
+    )
+
+    assert any(
+        "sales-only records" in message
+        for message in warning_messages
+    )
+
+
+def test_ai_memo_no_refund_warning_for_regular_sales(monkeypatch):
+    """Ordinary sales must not display a refund disclosure."""
+    summary, moves = make_inputs()
+
+    widgets = setup_mocks(monkeypatch)
+
+    monkeypatch.setenv("ENABLE_LIVE_AI", "false")
+
+    ai_decision_memo.render_ai_decision_memo(
+        summary=summary,
+        moves=moves,
+        business_name="Test Cafe",
+        dataset_name="Regular Sales",
+        currency="USD",
+        cost_basis="Actual",
+        cost_is_assumption=False,
+        capabilities={"revenue_analysis": True},
+        generate_memo_pdf=Mock(),
+        refund_candidate_count=0,
+    )
+
+    warning_messages = [
+        str(call.args[0])
+        for call in widgets["warning"].call_args_list
+    ]
+
+    assert not any(
+        "negative-quantity refund-candidate" in message
+        for message in warning_messages
+    )

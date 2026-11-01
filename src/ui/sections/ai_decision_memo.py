@@ -24,10 +24,21 @@ def render_ai_decision_memo(
     cost_is_assumption: bool,
     capabilities: dict,
     generate_memo_pdf: Callable[..., bytes],
+    refund_candidate_count: int = 0,
 ) -> None:
     """Render, cache, display, and download the AI decision memo"""
 
     st.header("AI Decision Memo")
+    
+    if refund_candidate_count > 0:
+        st.warning(
+            f"This analysis excludes {refund_candidate_count:,} "
+            "negative-quantity refund-candidate transaction(s). "
+            "Reported revenue, contribution profit, and pricing "
+            "simulations use sales-only records, before potential "
+            "refund adjustments. Refer to POS transaction accounting "
+            "for potential net revenue."
+        )
 
     metadata = {
         "business_name": business_name,
@@ -210,7 +221,11 @@ def render_ai_decision_memo(
                 )
 
         # Build a download-safe version that includes audit findings
-        export_memo = build_memo_export(memo, audit)
+        export_memo = build_memo_export(
+            memo,
+            audit,
+            refund_candidate_count=refund_candidate_count,
+        )
 
         st.divider()
 

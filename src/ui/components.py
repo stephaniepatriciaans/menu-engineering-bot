@@ -1,6 +1,5 @@
 """Reusable Streamlit dashboard components."""
 
-
 import pandas as pd
 import streamlit as st
 
@@ -10,7 +9,10 @@ from config import format_currency
 def render_kpi_cards(
     df: pd.DataFrame,
     currency: str,
+    has_refund_candidates: bool = False,
 ) -> None:
+    """Display dashboard KPI cards with clear revenue labeling."""
+
     """Display the original four-column Modern Fintech KPI cards."""
 
     total_revenue = float(
@@ -23,10 +25,18 @@ def render_kpi_cards(
 
     cards = [
         {
-            "label": "Total Revenue",
+            "label": (
+                "Gross Sales Revenue"
+                if has_refund_candidates
+                else "Total Revenue"
+            ),
             "value": format_currency(total_revenue, currency),
             "icon": "📈",
-            "caption": "Sales revenue",
+            "caption": (
+                "Before refund candidates; not net revenue"
+                if has_refund_candidates
+                else "Sales revenue"
+            ),
         },
         {
             "label": "Units Sold",

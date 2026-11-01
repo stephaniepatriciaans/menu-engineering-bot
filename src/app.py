@@ -10,6 +10,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from pdf_report import generate_memo_pdf
+from pos_transactions import split_pos_transactions
 
 load_dotenv()
 
@@ -57,6 +58,7 @@ from ui.components import (
 from ui.cost_settings import render_cost_settings
 from ui.data_upload import (
     load_uploaded_sales,
+    render_pos_accounting_summary,
     render_source_audit,
 )
 from ui.filters import render_category_filter, render_date_filter
@@ -114,7 +116,7 @@ max_increase = settings.max_increase
 
 source = settings.source
 uploaded = settings.uploaded
-
+encoding = settings.encoding
 
 # ================================================================
 # Load dataset
@@ -163,7 +165,8 @@ if source == "Full Demo Dataset — Synthetic Cafe":
 elif uploaded is not None:
     try:
         raw_df, source_audit_messages = load_uploaded_sales(
-            uploaded
+            uploaded,
+            encoding=encoding,
         )
 
         render_source_audit(source_audit_messages)
@@ -229,6 +232,17 @@ if mapping_errors:
 
 
 # ================================================================
+# POS transaction accounting preview
+# ================================================================
+
+if source == "Upload my own CSV":
+    render_pos_accounting_summary(
+        raw_df,
+        mapping,
+    )
+
+
+# ================================================================
 # Adapt dataset to canonical schema
 # ================================================================
 
@@ -246,6 +260,42 @@ except ValueError as exc:
     st.error(str(exc))
     st.stop()
 
+
+# ================================================================
+# Separate refund candidates from sales analysis
+# ================================================================
+
+refund_candidates_df = pd.DataFrame()
+
+if source == "Upload my own CSV":
+    try:
+        sales_df, refund_candidates_df = split_pos_transactions(
+            canonical_df
+        )
+    except ValueError as exc:
+        st.error(
+            f"Unable to classify POS transactions: {exc}"
+        )
+        st.stop()
+
+    if not refund_candidates_df.empty:
+        st.warning(
+            f"{len(refund_candidates_df):,} negative-quantity "
+            "transaction(s) were identified as refund candidates. "
+            "These records are preserved for the POS accounting "
+            "preview but excluded from sales-only dashboard analysis. "
+            "Dashboard revenue is gross sales revenue before refunds, "
+            "not net revenue."
+        )
+
+    if sales_df.empty:
+        st.error(
+            "No nonnegative-quantity sales records are available "
+            "for analysis. Review the uploaded transactions."
+        )
+        st.stop()
+
+    canonical_df = sales_df
 
 # ================================================================
 # Optional cost handling
@@ -413,7 +463,11 @@ render_business_header(
 )
 
 # Reusable KPI cards from src/ui/components.py
-render_kpi_cards(df, currency)
+render_kpi_cards(
+    df,
+    currency,
+    has_refund_candidates=not refund_candidates_df.empty,
+)
 
 # ================================================================
 # Display Dashboard
@@ -521,4 +575,5 @@ render_ai_decision_memo(
     cost_is_assumption=cost_is_assumption,
     capabilities=capabilities,
     generate_memo_pdf=generate_memo_pdf,
+    refund_candidate_count=len(refund_candidates_df),
 )

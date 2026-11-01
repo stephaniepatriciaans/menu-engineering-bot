@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 from collections.abc import Iterable, Mapping
 from difflib import SequenceMatcher
 
@@ -18,12 +19,19 @@ from config import (
 NOT_AVAILABLE = "Not available"
 
 
-def read_delimited_csv(file_obj) -> pd.DataFrame:
-    """Read CSV files with bounded parsing and delimiter detection.
-
+def read_delimited_csv(file_obj,encoding: str = "utf-8-sig") -> pd.DataFrame:
+    """Read bounded POS CSV files with quote-aware delimiter detection.
     Supports comma, pipe, semicolon, and tab delimiters.
-    Rejects excessive file sizes and row counts.
     """
+    # Validate the selected file encoding.
+    supported_encodings = {"utf-8-sig", "cp1252"}
+
+    if encoding not in supported_encodings:
+        raise ValueError(
+            "Unsupported CSV encoding. "
+            "Choose UTF-8 or Windows-1252."
+        )
+
     max_file_bytes = 200 * 1024 * 1024
     max_rows = 500_000
     max_columns = 200
@@ -42,19 +50,18 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
             "The uploaded CSV exceeds the 200 MB file limit."
         )
 
-    # Read only a small sample for delimiter detection.
+    # Read a small sample for delimiter and encoding detection.
     sample = file_obj.read(16_384)
     file_obj.seek(0)
 
     if isinstance(sample, bytes):
         try:
-            sample_text = sample.decode(
-                "utf-8-sig",
-                errors="ignore",
-            )
-        except UnicodeError as exc:
+            sample_text = sample.decode(encoding)
+        except UnicodeDecodeError as exc:
             raise ValueError(
-                "Unable to decode the uploaded CSV."
+                "Unable to parse the uploaded CSV. "
+                f"The file cannot be decoded using {encoding}. "
+                "Choose the correct file encoding."
             ) from exc
     else:
         sample_text = sample
@@ -62,26 +69,19 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
     if not sample_text.strip():
         raise ValueError("The uploaded file is empty.")
 
-    first_line = sample_text.splitlines()[0]
-
-    delimiters = [",", "|", ";", "\t"]
-
-    delimiter_counts = {
-        delimiter: first_line.count(delimiter)
-        for delimiter in delimiters
-    }
-
-    detected_delimiter = max(
-        delimiter_counts,
-        key=lambda delimiter: delimiter_counts[delimiter],
-    )
-
-    if delimiter_counts[detected_delimiter] == 0:
+    # CSV Sniffer understands quotation marks and escaped delimiters.
+    try:
+        dialect = csv.Sniffer().sniff(
+            sample_text,
+            delimiters=",|;\t",
+        )
+        detected_delimiter = dialect.delimiter
+    except csv.Error as exc:
         raise ValueError(
             "Could not detect the file delimiter. "
             "Supported delimiters are comma, pipe, "
             "semicolon, and tab."
-        )
+        ) from exc
 
     chunks: list[pd.DataFrame] = []
     total_rows = 0
@@ -90,7 +90,7 @@ def read_delimited_csv(file_obj) -> pd.DataFrame:
         reader = pd.read_csv(
             file_obj,
             sep=detected_delimiter,
-            encoding="utf-8-sig",
+            encoding=encoding,
             chunksize=chunk_size,
             low_memory=False,
         )
