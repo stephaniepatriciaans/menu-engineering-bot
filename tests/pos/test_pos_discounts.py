@@ -3,7 +3,7 @@
 import pandas as pd
 import pytest
 
-from pos_transactions import calculate_discounted_sales
+from pos.transactions import calculate_discounted_sales
 
 
 def test_discounted_sale_calculates_realized_revenue():

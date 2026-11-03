@@ -3,7 +3,7 @@
 import pandas as pd
 import pytest
 
-from pos_transactions import (
+from pos.transactions import (
     split_pos_transactions,
     summarize_pos_transactions,
 )

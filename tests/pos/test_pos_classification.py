@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pos_classification import classify_pos_transactions
+from pos.classification import classify_pos_transactions
 
 
 @pytest.fixture

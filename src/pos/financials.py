@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from pos_transactions import (
+from pos.transactions import (
     calculate_discounted_sales,
     calculate_percentage_discounted_sales,
     validate_discount_price_basis,

@@ -2,7 +2,7 @@
 
 import pytest
 
-from pos_transactions import validate_discount_price_basis
+from pos.transactions import validate_discount_price_basis
 
 
 @pytest.mark.parametrize(

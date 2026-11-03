@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pos_financials import normalize_pos_financials
+from pos.financials import normalize_pos_financials
 
 
 @pytest.fixture

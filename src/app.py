@@ -10,7 +10,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from pdf_report import generate_memo_pdf
-from pos_transactions import split_pos_transactions
+from pos.transactions import split_pos_transactions
 
 load_dotenv()
 

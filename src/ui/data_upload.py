@@ -6,8 +6,8 @@ import pandas as pd
 import streamlit as st
 
 from data_adapter import read_delimited_csv
-from pos_classification import classify_pos_transactions
-from pos_transactions import (
+from pos.classification import classify_pos_transactions
+from pos.transactions import (
     calculate_discounted_sales,
     calculate_percentage_discounted_sales,
     summarize_pos_transactions,
