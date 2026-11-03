@@ -219,3 +219,116 @@ def discount_percent_selector(
     )
 
     return None if selected == NOT_AVAILABLE else selected
+
+def transaction_status_selector(
+    raw_df: pd.DataFrame,
+    prefix: str = "sales",
+    mapping: dict[str, str | None] | None = None,
+    excluded_columns: set[str] | None = None,
+) -> str | None:
+    """Select an optional POS transaction status column."""
+    from config import POS_COLUMN_ALIASES
+
+    excluded = set(excluded_columns or set())
+
+    if mapping is not None:
+        excluded.update(
+            column
+            for column in mapping.values()
+            if column is not None
+        )
+
+    options = [NOT_AVAILABLE] + [
+        str(column)
+        for column in raw_df.columns
+        if str(column) not in excluded
+    ]
+
+    aliases = {
+        alias.strip().lower()
+        for alias in POS_COLUMN_ALIASES["transaction_status"]
+    }
+
+    detected = next(
+        (
+            str(column)
+            for column in raw_df.columns
+            if (
+                str(column).strip().lower() in aliases
+                and str(column) not in excluded
+            )
+        ),
+        None,
+    )
+
+    selected = st.selectbox(
+        "Transaction Status (optional)",
+        options,
+        index=options.index(detected) if detected else 0,
+        key=f"{prefix}_transaction_status",
+        help=(
+            "Select a column describing transaction states "
+            "such as completed, refunded, returned, cancelled, "
+            "or voided. Statuses are reviewed before they "
+            "affect financial calculations."
+        ),
+    )
+
+    return None if selected == NOT_AVAILABLE else selected
+
+
+def transaction_amount_selector(
+    raw_df: pd.DataFrame,
+    prefix: str = "sales",
+    mapping: dict[str, str | None] | None = None,
+    excluded_columns: set[str] | None = None,
+) -> str | None:
+    """Select an optional signed transaction amount column."""
+    from config import POS_COLUMN_ALIASES
+
+    excluded = set(excluded_columns or set())
+
+    if mapping is not None:
+        excluded.update(
+            column
+            for column in mapping.values()
+            if column is not None
+        )
+
+    options = [NOT_AVAILABLE] + [
+        str(column)
+        for column in raw_df.columns
+        if str(column) not in excluded
+    ]
+
+    aliases = {
+        alias.strip().lower()
+        for alias in POS_COLUMN_ALIASES["transaction_amount"]
+    }
+
+    detected = next(
+        (
+            str(column)
+            for column in raw_df.columns
+            if (
+                str(column).strip().lower() in aliases
+                and str(column) not in excluded
+            )
+        ),
+        None,
+    )
+
+    selected = st.selectbox(
+        "Transaction Amount (optional, signed)",
+        options,
+        index=options.index(detected) if detected else 0,
+        key=f"{prefix}_transaction_amount",
+        help=(
+            "Select a signed transaction or line amount column. "
+            "Negative values may indicate refund candidates. "
+            "Verify the POS export convention before using "
+            "these values for financial reporting."
+        ),
+    )
+
+    return None if selected == NOT_AVAILABLE else selected

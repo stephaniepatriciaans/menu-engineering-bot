@@ -12,6 +12,8 @@ OPTIONAL_FIELDS = ["category", "unit_cost", "transaction_time"]
 POS_OPTIONAL_FIELDS = [
     "discount_amount",
     "discount_percent",
+    "transaction_status",
+    "transaction_amount",
 ]
 
 POS_COLUMN_ALIASES: dict[str, list[str]] = {
@@ -33,6 +35,25 @@ POS_COLUMN_ALIASES: dict[str, list[str]] = {
         "discount_rate_percent",
         "promo_percent",
     ],
+    "transaction_status": [
+        "transaction_status",
+        "order_status",
+        "payment_status",
+        "transaction_state",
+        "order_state",
+        "sale_status",
+        "status",
+    ],
+    "transaction_amount": [
+        "transaction_amount",
+        "line_total",
+        "line_amount",
+        "signed_amount",
+        "transaction_total",
+        "net_line_amount",
+        "net_line_total",
+    ],
+
 }
 
 COLUMN_ALIASES: dict[str, list[str]] = {

@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from data_adapter import read_delimited_csv
+from pos_classification import classify_pos_transactions
 from pos_transactions import (
     calculate_discounted_sales,
     calculate_percentage_discounted_sales,
@@ -254,3 +255,68 @@ def load_uploaded_sales(
 
     return raw_df, source_audit_messages
 
+
+def render_pos_classification_summary(
+    raw_df: pd.DataFrame,
+    mapping: dict[str, str | None],
+    status_column: str | None = None,
+    amount_column: str | None = None,
+) -> None:
+    """Preview transaction classifications without altering sales data."""
+    quantity_column = mapping.get("units_sold")
+
+    if quantity_column is None:
+        return
+
+    if status_column is None and amount_column is None:
+        return
+
+    try:
+        classified = classify_pos_transactions(
+            raw_df,
+            quantity_column=quantity_column,
+            status_column=status_column,
+            amount_column=amount_column,
+        )
+    except ValueError as exc:
+        st.warning(
+            f"Transaction classification is unavailable: {exc}"
+        )
+        return
+
+    counts = classified["transaction_class"].value_counts()
+
+    with st.expander(
+        "POS transaction classification",
+        expanded=False,
+    ):
+        c1, c2, c3 = st.columns(3)
+
+        c1.metric("Sales", int(counts.get("sale", 0)))
+        c2.metric(
+            "Refund Candidates",
+            int(counts.get("refund_candidate", 0)),
+        )
+        c3.metric(
+            "Cancelled",
+            int(counts.get("cancelled", 0)),
+        )
+
+        c4, c5 = st.columns(2)
+
+        c4.metric(
+            "Classification Conflicts",
+            int(classified["has_classification_conflict"].sum()),
+        )
+        c5.metric(
+            "Records Requiring Review",
+            int(classified["requires_accounting_review"].sum()),
+        )
+
+        st.caption(
+            "Classifications are preliminary and depend on POS "
+            "export conventions. Refunded statuses may identify "
+            "original sales rather than separate refund events. "
+            "No records are removed or financial adjustments "
+            "made by this preview."
+        )

@@ -59,6 +59,7 @@ from ui.cost_settings import render_cost_settings
 from ui.data_upload import (
     load_uploaded_sales,
     render_pos_accounting_summary,
+    render_pos_classification_summary,
     render_source_audit,
 )
 from ui.filters import render_category_filter, render_date_filter
@@ -66,6 +67,8 @@ from ui.mapping import (
     discount_amount_selector,
     discount_percent_selector,
     mapping_selectors,
+    transaction_amount_selector,
+    transaction_status_selector,
 )
 
 # ================================================================
@@ -248,7 +251,45 @@ with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
             mapping=mapping,
             discount_amount_column=discount_column,
         )
+        
+        st.markdown("#### Optional POS Transaction Classification")
 
+        excluded_pos_columns = {
+            column
+            for column in (
+                discount_column,
+                discount_percent_column,
+            )
+            if column is not None
+        }
+
+        transaction_status_column = transaction_status_selector(
+            raw_df,
+            prefix="sales",
+            mapping=mapping,
+            excluded_columns=excluded_pos_columns,
+        )
+
+        if transaction_status_column is not None:
+            excluded_pos_columns.add(transaction_status_column)
+
+        transaction_amount_column = transaction_amount_selector(
+            raw_df,
+            prefix="sales",
+            mapping=mapping,
+            excluded_columns=excluded_pos_columns,
+        )
+        
+        if (
+            transaction_status_column is not None
+            or transaction_amount_column is not None
+        ):
+            st.caption(
+                "Transaction classification fields are mapped "
+                "for review only. Refund and cancellation statuses "
+                "do not automatically change dashboard revenue "
+                "or demand calculations."
+            )
        
         if discount_column is not None:
             st.caption(
@@ -312,6 +353,8 @@ with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
     else:
         discount_column = None
         discount_percent_column = None
+        transaction_status_column = None
+        transaction_amount_column = None
         price_basis = "unknown"
 
         st.success(
@@ -348,6 +391,13 @@ if source == "Upload my own CSV":
         discount_column=discount_column,
         discount_percent_column=discount_percent_column,
         price_basis=price_basis,
+    )
+    
+    render_pos_classification_summary(
+        raw_df,
+        mapping,
+        status_column=transaction_status_column,
+        amount_column=transaction_amount_column,
     )
 
 

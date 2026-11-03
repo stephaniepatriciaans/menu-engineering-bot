@@ -1,0 +1,5 @@
+date,item,category,price,unit_cost,units_sold,transaction_status,line_total
+2026-01-01,Item A,Drinks,5.00,2.00,2,completed,10.00
+2026-01-02,Item B,Food,8.00,3.00,1,refunded,-8.00
+2026-01-03,Item C,Food,6.00,2.50,1,cancelled,6.00
+2026-01-04,Item D,Drinks,4.00,1.50,3,completed,12.00
