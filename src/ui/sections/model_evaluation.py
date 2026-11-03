@@ -8,7 +8,7 @@ import json
 import pandas as pd
 import streamlit as st
 
-from model_evaluation import (
+from analytics.model_evaluation import (
     build_model_evaluation_report,
     evaluate_historical_average,
 )

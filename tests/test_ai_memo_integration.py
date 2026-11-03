@@ -8,7 +8,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-import agent
+from ai import agent
 
 
 def test_generated_memo_with_audit_accepts_valid_claims(

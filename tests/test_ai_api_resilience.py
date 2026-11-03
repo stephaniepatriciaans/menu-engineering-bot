@@ -11,7 +11,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-import agent
+from ai import agent
 
 
 def test_generate_menu_memo_rejects_empty_response(monkeypatch):

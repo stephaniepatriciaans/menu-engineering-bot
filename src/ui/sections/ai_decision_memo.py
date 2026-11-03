@@ -9,9 +9,9 @@ from collections.abc import Callable
 import pandas as pd
 import streamlit as st
 
-from agent import generate_menu_memo_with_audit
-from ai_errors import friendly_ai_error
-from memo_export import build_memo_export
+from ai.agent import generate_menu_memo_with_audit
+from ai.errors import friendly_ai_error
+from reporting.memo_export import build_memo_export
 
 
 def render_ai_decision_memo(

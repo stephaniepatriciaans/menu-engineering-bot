@@ -5,7 +5,7 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
-from dashboard_utils import filter_by_date_range
+from core.dashboard_utils import filter_by_date_range
 
 
 def render_date_filter(

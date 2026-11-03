@@ -5,7 +5,7 @@ import io
 import pandas as pd
 import pytest
 
-from data_adapter import (
+from data_pipeline.adapter import (
     adapt_to_canonical,
     apply_known_preset,
     mapping_confidence,

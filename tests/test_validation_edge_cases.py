@@ -3,7 +3,7 @@
 import pandas as pd
 import pytest
 
-from validation import (
+from core.validation import (
     audit_source_transactions,
     validate_sales_df,
 )

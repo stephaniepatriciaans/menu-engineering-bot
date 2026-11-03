@@ -400,7 +400,7 @@ def generate_menu_memo_with_audit(
     Returns the cleaned memo and a separate diagnostic audit.
     The audit does not modify the generated memo.
     """
-    from memo_validation import audit_generated_memo
+    from ai.memo_validation import audit_generated_memo
 
     memo = generate_menu_memo(
         summary_df=summary_df,
@@ -424,8 +424,8 @@ def generate_menu_memo_with_audit(
 
 
 if __name__ == "__main__":
-    from analysis import build_item_summary, load_sales, recommend_price_moves
-    from validation import determine_capabilities, validate_sales_df
+    from analytics.analysis import build_item_summary, load_sales, recommend_price_moves
+    from core.validation import determine_capabilities, validate_sales_df
 
     raw = load_sales("data/cafe_sales.csv")
     validated, errors, _warnings = validate_sales_df(raw)

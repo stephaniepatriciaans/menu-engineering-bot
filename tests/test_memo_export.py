@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from memo_export import build_memo_export
+from reporting.memo_export import build_memo_export
 
 
 def test_memo_export_includes_financial_warnings():

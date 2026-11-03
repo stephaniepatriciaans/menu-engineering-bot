@@ -3,7 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from data_adapter import (
+from data_pipeline.adapter import (
     NOT_AVAILABLE,
     apply_estimated_cost_percentage,
     detect_column_mapping,

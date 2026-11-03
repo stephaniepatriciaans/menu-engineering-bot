@@ -3,7 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from dashboard_utils import (
+from core.dashboard_utils import (
     SORTING_OPTIONS,
     sort_menu_items,
 )

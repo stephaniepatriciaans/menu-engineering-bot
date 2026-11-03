@@ -6,7 +6,7 @@ sys.path.insert(
     str(Path(__file__).resolve().parents[1] / "src"),
 )
 
-from pdf_report import generate_memo_pdf
+from reporting.pdf_report import generate_memo_pdf
 
 
 def test_generate_pdf():

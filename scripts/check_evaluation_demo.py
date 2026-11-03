@@ -5,7 +5,7 @@ from typing import Any
 
 import pandas as pd
 
-from model_evaluation import build_model_evaluation_report
+from analytics.model_evaluation import build_model_evaluation_report
 
 
 def main() -> None:

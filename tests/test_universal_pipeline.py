@@ -12,13 +12,13 @@ SRC = os.path.join(ROOT, "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
-from analysis import build_item_summary, recommend_price_moves
-from data_adapter import (
+from analytics.analysis import build_item_summary, recommend_price_moves
+from data_pipeline.adapter import (
     adapt_to_canonical,
     apply_estimated_cost_percentage,
     detect_column_mapping,
 )
-from validation import determine_capabilities, validate_sales_df
+from core.validation import determine_capabilities, validate_sales_df
 
 
 class UniversalPipelineTests(unittest.TestCase):

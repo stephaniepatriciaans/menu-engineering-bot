@@ -4,7 +4,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from analysis import recommend_price_moves
+from analytics.analysis import recommend_price_moves
 from ui.table_formatters import display_moves_table
 
 

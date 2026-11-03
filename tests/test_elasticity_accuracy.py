@@ -11,7 +11,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-import analysis
+from analytics import analysis
 
 
 def test_estimated_elasticity_recovers_known_slope():

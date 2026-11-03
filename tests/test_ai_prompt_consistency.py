@@ -11,7 +11,7 @@ from pandas.testing import assert_frame_equal
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from agent import build_elasticity_summary, build_user_prompt
+from ai.agent import build_elasticity_summary, build_user_prompt
 
 
 def extract_json_section(prompt: str, heading: str):
@@ -251,7 +251,7 @@ def test_ai_prompt_includes_pricing_reliability():
 def test_ai_system_prompt_explains_profit_limitations():
     """The AI instructions must distinguish simulated and net profit."""
 
-    from agent import SYSTEM_PROMPT
+    from ai.agent import SYSTEM_PROMPT
 
     prompt = SYSTEM_PROMPT.lower()
 
@@ -324,7 +324,7 @@ def test_ai_prompt_includes_pricing_scenarios():
 def test_ai_system_prompt_labels_sensitivity_limitations():
     """AI instructions must not represent scenarios as guarantees."""
 
-    from agent import SYSTEM_PROMPT
+    from ai.agent import SYSTEM_PROMPT
 
     prompt = SYSTEM_PROMPT.lower()
 
@@ -368,7 +368,7 @@ def test_ai_prompt_includes_selection_mode():
 def test_ai_system_prompt_explains_selection_modes():
     """The AI must distinguish central and conservative selection."""
 
-    from agent import SYSTEM_PROMPT
+    from ai.agent import SYSTEM_PROMPT
 
     prompt = SYSTEM_PROMPT.lower()
 
@@ -379,7 +379,7 @@ def test_ai_system_prompt_explains_selection_modes():
     
 def test_ai_system_prompt_requires_exact_financial_values():
     """Claude must be instructed to preserve exact financial amounts."""
-    from agent import SYSTEM_PROMPT
+    from ai.agent import SYSTEM_PROMPT
 
     prompt = SYSTEM_PROMPT.lower()
 

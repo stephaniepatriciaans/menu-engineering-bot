@@ -10,7 +10,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from data_adapter import read_delimited_csv
+from data_pipeline.adapter import read_delimited_csv
 
 
 def test_semicolon_csv_with_quoted_commas_in_header():

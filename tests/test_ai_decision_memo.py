@@ -12,7 +12,7 @@ from pandas.testing import assert_frame_equal
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from memo_export import build_memo_export
+from reporting.memo_export import build_memo_export
 from ui.sections import ai_decision_memo
 
 

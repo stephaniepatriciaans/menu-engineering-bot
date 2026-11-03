@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from dashboard_utils import aggregate_sales_by_period
+from core.dashboard_utils import aggregate_sales_by_period
 from ui.charts import style_chart
 from ui.components import render_chart_header
 from ui.table_formatters import safe_format_currency

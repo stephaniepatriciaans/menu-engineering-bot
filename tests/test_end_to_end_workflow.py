@@ -11,9 +11,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from agent import build_user_prompt
-from analysis import build_item_summary, recommend_price_moves
-from validation import determine_capabilities, validate_sales_df
+from ai.agent import build_user_prompt
+from analytics.analysis import build_item_summary, recommend_price_moves
+from core.validation import determine_capabilities, validate_sales_df
 
 
 def test_complete_csv_to_ai_prompt_workflow():

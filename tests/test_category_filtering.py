@@ -12,7 +12,7 @@ sys.path.insert(
 )
 
 from config import category_group, classify_menu_item
-from data_adapter import adapt_to_canonical
+from data_pipeline.adapter import adapt_to_canonical
 
 
 def test_basic_category_mapping():

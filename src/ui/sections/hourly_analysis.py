@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from dashboard_utils import (
+from core.dashboard_utils import (
     analyze_hourly_revenue,
     analyze_peak_hours,
 )

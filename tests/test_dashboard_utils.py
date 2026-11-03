@@ -11,7 +11,7 @@ sys.path.insert(
     str(Path(__file__).resolve().parents[1] / "src"),
 )
 
-from dashboard_utils import (
+from core.dashboard_utils import (
     add_transaction_datetime,
     aggregate_sales_by_period,
     analyze_day_of_week,

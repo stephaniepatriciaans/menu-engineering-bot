@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from analysis import recommend_price_moves
+from analytics.analysis import recommend_price_moves
 
 
 def test_recommendation_selects_highest_profit_scenario():
@@ -106,7 +106,7 @@ def test_conservative_mode_selects_expected_price():
     # result using the existing scenario simulator.
     row = summary.iloc[0]
 
-    from analysis import simulate_pricing_scenarios
+    from analytics.analysis import simulate_pricing_scenarios
 
     candidate_results = []
 

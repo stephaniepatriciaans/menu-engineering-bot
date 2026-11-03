@@ -8,7 +8,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from validation import validate_sales_df
+from core.validation import validate_sales_df
 
 
 def test_refund_rows_are_identified_without_losing_sales():

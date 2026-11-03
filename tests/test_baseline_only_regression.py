@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from model_evaluation import (
+from analytics.model_evaluation import (
     build_model_evaluation_report,
     evaluate_all_items,
     summarize_model_coverage,

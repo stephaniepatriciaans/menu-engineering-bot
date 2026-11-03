@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from memo_validation import (
+from ai.memo_validation import (
     audit_generated_memo,
     audit_item_price_claims,
     audit_item_profit_impact_claims,
@@ -388,7 +388,7 @@ def test_unified_audit_includes_scenarios_without_duplicate_findings(
     monkeypatch,
 ):
     """Every audit category must appear exactly once in findings."""
-    import memo_validation as memo_module
+    from ai import memo_validation as memo_module
 
     financial_finding = {
         "claim": "$999.00",

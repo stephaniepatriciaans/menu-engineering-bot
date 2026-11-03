@@ -15,7 +15,7 @@ from config import (
     MIN_ELASTICITY_PRICE_POINTS,
     MIN_RELATIVE_PRICE_RANGE,
 )
-from model_evaluation import (
+from analytics.model_evaluation import (
     build_model_evaluation_report,
     calculate_forecast_metrics,
     chronological_split,

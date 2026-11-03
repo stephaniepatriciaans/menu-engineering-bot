@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 from config import CANONICAL_FIELDS
-from data_adapter import (
+from data_pipeline.adapter import (
     KNOWN_MAPPING_PRESETS,
     NOT_AVAILABLE,
     apply_known_preset,

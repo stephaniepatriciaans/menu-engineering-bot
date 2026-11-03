@@ -10,7 +10,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from model_evaluation import (
+from analytics.model_evaluation import (
     chronological_split,
     evaluate_historical_average,
 )
@@ -188,7 +188,7 @@ def test_same_day_records_remain_in_one_split():
 
 def test_future_sales_do_not_change_elasticity_predictions():
     """Changing test demand must not affect fitted forecasts."""
-    from model_evaluation import compare_demand_forecasts
+    from analytics.model_evaluation import compare_demand_forecasts
 
     prices = (
         [5.0, 5.5, 6.0, 6.5, 7.0] * 6

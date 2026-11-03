@@ -2,7 +2,7 @@
 
 import pytest
 
-from memo_export import build_memo_export
+from reporting.memo_export import build_memo_export
 
 
 def test_refund_disclosure_in_export():

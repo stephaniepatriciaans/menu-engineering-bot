@@ -9,7 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from analysis import (
+from analytics.analysis import (
     build_item_summary,
     recommend_price_moves,
     simulate_price_change,
@@ -72,7 +72,7 @@ def test_invalid_costs_and_prices_are_rejected():
 def test_elasticity_ignores_invalid_sales_records():
     """Invalid records must not influence elasticity estimation."""
 
-    from analysis import estimate_elasticity
+    from analytics.analysis import estimate_elasticity
 
     df = pd.DataFrame({
         "date": pd.to_datetime([
@@ -106,7 +106,7 @@ def test_elasticity_ignores_invalid_sales_records():
 def test_elasticity_with_no_valid_sales_uses_default_prior():
     """No valid records must not produce a historical estimate."""
 
-    from analysis import estimate_elasticity
+    from analytics.analysis import estimate_elasticity
 
     df = pd.DataFrame({
         "date": pd.to_datetime([
@@ -137,7 +137,7 @@ def test_elasticity_with_no_valid_sales_uses_default_prior():
 def test_average_daily_units_uses_recorded_dates(monkeypatch):
     """Document the existing recorded-date averaging rule."""
 
-    import analysis
+    from analytics import analysis
 
     monkeypatch.setattr(
         analysis,
@@ -180,7 +180,7 @@ def test_average_daily_units_counts_dates_without_item_sales(
 ):
     """A date with another item's sales contributes to the denominator."""
 
-    import analysis
+    from analytics import analysis
 
     monkeypatch.setattr(
         analysis,

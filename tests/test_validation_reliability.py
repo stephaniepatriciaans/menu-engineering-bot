@@ -8,7 +8,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from validation import (
+from core.validation import (
     audit_source_transactions,
     determine_capabilities,
     validate_sales_df,

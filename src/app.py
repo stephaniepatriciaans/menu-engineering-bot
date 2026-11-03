@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from pdf_report import generate_memo_pdf
+from reporting.pdf_report import generate_memo_pdf
 from pos.transactions import split_pos_transactions
 
 load_dotenv()
@@ -19,7 +19,7 @@ sys.path.append(os.path.dirname(__file__))
 # ================================================================
 # FROM ANALYSIS
 # ================================================================
-from analysis import (
+from analytics.analysis import (
     build_item_summary,
     load_sales,
 )
@@ -34,14 +34,14 @@ from config import (
 # ================================================================
 # FROM DASHBOARD UTILS
 # ================================================================
-from dashboard_utils import (
+from core.dashboard_utils import (
     add_transaction_datetime,
 )
 
 # ================================================================
 # FROM DATA ADAPTER
 # ================================================================
-from data_adapter import (
+from data_pipeline.adapter import (
     adapt_to_canonical,
     validate_mapping,
 )
@@ -92,7 +92,7 @@ from ui.styles import apply_dashboard_styles
 # ================================================================
 # FROM VALIDATION
 # ================================================================
-from validation import (
+from core.validation import (
     determine_capabilities,
     validate_sales_df,
 )

@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from ai_errors import friendly_ai_error
+from ai.errors import friendly_ai_error
 
 
 def test_friendly_ai_error_hides_sensitive_exception_details():

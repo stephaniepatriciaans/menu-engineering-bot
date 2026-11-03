@@ -9,7 +9,7 @@ sys.path.insert(
     str(Path(__file__).resolve().parents[1] / "src"),
 )
 
-from analysis import simulate_price_change
+from analytics.analysis import simulate_price_change
 
 
 def make_item(price=3.25, unit_cost=1.00, units=20.0, elasticity=-0.8):

@@ -8,7 +8,7 @@ sys.path.insert(
     str(Path(__file__).resolve().parents[1] / "src"),
 )
 
-from analysis import assess_pricing_reliability
+from analytics.analysis import assess_pricing_reliability
 
 
 @pytest.mark.parametrize(

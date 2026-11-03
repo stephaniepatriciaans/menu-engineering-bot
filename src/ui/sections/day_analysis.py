@@ -5,7 +5,7 @@ import plotly.express as px
 import streamlit as st
 
 from config import format_currency
-from dashboard_utils import (
+from core.dashboard_utils import (
     analyze_day_of_week,
     compare_weekday_weekend,
 )
