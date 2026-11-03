@@ -62,7 +62,11 @@ from ui.data_upload import (
     render_source_audit,
 )
 from ui.filters import render_category_filter, render_date_filter
-from ui.mapping import mapping_selectors
+from ui.mapping import (
+    discount_amount_selector,
+    discount_percent_selector,
+    mapping_selectors,
+)
 
 # ================================================================
 # FROM UI SECTIONS
@@ -207,7 +211,109 @@ with st.expander("⚙️ Data Setup & Column Mapping", expanded=False):
 
         mapping = mapping_selectors(raw_df)
 
+        st.markdown("#### Optional POS Discount Mapping")
+        
+        price_basis_label = st.selectbox(
+            "POS Price Basis",
+            [
+                "Unknown (not verified)",
+                "Listed price (before discounts)",
+                "Realized price (already discounted)",
+            ],
+            index=0,
+            key="sales_pos_price_basis",
+            help=(
+                "Specify whether the mapped Price column contains "
+                "original prices before discounts or prices that "
+                "already include discounts. Choose Unknown unless "
+                "you have verified the POS export convention."
+            ),
+        )
+
+        price_basis = {
+            "Unknown (not verified)": "unknown",
+            "Listed price (before discounts)": "listed",
+            "Realized price (already discounted)": "realized",
+        }[price_basis_label]
+
+        discount_column = discount_amount_selector(
+            raw_df,
+            prefix="sales",
+            mapping=mapping,
+        )
+
+        discount_percent_column = discount_percent_selector(
+            raw_df,
+            prefix="sales",
+            mapping=mapping,
+            discount_amount_column=discount_column,
+        )
+
+       
+        if discount_column is not None:
+            st.caption(
+                f"Monetary discount column: `{discount_column}`."
+            )
+
+        if discount_percent_column is not None:
+            st.caption(
+                "Percentage discount column: "
+                f"`{discount_percent_column}`."
+            )
+
+        if (
+            discount_column is not None
+            or discount_percent_column is not None
+        ):
+            st.info(
+                "Discounts are currently shown in the POS "
+                "accounting preview only. Dashboard revenue, "
+                "profit, and pricing calculations have not "
+                "been adjusted for discounts."
+            )
+
+        
+        if (
+            discount_column is not None
+            and discount_percent_column is not None
+        ):
+            st.warning(
+                "Both monetary and percentage discounts are "
+                "mapped. These may describe overlapping "
+                "promotions. They will not be combined until "
+                "their accounting relationship is confirmed."
+            )
+
+        # Warn users when the POS price basis is uncertain.
+        if (
+            discount_column is not None
+            or discount_percent_column is not None
+        ):
+            if price_basis == "unknown":
+                st.warning(
+                    "The POS price basis has not been verified. "
+                    "Discount-adjusted revenue should not be "
+                    "treated as reliable until you confirm "
+                    "whether prices are listed or already discounted."
+                )
+            elif price_basis == "realized":
+                st.info(
+                    "Source prices already include discounts. "
+                    "Discounts must not be subtracted again."
+                )
+
+        if discount_column is not None:
+            st.caption(
+                f"Discount column selected: `{discount_column}`. "
+                "Discounts are not yet applied to dashboard "
+                "revenue or pricing calculations."
+            )
+
     else:
+        discount_column = None
+        discount_percent_column = None
+        price_basis = "unknown"
+
         st.success(
             "Bundled demo columns already match the canonical schema."
         )
@@ -239,6 +345,9 @@ if source == "Upload my own CSV":
     render_pos_accounting_summary(
         raw_df,
         mapping,
+        discount_column=discount_column,
+        discount_percent_column=discount_percent_column,
+        price_basis=price_basis,
     )
 
 

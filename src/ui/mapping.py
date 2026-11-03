@@ -97,3 +97,125 @@ def mapping_selectors(
         )
 
     return result
+
+
+def discount_amount_selector(
+    raw_df: pd.DataFrame,
+    prefix: str = "sales",
+    mapping: dict[str, str | None] | None = None,
+) -> str | None:
+    """Select an optional line-level monetary discount column."""
+    from config import POS_COLUMN_ALIASES
+
+    excluded_columns: set[str] = set()
+
+    if mapping is not None:
+        excluded_columns = {
+            column
+            for column in (
+                mapping.get("price"),
+                mapping.get("units_sold"),
+            )
+            if column is not None
+        }
+
+    options = [NOT_AVAILABLE] + [
+        str(column)
+        for column in raw_df.columns
+        if str(column) not in excluded_columns
+    ]
+
+    aliases = {
+        alias.strip().lower()
+        for alias in POS_COLUMN_ALIASES["discount_amount"]
+    }
+
+    detected = next(
+        (
+            str(column)
+            for column in raw_df.columns
+            if (
+                str(column).strip().lower() in aliases
+                and str(column) not in excluded_columns
+            )
+        ),
+        None,
+    )
+
+    selected = st.selectbox(
+        "Discount Amount (optional, per transaction row)",
+        options,
+        index=options.index(detected) if detected else 0,
+        key=f"{prefix}_discount_amount",
+        help=(
+            "Select the total monetary discount for each row. "
+            "Do not select percentages, per-unit discounts, "
+            "price columns, or already-discounted totals."
+        ),
+    )
+
+    return None if selected == NOT_AVAILABLE else selected
+
+def discount_percent_selector(
+    raw_df: pd.DataFrame,
+    prefix: str = "sales",
+    mapping: dict[str, str | None] | None = None,
+    discount_amount_column: str | None = None,
+) -> str | None:
+    """Select an optional line-level percentage discount column.
+
+    A value of 20 represents 20%, not 0.20.
+    """
+    from config import POS_COLUMN_ALIASES
+
+    excluded_columns: set[str] = set()
+
+    if mapping is not None:
+        excluded_columns.update(
+            column
+            for column in (
+                mapping.get("price"),
+                mapping.get("units_sold"),
+            )
+            if column is not None
+        )
+
+    if discount_amount_column is not None:
+        excluded_columns.add(discount_amount_column)
+
+    options = [NOT_AVAILABLE] + [
+        str(column)
+        for column in raw_df.columns
+        if str(column) not in excluded_columns
+    ]
+
+    aliases = {
+        alias.strip().lower()
+        for alias in POS_COLUMN_ALIASES["discount_percent"]
+    }
+
+    detected = next(
+        (
+            str(column)
+            for column in raw_df.columns
+            if (
+                str(column).strip().lower() in aliases
+                and str(column) not in excluded_columns
+            )
+        ),
+        None,
+    )
+
+    selected = st.selectbox(
+        "Discount Percentage (optional, per transaction row)",
+        options,
+        index=options.index(detected) if detected else 0,
+        key=f"{prefix}_discount_percent",
+        help=(
+            "Select a percentage discount column where "
+            "20 means 20%. Do not select monetary discounts, "
+            "prices, or already-discounted totals."
+        ),
+    )
+
+    return None if selected == NOT_AVAILABLE else selected

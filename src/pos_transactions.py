@@ -106,3 +106,167 @@ def split_pos_transactions(
     refund_candidates_df = df.loc[quantities < 0].copy()
 
     return sales_df, refund_candidates_df
+
+
+def calculate_discounted_sales(
+    df: pd.DataFrame,
+    discount_column: str = "discount_amount",
+) -> pd.DataFrame:
+    """Calculate gross and realized sales for line-level discounts.
+
+    Assumptions:
+    - price is the listed unit price before discounts.
+    - units_sold is a nonnegative quantity.
+    - discount_amount is the total discount for the entire row,
+      not a per-unit or percentage discount.
+    - Tax, tips, and service charges are excluded.
+    """
+    required = {"price", "units_sold", discount_column}
+    missing = required.difference(df.columns)
+
+    if missing:
+        raise ValueError(
+            "Missing discount calculation fields: "
+            + ", ".join(sorted(missing))
+        )
+
+    work = df.copy()
+
+    for column in ["price", "units_sold", discount_column]:
+        work[column] = pd.to_numeric(
+            work[column],
+            errors="coerce",
+        )
+
+        if not np.isfinite(
+            work[column].to_numpy(dtype=float)
+        ).all():
+            raise ValueError(
+                f"{column} must contain finite numeric values."
+            )
+
+    if (work["price"] <= 0).any():
+        raise ValueError("Price must be greater than zero.")
+
+    if (work["units_sold"] < 0).any():
+        raise ValueError(
+            "Discount calculation requires nonnegative quantities."
+        )
+
+    if (work[discount_column] < 0).any():
+        raise ValueError(
+            "Discount amounts cannot be negative."
+        )
+
+    gross = work["price"] * work["units_sold"]
+
+    if (work[discount_column] > gross).any():
+        raise ValueError(
+            "Discount cannot exceed gross line sales."
+        )
+
+    work["gross_line_amount"] = gross
+    work["realized_line_amount"] = gross - work[discount_column]
+
+    work["effective_unit_price"] = np.where(
+        work["units_sold"] > 0,
+        work["realized_line_amount"]
+        / work["units_sold"].replace(0, np.nan),
+        np.nan,
+    )
+
+    return work
+
+
+def calculate_percentage_discounted_sales(
+    df: pd.DataFrame,
+    percentage_column: str = "discount_percent",
+) -> pd.DataFrame:
+    """Calculate realized sales from percentage discounts.
+
+    A value of 20 means 20%, not 0.20.
+    Percentages apply to the gross line amount.
+    """
+    required = {"price", "units_sold", percentage_column}
+    missing = required.difference(df.columns)
+
+    if missing:
+        raise ValueError(
+            "Missing percentage discount fields: "
+            + ", ".join(sorted(missing))
+        )
+
+    work = df.copy(deep=True)
+
+    for column in ["price", "units_sold", percentage_column]:
+        work[column] = pd.to_numeric(
+            work[column],
+            errors="coerce",
+        )
+
+        if not np.isfinite(
+            work[column].to_numpy(dtype=float)
+        ).all():
+            raise ValueError(
+                f"{column} must contain finite numeric values."
+            )
+
+    if (work["price"] <= 0).any():
+        raise ValueError("Price must be greater than zero.")
+
+    if (work["units_sold"] < 0).any():
+        raise ValueError(
+            "Percentage discounts require nonnegative quantities."
+        )
+
+    if (
+        (work[percentage_column] < 0)
+        | (work[percentage_column] > 100)
+    ).any():
+        raise ValueError(
+            "Discount percentages must be between 0 and 100."
+        )
+
+    work["gross_line_amount"] = (
+        work["price"] * work["units_sold"]
+    )
+
+    work["discount_amount"] = (
+        work["gross_line_amount"]
+        * work[percentage_column]
+        / 100.0
+    )
+
+    work["realized_line_amount"] = (
+        work["gross_line_amount"]
+        - work["discount_amount"]
+    )
+
+    work["effective_unit_price"] = (
+        work["realized_line_amount"]
+        .div(work["units_sold"].replace(0, np.nan))
+    )
+
+    return work
+
+
+def validate_discount_price_basis(
+    price_basis: str,
+) -> str:
+    """Validate how source prices relate to discounts.
+
+    listed:
+        Prices are before discounts.
+    realized:
+        Prices already include discounts.
+    unknown:
+        The source price convention is unconfirmed.
+    """
+    allowed = {"listed", "realized", "unknown"}
+
+    if price_basis not in allowed:
+        raise ValueError(
+            "Price basis must be 'listed', 'realized', or 'unknown'."
+        )
+
+    return price_basis

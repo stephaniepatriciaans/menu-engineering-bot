@@ -1,0 +1,3 @@
+date,item,category,price,unit_cost,units_sold,discount_percent
+2026-01-01,Latte,Coffee,5.00,2.00,2,20
+2026-01-02,Tea,Tea,3.00,1.00,1,10

@@ -56,7 +56,7 @@ def test_pos_accounting_uses_selected_column_mapping():
         )
 
         metric_columns[2].metric.assert_called_once_with(
-            "Net Revenue",
+            "Revenue After Refund Candidates",
             "16.00",
         )
 

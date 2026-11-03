@@ -9,6 +9,32 @@ CANONICAL_FIELDS = ["date", "item", "category", "price", "unit_cost", "units_sol
 CORE_FIELDS = ["date", "item", "price", "units_sold"]
 OPTIONAL_FIELDS = ["category", "unit_cost", "transaction_time"]
 
+POS_OPTIONAL_FIELDS = [
+    "discount_amount",
+    "discount_percent",
+]
+
+POS_COLUMN_ALIASES: dict[str, list[str]] = {
+    "discount_amount": [
+        "discount_amount",
+        "line_discount",
+        "line_discount_amount",
+        "item_discount",
+        "discount_value",
+        "total_discount",
+    ],
+    "discount_percent": [
+        "discount_percent",
+        "discount_percentage",
+        "discount_pct",
+        "percentage_discount",
+        "percentage_off",
+        "percent_off",
+        "discount_rate_percent",
+        "promo_percent",
+    ],
+}
+
 COLUMN_ALIASES: dict[str, list[str]] = {
     "date": [
         "date", "transaction_date", "order_date", "sale_date", "sales_date",
