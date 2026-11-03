@@ -5,6 +5,7 @@ from collections.abc import Iterable
 import pandas as pd
 import streamlit as st
 
+from core.validation import audit_source_transactions
 from data_pipeline.adapter import read_delimited_csv
 from pos.classification import classify_pos_transactions
 from pos.transactions import (
@@ -12,7 +13,6 @@ from pos.transactions import (
     calculate_percentage_discounted_sales,
     summarize_pos_transactions,
 )
-from core.validation import audit_source_transactions
 
 
 def render_source_audit(messages: Iterable[str]) -> None:

@@ -382,3 +382,8 @@ PYTHONPATH=src python3 -m pytest --cov=src --cov-report=term-missing -q
 Created by **Stephanie Patricia Anshell** · [Portfolio](https://stephaniepatriciaans.github.io/portfolio/)
 
 This project demonstrates data engineering, applied analytics, conservative statistical evaluation, scenario-based pricing, AI integration with deterministic numerical safeguards, and tested Streamlit application development.
+## Developer architecture
+
+See [architecture](docs/architecture.md), [CSV data formats](docs/data_format.md), and [financial methodology](docs/financial_methodology.md).
+
+The four workflow tabs are **Data Setup → Data Quality → Analytics → Reports**. They preserve the existing sales-only financial calculation scope.

@@ -1,0 +1,3 @@
+# Financial methodology and current limitations
+
+The main dashboard uses canonical sales-only rows. Quantity-negative rows are treated as refund candidates and separated for accounting review; this is **not** verified net revenue. POS status or signed-amount classification is review-only and does not independently change dashboard totals. Discounts are reflected only in the POS accounting preview with explicit price-basis caveats. Multiple discount types are not silently combined. Before using reported revenue or profit for accounting, reconcile original events, reversals, tax, tips, and order-level allocations against the POS provider's exports.

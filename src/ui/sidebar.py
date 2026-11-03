@@ -43,21 +43,7 @@ def render_sidebar() -> SidebarSettings:
             index=0,
         )
 
-        st.header("Price simulation")
-
-        max_decrease = st.slider(
-            "Maximum price decrease",
-            0, 30, 10, 5,
-            format="-%d%%",
-        )
-
-        max_increase = st.slider(
-            "Maximum price increase",
-            0, 30, 15, 5,
-            format="+%d%%",
-        )
-
-        st.header("1. Load dataset")
+        st.header("Dataset")
 
         source = st.radio(
             "Data source",
@@ -95,8 +81,8 @@ def render_sidebar() -> SidebarSettings:
         business_name=business_name,
         dataset_name=dataset_name,
         currency=currency,
-        max_decrease=max_decrease,
-        max_increase=max_increase,
+        max_decrease=10,
+        max_increase=15,
         source=source,
         uploaded=uploaded,
         encoding=encoding,

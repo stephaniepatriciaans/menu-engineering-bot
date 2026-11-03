@@ -48,3 +48,8 @@ outputs/
 .idea/
 *.swp
 *.log
+
+# ==========================================
+# Local project archives
+# ==========================================
+menu-engineering-*.zip

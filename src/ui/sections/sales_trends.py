@@ -66,6 +66,20 @@ def render_sales_trends(
             y_column = "units_sold"
             y_label = "Units Sold"
 
+        # Give a single-period series a meaningful date span. Otherwise Plotly
+        # auto-zooms to milliseconds and displays timestamps on the x-axis.
+        single_period_range = None
+        if len(grouped_sales) == 1:
+            period = pd.Timestamp(grouped_sales["period"].iloc[0])
+            padding_days = {
+                "Daily": 1,
+                "Weekly": 7,
+                "Monthly": 16,
+                "Yearly": 190,
+            }[time_grouping]
+            padding = pd.Timedelta(days=padding_days)
+            single_period_range = [period - padding, period + padding]
+
         # Create the time-series chart.
         fig = px.line(
             grouped_sales,
@@ -77,6 +91,12 @@ def render_sales_trends(
                 "period": "Period Starting",
                 y_column: y_label,
             },
+        )
+
+        fig.update_xaxes(
+            type="date",
+            tickformat="%b %d, %Y" if time_grouping in ("Daily", "Weekly") else "%b %Y" if time_grouping == "Monthly" else "%Y",
+            range=single_period_range,
         )
 
         fig.update_layout(
