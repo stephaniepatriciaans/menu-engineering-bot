@@ -5,6 +5,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from pos.export_validation import audit_pos_export
 from pos.reconciliation import reconcile_pos_sales, summarize_reconciled_sales
 
 
@@ -99,4 +100,74 @@ def render_pos_reconciliation(
             else:
                 st.warning("Preview only: source accounting conventions have not been confirmed.")
         st.caption("This preview does not replace the existing dashboard KPI, model-evaluation prices or pricing recommendations.")
+
+        st.divider()
+        st.markdown("**Independent POS settlement audit (required for financial integration)**")
+        st.caption(
+            "Compare the complete export against a separately generated pre-tax "
+            "net item-sales total. This is not inferred from the uploaded rows."
+        )
+        audit_enabled = st.checkbox(
+            "Compare with an independent POS settlement summary",
+            value=False,
+            key="pos_financial_audit_enabled",
+        )
+        if audit_enabled:
+            event_choices = [None, *[str(col) for col in raw_df.columns if col not in excluded]]
+            event_id = st.selectbox(
+                "Unique transaction event ID", event_choices,
+                format_func=lambda col: col or "Not mapped",
+                key="pos_financial_event_id",
+            )
+            convention = st.selectbox(
+                "Refund representation confirmed by the POS provider",
+                ["unknown", "separate_signed_events", "status_only_original"],
+                key="pos_financial_refund_convention",
+            )
+            amount_basis = st.selectbox(
+                "Signed amount basis", ["unknown", "pre_tax_sales"],
+                key="pos_financial_amount_basis",
+            )
+            expected_net = st.text_input(
+                "Independent pre-tax net item-sales total",
+                value="", placeholder="e.g. 1250.00",
+                key="pos_financial_expected_net",
+            )
+            if not expected_net.strip():
+                st.info("Enter the independently reported total to run the audit.")
+            else:
+                audit_frame = canonical.copy()
+                if event_id is not None:
+                    audit_frame["event_id"] = raw_df[event_id]
+                try:
+                    audit = audit_pos_export(
+                        audit_frame,
+                        price_basis=price_basis,
+                        amount_column="amount" if amount_column else None,
+                        status_column="status" if status_column else None,
+                        event_id_column="event_id" if event_id else None,
+                        refund_convention=convention,
+                        source_amount_basis=amount_basis,
+                        expected_net_sales=expected_net.strip(),
+                        verified_conventions=verified,
+                        line_discount_column="line_discount" if line_discount_column else None,
+                        percent_column="percent" if percent_column else None,
+                        per_unit_discount_column="per_unit" if per_unit else None,
+                        order_id_column="order_id" if order_id else None,
+                        order_discount_column="order_discount" if order_discount else None,
+                        order_percent_column="order_percent" if order_percent else None,
+                        stacking=stacking,
+                    )
+                except (ValueError, TypeError) as exc:
+                    st.warning(f"Independent settlement audit unavailable: {exc}")
+                else:
+                    if audit.outcome == "matched":
+                        st.success("POS settlement matched to the cent for this full export.")
+                        # Only an independently matched audit unlocks these rows.
+                        summary["audited_rows"] = rows
+                        summary["matched_audit"] = audit
+                    else:
+                        st.warning(f"Settlement audit: {audit.outcome}. Financial integration remains disabled.")
+                        for finding in audit.findings:
+                            st.caption(f"• {finding}")
         return summary

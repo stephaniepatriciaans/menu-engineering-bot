@@ -1,0 +1,5 @@
+event_id,date,item,category,price,unit_cost,units_sold,status,signed_amount
+s1,2026-01-01,Latte,Drinks,10.00,2.00,2,completed,20.00
+s2,2026-01-02,Tea,Drinks,5.00,1.00,1,completed,5.00
+r1,2026-01-02,Latte,Drinks,10.00,2.00,-1,refunded,-10.00
+c1,2026-01-02,Cancelled Item,Food,20.00,1.00,1,cancelled,20.00
