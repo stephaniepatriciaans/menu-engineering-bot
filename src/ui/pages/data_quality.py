@@ -21,6 +21,7 @@ from ui.data_upload import (
     render_pos_classification_summary,
 )
 from ui.filters import render_category_filter, render_date_filter
+from ui.menu_quality import render_menu_quality
 from ui.pages.data_setup import SetupData
 from ui.pos_reconciliation import render_pos_reconciliation
 
@@ -125,6 +126,9 @@ def render_data_quality(setup: SetupData) -> QualityData:
             "This is a synthetic demonstration dataset. Schema validation "
             "does not constitute independent financial verification."
         )
+
+    # Read-only Part 5 menu data quality; never changes financial rows.
+    render_menu_quality(raw_df, mapping)
 
     # ================================================================
     # POS transaction accounting preview
