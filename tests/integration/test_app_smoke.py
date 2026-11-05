@@ -47,7 +47,7 @@ def test_upload_mode_without_file_shows_guidance():
     ]
 
     assert any(
-        "Upload a CSV to start" in message.value
+        "Upload a CSV or Excel workbook to start" in message.value
         for message in app.info
     )
 

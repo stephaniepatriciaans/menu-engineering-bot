@@ -7,6 +7,7 @@ import streamlit as st
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from config import CURRENCY_CONFIG
+from data_pipeline.excel_import import list_excel_sheets
 
 
 class SidebarSettings(NamedTuple):
@@ -19,6 +20,7 @@ class SidebarSettings(NamedTuple):
     source: str
     uploaded: UploadedFile | None
     encoding: str = "utf-8-sig"
+    sheet_name: str | None = None
 
 
 def render_sidebar() -> SidebarSettings:
@@ -51,10 +53,15 @@ def render_sidebar() -> SidebarSettings:
                 "Full Demo Dataset — Synthetic Cafe",
                 "Upload my own CSV",
             ],
+            format_func=lambda option: (
+                "Upload my own CSV / Excel"
+                if option == "Upload my own CSV" else option
+            ),
         )
 
         uploaded = None
         encoding = "utf-8-sig"
+        sheet_name = None
 
         if source == "Upload my own CSV":
             encoding = st.selectbox(
@@ -73,9 +80,22 @@ def render_sidebar() -> SidebarSettings:
             )
 
             uploaded = st.file_uploader(
-                "Upload sales/POS CSV",
-                type=["csv"],
+                "Upload sales/POS CSV or Excel",
+                type=["csv", "xlsx"],
             )
+
+            if uploaded is not None and uploaded.name.lower().endswith(".xlsx"):
+                try:
+                    sheets = list_excel_sheets(uploaded)
+                except ValueError as exc:
+                    st.error(str(exc))
+                    st.stop()
+                sheet_name = st.selectbox(
+                    "Excel worksheet",
+                    sheets,
+                    key="sales_excel_worksheet",
+                )
+                st.caption("CSV encoding selection does not apply to Excel workbooks.")
 
     return SidebarSettings(
         business_name=business_name,
@@ -86,4 +106,5 @@ def render_sidebar() -> SidebarSettings:
         source=source,
         uploaded=uploaded,
         encoding=encoding,
+        sheet_name=sheet_name,
     )

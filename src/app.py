@@ -22,7 +22,6 @@ def main() -> None:
     load_dotenv()
     st.set_page_config(
         page_title="Menu Engineering Bot",
-        page_icon="📊",
         layout="wide",
         initial_sidebar_state="expanded",
     )

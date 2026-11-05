@@ -16,11 +16,9 @@ def build_memo_export(
     Audit findings are diagnostic, not definitive proof of errors.
     """
     sections = []
-    
+
     if refund_candidate_count < 0:
-        raise ValueError(
-            "Refund candidate count cannot be negative."
-        )
+        raise ValueError("Refund candidate count cannot be negative.")
 
     if refund_candidate_count > 0:
         sections.append(
@@ -38,13 +36,10 @@ def build_memo_export(
             "original POS records before their accounting "
             "treatment can be confirmed."
         )
-        
+
     sections.append(memo.rstrip())
 
-    sections.append(
-        "\n---\n\n"
-        "## Financial Audit & Review Status\n"
-    )
+    sections.append("\n---\n\n## Financial Audit & Review Status\n")
 
     if audit is None:
         sections.append(
@@ -56,9 +51,7 @@ def build_memo_export(
         return "\n".join(sections).strip() + "\n"
 
     findings = audit.get("findings", [])
-    requires_review = bool(
-        audit.get("requires_review", False)
-    )
+    requires_review = bool(audit.get("requires_review", False))
 
     if requires_review:
         sections.append(
@@ -70,14 +63,11 @@ def build_memo_export(
 
         if not findings:
             sections.append(
-                "\nThe audit requested review but did not "
-                "provide individual findings."
+                "\nThe audit requested review but did not provide individual findings."
             )
 
         for index, finding in enumerate(findings, start=1):
-            claim = str(
-                finding.get("claim", "Unspecified claim")
-            )
+            claim = str(finding.get("claim", "Unspecified claim"))
             reason = str(
                 finding.get(
                     "reason",
@@ -85,18 +75,15 @@ def build_memo_export(
                 )
             )
 
-            sections.append(
-                f"\n{index}. **Claim:** {claim}\n"
-                f"   **Reason:** {reason}"
-            )
+            sections.append(f"\n{index}. **Claim:** {claim}\n   **Reason:** {reason}")
 
     else:
         sections.append(
-            "**Audit status: No issues detected by "
-            "automated checks**\n\n"
-            "No issues were identified by the limited "
-            "financial audit. This does not guarantee "
-            "that the memo is factually accurate."
+            "**Memo-claim check status: No discrepancies found in the "
+            "limited checks performed**\n\n"
+            "These checks do not reconcile POS settlement totals "
+            "or verify gross versus net revenue, refunds, discounts, "
+            "charge classifications, or factual accuracy."
         )
 
     sections.append(

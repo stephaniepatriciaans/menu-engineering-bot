@@ -10,6 +10,7 @@ from typing import cast
 import numpy as np
 import pandas as pd
 
+from analytics.item_review import review_item_reliability  # part6-review
 from config import (
     CATEGORY_ELASTICITY_PRIORS,
     DEFAULT_ELASTICITY_PRIOR,
@@ -147,6 +148,15 @@ def build_item_summary(
         revenue = float((item_df["price"] * item_df["units_sold"]).sum())
         elasticity_info = estimate_elasticity(item_df, category, category_priors, default_prior)
 
+        (review_confidence, review_reason, operational_review) = (
+            review_item_reliability(
+                item,
+                elasticity_info["elasticity_source"],
+                elasticity_info["elasticity_confidence"],
+                elasticity_info["price_variation_pct"],
+            )
+        )
+
         record: dict[str, object] = {
             "item": item,
             "category": category,
@@ -161,7 +171,9 @@ def build_item_summary(
             "quadrant": None,
             "elasticity": round(float(cast(float, elasticity_info["elasticity"])), 2),
             "elasticity_source": elasticity_info["elasticity_source"],
-            "elasticity_confidence": elasticity_info["elasticity_confidence"],
+            "elasticity_confidence": review_confidence,
+            "reliability_review_reason": review_reason,
+            "possible_operational_charge": operational_review,
             "price_points": int(cast(int, elasticity_info["price_points"])),
             "observations": int(cast(int, elasticity_info["observations"])),
             "price_variation_%": float(cast(float, elasticity_info["price_variation_pct"])),

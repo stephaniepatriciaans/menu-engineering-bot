@@ -451,6 +451,23 @@ def compare_demand_forecasts(
         test_prices,
     )
 
+    # Reject implausibly large elasticity forecasts.
+    # Keep the historical-average baseline available.
+    # This is a conservative numerical guardrail,
+    # not evidence that smaller forecasts are reliable.
+    max_training_demand = float(np.max(train_units))
+    max_allowed_prediction = max_training_demand * 100.0
+
+    if (
+        not np.isfinite(elasticity_predictions).all()
+        or (elasticity_predictions > max_allowed_prediction).any()
+    ):
+        raise ValueError(
+            "Unreliable elasticity forecast: predicted demand "
+            "exceeds 100 times the maximum observed training demand."
+        )
+
+
     baseline_metrics = calculate_forecast_metrics(
         test_units,
         baseline_predictions,
@@ -571,6 +588,8 @@ def evaluate_all_items(
             elasticity_unavailable = (
                 "Insufficient historical evidence for elasticity" in reason
                 or "At least two distinct training prices" in reason
+                or "Unreliable elasticity forecast" in reason
+                or "Forecast produced non-finite values" in reason
             )
 
             baseline_result = None

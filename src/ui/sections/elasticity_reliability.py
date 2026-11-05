@@ -40,6 +40,8 @@ def render_elasticity_reliability(
                         "price_points",
                         "observations",
                         "price_variation_%",
+                        *(["reliability_review_reason", "possible_operational_charge"]
+                          if "reliability_review_reason" in summary.columns else []),  # part6-review-table
                     ]
                 ],
                 width="stretch",

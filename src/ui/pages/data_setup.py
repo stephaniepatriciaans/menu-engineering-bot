@@ -19,6 +19,7 @@ from ui.mapping import (
     transaction_status_selector,
 )
 from ui.sidebar import SidebarSettings
+from ui.table_formatters import prepare_dataframe_for_display
 
 
 class SetupData(NamedTuple):
@@ -51,7 +52,7 @@ def render_data_setup(settings: SidebarSettings) -> SetupData:
     if source == "Full Demo Dataset — Synthetic Cafe":
         demo_path = Path(__file__).resolve().parents[3] / "data" / "cafe_sales.csv"
 
-        raw_df = load_sales(demo_path)
+        raw_df = load_sales(str(demo_path))
 
         # Map only columns that actually exist in the demo dataset.
         # Optional fields, such as transaction_time, may be missing.
@@ -82,6 +83,7 @@ def render_data_setup(settings: SidebarSettings) -> SetupData:
             raw_df, source_audit_messages = load_uploaded_sales(
                 uploaded,
                 encoding=encoding,
+                sheet_name=getattr(settings, "sheet_name", None),
             )
 
             render_source_audit(source_audit_messages)
@@ -89,11 +91,11 @@ def render_data_setup(settings: SidebarSettings) -> SetupData:
         except Exception as exc:  # noqa: BLE001
             # CSV uploads can fail during parsing, decoding, or source auditing.
             # Show a user-friendly error instead of crashing the dashboard.
-            st.error(f"Could not read or audit the CSV: {exc}")
+            st.error(f"Could not read or audit the dataset: {exc}")
             st.stop()
 
     else:
-        st.info("Upload a CSV to startYou do not need to rename its columns first")
+        st.info("Upload a CSV or Excel workbook to startYou do not need to rename its columns first")
         st.stop()
 
     # ================================================================
@@ -109,8 +111,8 @@ def render_data_setup(settings: SidebarSettings) -> SetupData:
 
             with st.expander("Preview raw columns", expanded=False):
                 st.dataframe(
-                    raw_df.head(10),
-                    width="stretch",
+                    prepare_dataframe_for_display(raw_df.head(10)),
+                    use_container_width=True,
                 )
 
             mapping = mapping_selectors(raw_df)

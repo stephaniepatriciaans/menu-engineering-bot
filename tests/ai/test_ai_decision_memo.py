@@ -173,12 +173,13 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
     }
 
     expected_export = build_memo_export(
-        memo_text,
+        ai_decision_memo.build_verified_memo(summary, "USD", cost_basis="actual"),
         session.generated_memo_audit,
     )
 
     assert "Financial Audit & Review Status" in expected_export
-    assert "No issues detected by automated checks" in expected_export
+    assert "Memo-claim check status: No discrepancies" in expected_export
+    assert "do not reconcile POS settlement totals" in expected_export
 
     assert isinstance(session.generated_memo_context, str)
     assert len(session.generated_memo_context) == 64
@@ -188,16 +189,13 @@ def test_ai_memo_generation_and_downloads(monkeypatch):
         "Review its financial claims before use."
     )
 
-    # Streamlit display escapes dollar signs.
-    assert widgets["markdown"].call_count == 2
-
-    assert widgets["markdown"].call_args_list[0].args[0] == (
-        "### Decision Memo"
-    )
-
-    assert widgets["markdown"].call_args_list[1].args[0] == (
-        r"Increase Latte price to \$5.50."
-    )
+    # Source-backed claims and unverified commentary are clearly separated.
+    rendered = [call.args[0] for call in widgets["markdown"].call_args_list]
+    assert rendered[0] == "### Data-backed findings"
+    assert "Items in analysis" in rendered[1]
+    assert rendered[2] == "### AI commentary — unverified"
+    assert rendered[3] == r"Increase Latte price to \$5.50."
+    assert "Increase Latte price" not in expected_export
 
     # PDF generator receives original, unmodified memo.
     pdf_mock.assert_called_once_with(

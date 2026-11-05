@@ -7,6 +7,7 @@ import streamlit as st
 
 from core.validation import audit_source_transactions
 from data_pipeline.adapter import read_delimited_csv
+from data_pipeline.excel_import import read_excel_sales
 from pos.classification import classify_pos_transactions
 from pos.transactions import (
     calculate_discounted_sales,
@@ -233,6 +234,7 @@ def render_pos_accounting_summary(
 def load_uploaded_sales(
     uploaded,
     encoding: str = "utf-8-sig",
+    sheet_name: str | None = None,
 ) -> tuple[pd.DataFrame, list[str]]:
     """Load uploaded sales data and audit source transactions.
 
@@ -244,10 +246,14 @@ def load_uploaded_sales(
     """
     uploaded.seek(0)
 
-    raw_df = read_delimited_csv(
-        uploaded,
-        encoding=encoding,
-    )
+    filename = str(getattr(uploaded, "name", "")).lower()
+    if filename.endswith(".xlsx"):
+        raw_df = read_excel_sales(uploaded, sheet_name=sheet_name)
+    else:
+        raw_df = read_delimited_csv(
+            uploaded,
+            encoding=encoding,
+        )
 
     source_audit_messages = audit_source_transactions(
         raw_df

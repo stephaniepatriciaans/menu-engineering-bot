@@ -108,3 +108,25 @@ def display_moves_table(
 
 
     return table
+
+def prepare_dataframe_for_display(df: pd.DataFrame) -> pd.DataFrame:
+    """Make mixed-type object columns compatible with Streamlit/PyArrow."""
+    result = df.copy()
+
+    for column in result.columns:
+        series = result[column]
+
+        if series.dtype != "object":
+            continue
+
+        values = series.dropna()
+
+        if values.empty:
+            continue
+
+        value_types = {type(value) for value in values}
+
+        if len(value_types) > 1:
+            result[column] = series.astype("string")
+
+    return result

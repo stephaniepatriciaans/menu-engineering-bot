@@ -23,6 +23,7 @@ from ui.data_upload import (
 from ui.filters import render_category_filter, render_date_filter
 from ui.menu_quality import render_menu_quality
 from ui.pages.data_setup import SetupData
+from ui.pos_quarantine import render_pos_quarantine
 from ui.pos_reconciliation import render_pos_reconciliation
 
 
@@ -130,6 +131,19 @@ def render_data_quality(setup: SetupData) -> QualityData:
     # Read-only Part 5 menu data quality; never changes financial rows.
     render_menu_quality(raw_df, mapping)
 
+    # Full-source POS review is read-only. Malformed records do not enter
+    # historical sales analytics, but remain visible in original accounting.
+    analysis_raw_df = raw_df
+    pos_review = None
+    if source == "Upload my own CSV":
+        pos_review = render_pos_quarantine(
+            raw_df,
+            mapping,
+            status_column=transaction_status_column,
+            amount_column=transaction_amount_column,
+        )
+        analysis_raw_df = pos_review.analysis_rows
+
     # ================================================================
     # POS transaction accounting preview
     # ================================================================
@@ -163,13 +177,27 @@ def render_data_quality(setup: SetupData) -> QualityData:
             percent_column=discount_percent_column,
         )
 
+    # A matched total alone cannot certify an analytical subset with malformed
+    # source records. Never expose an audited financial integration in that case.
+    if (
+        pos_review is not None
+        and (pos_review.invalid_rows or pos_review.uci_unverified_exclusions)
+        and financial_preview is not None
+    ):
+        financial_preview = None
+        st.warning(
+            "Audited financial integration is disabled when invalid source "
+            "records or UCI-specific unverified exclusions affect the "
+            "analytical subset. Reconcile the complete export first."
+        )
+
     # ================================================================
     # Adapt dataset to canonical schema
     # ================================================================
 
     try:
         canonical_df, adapter_warnings = adapt_to_canonical(
-            raw_df,
+            analysis_raw_df,
             mapping,
         )
 
@@ -198,6 +226,15 @@ def render_data_quality(setup: SetupData) -> QualityData:
                 f"Unable to classify POS transactions: {exc}"
             )
             st.stop()
+
+        if pos_review is not None and pos_review.refund_candidates:
+            original_negative = pd.to_numeric(
+                raw_df[mapping["units_sold"]], errors="coerce"
+            ).lt(0)
+            if original_negative.any():
+                refund_candidates_df, _ = adapt_to_canonical(
+                    raw_df.loc[original_negative], mapping
+                )
 
         if not refund_candidates_df.empty:
             st.warning(

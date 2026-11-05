@@ -54,8 +54,8 @@ def test_memo_export_does_not_claim_full_verification():
 
     exported = build_memo_export(memo, audit)
 
-    assert "No issues detected by automated checks" in exported
-    assert "does not guarantee" in exported
+    assert "No discrepancies found" in exported  # part6-disclosure-test
+    assert "do not reconcile POS" in exported  # part6-disclosure-limit-test
     assert "pattern-based checks" in exported
     assert exported.startswith(memo)
 

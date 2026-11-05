@@ -53,3 +53,5 @@ outputs/
 # Local project archives
 # ==========================================
 menu-engineering-*.zip
+# Local POS datasets
+data/Online Retail.xlsx

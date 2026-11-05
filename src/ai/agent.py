@@ -41,9 +41,21 @@ Rules:
 - Never claim that no historical estimates exist if the supplied
   elasticity summary reports one or more.
 - Distinguish low-confidence estimates from high-confidence estimates.
+- The field "possible_operational_charge" is a human-review flag,
+  not a confirmed product classification. Do not propose merchandise
+  repricing for these flagged lines until reviewed. Do not remove their
+  accounting revenue from the provided totals.
+- The field "reliability_review_reason" explains caution around
+  unusual price ranges or charge-like item descriptions.
+- Confidence labels are heuristic data-adequacy labels, not validated
+  statistical confidence or causal evidence.  # part6-review-agent
 - Low-confidence estimates are exploratory and should not support
   definitive pricing decisions.
 - Use the supplied elasticity counts when describing overall reliability.
+- Include other_confidence_estimates if present; do not imply that
+  high and low counts sum to all estimated items.
+- Count operational-charge review candidates from the supplied
+  possible_operational_charge flags; never invent a count.  # part6-count-rules
 - Translate technical fields into plain business language. Avoid statistics jargon unless needed to explain uncertainty.
 - Keep recommendations practical and prioritized; do not mechanically list every item.
 - Respect the supplied currency and business/dataset metadata.
@@ -178,6 +190,7 @@ def build_elasticity_summary(
             "default_prior_items": 0,
             "low_confidence_estimates": 0,
             "high_confidence_estimates": 0,
+            "other_confidence_estimates": 0,  # part6-other-confidence
         }
 
     sources = (
@@ -219,6 +232,9 @@ def build_elasticity_summary(
         "high_confidence_estimates": int(
             (estimated & confidence.eq("high")).sum()
         ),
+        "other_confidence_estimates": int(
+            (estimated & ~confidence.isin(("high", "low"))).sum()
+        ),  # part6-other-confidence-count
     }
 
 
@@ -241,6 +257,7 @@ def build_user_prompt(
             "quadrant", "elasticity", "elasticity_source", "elasticity_confidence",
             "price_points", "observations", "price_variation_%","pricing_reliability",
             "reliability_reason","requires_review",
+            "reliability_review_reason", "possible_operational_charge",
         ],
     )
     for record in summary_records:

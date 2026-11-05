@@ -975,3 +975,71 @@ def test_export_model_evaluation_report_rejects_missing_sections(
     assert not (
         tmp_path / "model_evaluation_items.csv"
     ).exists()
+
+
+def test_extreme_elasticity_forecast_is_rejected():
+    """Reject extreme demand forecasts instead of reporting them as valid."""
+    train_prices = sufficient_training_prices()
+    n_train = len(train_prices)
+
+    prices = train_prices + [0.01]
+    units = [
+        100.0 * (price / 5.0) ** -2.0
+        for price in train_prices
+    ] + [10.0]
+
+    df = pd.DataFrame({
+        "date": pd.date_range(
+            "2026-01-01",
+            periods=len(prices),
+        ),
+        "item": ["Latte"] * len(prices),
+        "price": prices,
+        "units_sold": units,
+    })
+
+    with pytest.raises(
+        ValueError,
+        match="Unreliable elasticity forecast",
+    ):
+        compare_demand_forecasts(
+            df,
+            train_fraction=(n_train + 0.5) / len(prices),
+        )
+
+
+def test_extreme_elasticity_preserves_baseline():
+    """An unreliable elasticity model must not discard a valid baseline."""
+    train_prices = sufficient_training_prices()
+    n_train = len(train_prices)
+
+    prices = train_prices + [0.01]
+    units = [
+        100.0 * (price / 5.0) ** -2.0
+        for price in train_prices
+    ] + [10.0]
+
+    df = pd.DataFrame({
+        "date": pd.date_range(
+            "2026-01-01",
+            periods=len(prices),
+        ),
+        "item": ["Latte"] * len(prices),
+        "price": prices,
+        "units_sold": units,
+    })
+
+    results = evaluate_all_items(
+        df,
+        train_fraction=(n_train + 0.5) / len(prices),
+    )
+
+    assert len(results) == 1
+
+    result = results.iloc[0]
+
+    assert result["status"] == "baseline_only"
+    assert "Unreliable elasticity forecast" in result["reason"]
+    assert result["baseline_mae"] is not None
+    assert pd.notna(result["baseline_mae"])
+    assert pd.isna(result["elasticity_mae"])

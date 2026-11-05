@@ -11,7 +11,9 @@ import streamlit as st
 
 from ai.agent import generate_menu_memo_with_audit
 from ai.errors import friendly_ai_error
+from reporting.memo_consistency import reconcile_memo_consistency  # part6-memo-polish
 from reporting.memo_export import build_memo_export
+from reporting.verified_memo import build_verified_memo
 
 
 def render_ai_decision_memo(
@@ -39,6 +41,23 @@ def render_ai_decision_memo(
             "refund adjustments. Refer to POS transaction accounting "
             "for potential net revenue."
         )
+
+    # Review-only classification: original accounting totals stay intact.
+    flagged = (
+        summary[summary["possible_operational_charge"].fillna(False)]
+        if "possible_operational_charge" in summary.columns
+        else summary.iloc[0:0]
+    )  # part6-review-memo
+    if not flagged.empty:
+        st.warning(
+            f"{len(flagged):,} charge-like item label(s) need manual review "
+            "before merchandise pricing recommendations. These records remain "
+            "in the source and gross-sales totals; classification is not verified."
+        )
+        with st.expander("Review potential operational charges"):
+            cols = [name for name in ("item", "total_revenue", "reliability_review_reason")
+                    if name in flagged.columns]
+            st.dataframe(flagged[cols], hide_index=True)
 
     metadata = {
         "business_name": business_name,
@@ -163,16 +182,25 @@ def render_ai_decision_memo(
         st.session_state.generated_memo is not None
         and st.session_state.generated_memo_context == context_id
     ):
-        memo = st.session_state.generated_memo
+        memo = reconcile_memo_consistency(
+            st.session_state.generated_memo, summary, currency
+        )  # part6-memo-consistency
 
-        st.markdown("### Decision Memo")
+        verified_summary = build_verified_memo(
+            summary,
+            currency,
+            cost_basis=cost_basis,
+        )
 
-        # Escape dollar signs only for Streamlit display
-        # Keep the original memo unchanged for downloads
-        display_memo = memo.replace("$", r"\$")
-
-
-        st.markdown(display_memo)
+        st.markdown("### Data-backed findings")
+        st.markdown(verified_summary.replace("$", r"\$"))
+        st.markdown("### AI commentary — unverified")
+        st.markdown(memo.replace("$", r"\$"))
+        st.caption(
+            "AI commentary may contain unsupported numerical claims. "
+            "It is displayed for human review but intentionally excluded "
+            "from the downloadable data-backed report."
+        )
 
         # Show the financial audit associated with this memo
         audit = st.session_state.generated_memo_audit
@@ -215,14 +243,15 @@ def render_ai_decision_memo(
 
             else:
                 st.info(
-                    "No issues were detected by the automated "
-                    "financial checks. This does not guarantee "
-                    "that the memo is factually accurate."
+                    "No discrepancies were found by the limited memo-claim "
+                    "checks performed. This is not a POS reconciliation or "
+                    "verification of gross/net revenue, refunds, discounts, "
+                    "operational charge classification, or factual accuracy."
                 )
 
         # Build a download-safe version that includes audit findings
         export_memo = build_memo_export(
-            memo,
+            verified_summary,
             audit,
             refund_candidate_count=refund_candidate_count,
         )

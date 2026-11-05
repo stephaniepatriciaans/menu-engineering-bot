@@ -18,7 +18,9 @@ from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,
     Spacer,
-)
+    Table,
+    TableStyle,
+)  # part6-markdown-tables
 
 PRIMARY_COLOR = colors.HexColor("#243047")
 SECONDARY_COLOR = colors.HexColor("#64748b")
@@ -197,6 +199,15 @@ def create_pdf_styles() -> dict:
         alignment=TA_CENTER,
     )
 
+    styles["table_header"] = ParagraphStyle(
+        name="MemoTableHeader", parent=styles["body"],
+        fontName="Helvetica-Bold", fontSize=8, leading=10,
+        textColor=PRIMARY_COLOR, spaceAfter=0,
+    )
+    styles["table_cell"] = ParagraphStyle(
+        name="MemoTableCell", parent=styles["body"],
+        fontSize=8, leading=10, spaceAfter=0,
+    )
     return styles
 
 
@@ -291,6 +302,49 @@ def draw_page_footer(canvas, doc) -> None:
     canvas.restoreState()
 
 
+def is_markdown_table_separator(line: str) -> bool:
+    """Recognize Markdown alignment rows without treating them as data."""
+    cells = [part.strip() for part in line.strip().strip("|").split("|")]
+    return bool(cells) and all(
+        re.fullmatch(r":?-{3,}:?", cell) for cell in cells
+    )
+
+
+def make_markdown_table(lines: list[str], styles: dict, width: float) -> Table:
+    """Render a Markdown pipe table as a ReportLab table, not raw pipes."""
+    parsed = [
+        [cell.strip() for cell in line.strip().strip("|").split("|")]
+        for line in lines
+    ]
+    n_columns = len(parsed[0])
+    parsed = [(row + [""] * n_columns)[:n_columns] for row in parsed]
+
+    # Approximate visual column sizes, with extra room for long item names.
+    lengths = [
+        max(8, min(45, max(len(row[col]) for row in parsed)))
+        for col in range(n_columns)
+    ]
+    total = sum(lengths)
+    column_widths = [width * length / total for length in lengths]
+    rows = [
+        [Paragraph(format_inline(value), styles[
+            "table_header" if row_index == 0 else "table_cell"
+        ]) for value in row]
+        for row_index, row in enumerate(parsed)
+    ]
+    table = Table(rows, colWidths=column_widths, repeatRows=1, hAlign="LEFT")
+    table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EFF4FA")),
+        ("GRID", (0, 0), (-1, -1), 0.35, DIVIDER_COLOR),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 7),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 7),
+        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+    ]))
+    return table
+
+
 # --------------------------------------------------
 # Main PDF generation
 # --------------------------------------------------
@@ -377,8 +431,28 @@ def generate_memo_pdf(
             )
             current_elements = []
 
-    for raw_line in memo.splitlines():
-        line = raw_line.strip()
+    lines = memo.splitlines()
+    line_index = 0
+    while line_index < len(lines):
+        line = lines[line_index].strip()
+        line_index += 1
+        if (
+            line.startswith("|")
+            and line_index < len(lines)
+            and is_markdown_table_separator(lines[line_index].strip())
+        ):
+            table_lines = [line]
+            line_index += 1  # Skip Markdown column-alignment markers.
+            while (
+                line_index < len(lines)
+                and lines[line_index].strip().startswith("|")
+            ):
+                table_lines.append(lines[line_index].strip())
+                line_index += 1
+            current_elements.append(
+                make_markdown_table(table_lines, styles, doc.width)
+            )  # part6-table-renderer
+            continue
 
         if not line:
             continue
@@ -458,26 +532,6 @@ def generate_memo_pdf(
             available_width,
             available_height,
         )
-    )
-
-    # Closing disclaimer
-    disclaimer = Paragraph(
-        "AI-generated report based on application calculations. "
-        "Pricing recommendations and elasticity estimates "
-        "require independent business validation.",
-        styles["footer"],
-    )
-
-    story.append(
-        KeepTogether([
-            HRFlowable(
-                width="100%",
-                thickness=0.5,
-                color=DIVIDER_COLOR,
-            ),
-            Spacer(1, 7),
-            disclaimer,
-        ])
     )
 
     doc.build(
