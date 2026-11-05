@@ -201,7 +201,7 @@ def reconcile_pos_sales(
             if row["eligible_sale"]:
                 order_id = str(row[order_id_column])
                 orders.setdefault(order_id, []).append(key)
-                
+
         for keys in orders.values():
             raw_amounts = (
                 [_optional_money(result.at[k, order_discount_column], "order_discount") for k in keys]
@@ -213,30 +213,30 @@ def reconcile_pos_sales(
             )
             if any(amount < 0 for amount in raw_amounts):
                 raise ValueError("Order discounts cannot be negative.")
-            
+
             if any(p < 0 or p > 100 for p in raw_percentages):
                 raise ValueError("Order percentages must be between 0 and 100.")
-            
+
             positive = {amount for amount in raw_amounts if amount > 0}
             positive_pct = {p for p in raw_percentages if p > 0}
-            
+
             if len(positive) > 1 or len(positive_pct) > 1:
                 raise ValueError("Conflicting order discount totals in the same order.")
-            
+
             fixed = next(iter(positive), _ZERO)
-            
+
             pct = next(iter(positive_pct), Decimal(0))
-            
+
             if fixed > 0 and pct > 0 and stacking == "exclusive":
                 raise ValueError("Overlapping order discounts require sequential stacking.")
-            
+
             weights = [values[k] for k in keys]
             total = sum(weights, Decimal(0))
             percentage_amount = (total * pct / 100).quantize(_CENT, rounding=ROUND_HALF_UP)
             percent_shares = _allocate_cents(percentage_amount, weights)
             amounts_after_pct = [w - share for w, share in zip(weights, percent_shares, strict=True)]
             fixed_shares = _allocate_cents(fixed, amounts_after_pct)
-            
+
             for key, pshare, fshare in zip(keys, percent_shares, fixed_shares, strict=True):
                 allocations[key] = pshare + fshare
 
