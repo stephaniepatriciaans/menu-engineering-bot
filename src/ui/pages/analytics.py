@@ -20,9 +20,7 @@ from ui.sections.sales_trends import render_sales_trends
 from ui.sidebar import SidebarSettings
 
 
-def render_analytics(
-    setup: SetupData, quality: QualityData, settings: SidebarSettings
-) -> pd.DataFrame:
+def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSettings) -> pd.DataFrame:
     df = quality.df
     summary = quality.summary
     capabilities = quality.capabilities
@@ -32,6 +30,20 @@ def render_analytics(
     end_date = quality.end_date
     business_name = setup.business_name
     currency = settings.currency
+
+    if quality.financial_preview is not None:
+        preview = quality.financial_preview
+        amount = preview.get("eligible_sales_revenue")
+        st.subheader("POS sales reconciliation (separate from dashboard KPIs)")
+        if amount is None:
+            st.info("Verified eligible-sales revenue is unavailable for this price convention.")
+        else:
+            st.metric("Eligible-sales revenue (excluding review rows)", f"${amount:,.2f}")
+            st.caption(
+                "Operator-confirmed sale conventions" if preview.get("conventions_verified")
+                else "Unverified preview. Not net revenue; excludes candidate refunds and cancellations."
+            )
+        st.caption("Main KPIs, profitability, elasticity and pricing still use the existing sales-only data pipeline.")
 
     # Calculate Analytics
     # ================================================================
@@ -66,14 +78,13 @@ def render_analytics(
     )
 
     with analysis_tabs[0]:
-        revenue_tabs = st.tabs(
-            [
-                "Sales Trends",
-                "Day Analysis",
-                "Hourly Analysis",
-                "Popular Items",
-            ]
-        )
+        revenue_tabs = st.tabs([
+            "Sales Trends",
+            "Day Analysis",
+            "Hourly Analysis",
+            "Popular Items",
+        ])
+
 
         # ================================================================
         # Feature 9: Sales Trends navigation tab
@@ -81,11 +92,13 @@ def render_analytics(
         with revenue_tabs[0]:
             render_sales_trends(df, currency)
 
+
         # ================================================================
         # Feature 9: Popular Items navigation tab
         # ================================================================
         with revenue_tabs[3]:
             render_popular_items(summary)
+
 
         # ================================================================
         # Feature 9: Day Analysis navigation tab
@@ -93,11 +106,13 @@ def render_analytics(
         with revenue_tabs[1]:
             render_day_analysis(df, currency)
 
+
         # ================================================================
         # HOURLY ANALYSIS TAB
         # ================================================================
         with revenue_tabs[2]:
             render_hourly_analysis(df, currency)
+
 
     # ================================================================
     # ELASTICITY RELIABILITY TAB
@@ -105,11 +120,13 @@ def render_analytics(
     with analysis_tabs[1]:
         render_elasticity_reliability(summary)
 
+
     # ================================================================
     # MENU ENGINEERING QUADRANTS TAB
     # ================================================================
     with analysis_tabs[2]:
         render_menu_quadrants(summary, capabilities, cost_is_assumption)
+
 
     # ================================================================
     # MENU ITEM EXPLORER TAB
@@ -117,11 +134,13 @@ def render_analytics(
     with analysis_tabs[3]:
         render_menu_item_explorer(summary, capabilities, currency)
 
+
     # ================================================================
     # MODEL EVALUATION TAB
     # ================================================================
     with analysis_tabs[4]:
         render_model_evaluation(df)
+
 
     # ================================================================
     # Pricing Recommendations

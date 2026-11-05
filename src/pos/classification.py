@@ -210,4 +210,25 @@ def classify_pos_transactions(
     )
 
 
+    # Explain each candidate without asserting that a refund was processed.
+    work["refund_signal_negative_quantity"] = negative_quantity_mask
+    work["refund_signal_negative_amount"] = negative_amount_mask
+    work["refund_signal_status"] = refund_status_mask
+    work["cancellation_signal_status"] = cancellation_mask
+    work["accounting_evidence"] = [
+        ", ".join(
+            label for flag, label in (
+                (nq, "negative_quantity"),
+                (na, "negative_amount"),
+                (rs, "refund_status"),
+                (cs, "cancelled_status"),
+            ) if flag
+        ) or "no_refund_or_cancellation_signal"
+        for nq, na, rs, cs in zip(
+            negative_quantity_mask, negative_amount_mask,
+            refund_status_mask, cancellation_mask, strict=True,
+        )
+    ]
+
+
     return work

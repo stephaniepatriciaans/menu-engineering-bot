@@ -387,3 +387,8 @@ This project demonstrates data engineering, applied analytics, conservative stat
 See [architecture](docs/architecture.md), [CSV data formats](docs/data_format.md), and [financial methodology](docs/financial_methodology.md).
 
 The four workflow tabs are **Data Setup → Data Quality → Analytics → Reports**. They preserve the existing sales-only financial calculation scope.
+
+
+### POS discount and refund reconciliation
+
+The optional advanced POS reconciliation tool is available in **Data Quality** and summarized in **Analytics**. It supports line, per-unit and order-level discounts, including explicit stacking rules, while keeping ambiguous refund/cancellation rows out of reconciled eligible-sales figures. It **does not calculate verified net revenue after refunds** or replace existing sales-only analytics automatically. See [POS reconciliation methodology](docs/pos_reconciliation.md).

@@ -22,6 +22,7 @@ from ui.data_upload import (
 )
 from ui.filters import render_category_filter, render_date_filter
 from ui.pages.data_setup import SetupData
+from ui.pos_reconciliation import render_pos_reconciliation
 
 
 class QualityData(NamedTuple):
@@ -33,6 +34,7 @@ class QualityData(NamedTuple):
     cost_is_assumption: bool
     start_date: object
     end_date: object
+    financial_preview: dict[str, object] | None = None
 
 
 def render_data_quality(setup: SetupData) -> QualityData:
@@ -60,6 +62,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
             st.error(error)
 
         st.stop()
+
 
     # ================================================================
     # Preliminary financial review: not an accounting reconciliation.
@@ -143,6 +146,19 @@ def render_data_quality(setup: SetupData) -> QualityData:
             amount_column=transaction_amount_column,
         )
 
+
+    financial_preview = None
+    if source == "Upload my own CSV":
+        financial_preview = render_pos_reconciliation(
+            raw_df,
+            mapping,
+            price_basis=price_basis,
+            status_column=transaction_status_column,
+            amount_column=transaction_amount_column,
+            line_discount_column=discount_column,
+            percent_column=discount_percent_column,
+        )
+
     # ================================================================
     # Adapt dataset to canonical schema
     # ================================================================
@@ -155,10 +171,12 @@ def render_data_quality(setup: SetupData) -> QualityData:
 
     except ValueError as exc:
         st.error(
-            "The dataset could not be standardized. Please review the column mapping."
+            "The dataset could not be standardized. "
+            "Please review the column mapping."
         )
         st.error(str(exc))
         st.stop()
+
 
     # ================================================================
     # Separate refund candidates from sales analysis
@@ -168,9 +186,13 @@ def render_data_quality(setup: SetupData) -> QualityData:
 
     if source == "Upload my own CSV":
         try:
-            sales_df, refund_candidates_df = split_pos_transactions(canonical_df)
+            sales_df, refund_candidates_df = split_pos_transactions(
+                canonical_df
+            )
         except ValueError as exc:
-            st.error(f"Unable to classify POS transactions: {exc}")
+            st.error(
+                f"Unable to classify POS transactions: {exc}"
+            )
             st.stop()
 
         if not refund_candidates_df.empty:
@@ -196,7 +218,9 @@ def render_data_quality(setup: SetupData) -> QualityData:
     # Optional cost handling
     # ================================================================
 
-    canonical_df, cost_basis, cost_is_assumption = render_cost_settings(canonical_df)
+    canonical_df, cost_basis, cost_is_assumption = (
+        render_cost_settings(canonical_df)
+    )
 
     # ================================================================
     # Feature 3: Validate Dataset
@@ -209,11 +233,16 @@ def render_data_quality(setup: SetupData) -> QualityData:
     )
 
     # Validate the canonical dataframe.
-    df, errors, validation_warnings = validate_sales_df(canonical_df)
+    df, errors, validation_warnings = validate_sales_df(
+        canonical_df
+    )
 
     # Blocking errors must always remain visible.
     if errors or df is None:
-        st.error("Dataset validation failed. Please review the errors below.")
+        st.error(
+            "Dataset validation failed. "
+            "Please review the errors below."
+        )
 
         for error in errors:
             st.error(error)
@@ -230,6 +259,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
     # Date range filtering
     # ================================================================
     with st.expander("⚙️ Sales Filters", expanded=False):
+
         st.subheader("Filter sales by date")
 
         # Date filtering is handled by the reusable UI module.
@@ -249,12 +279,15 @@ def render_data_quality(setup: SetupData) -> QualityData:
             not summary.empty and (summary["elasticity_source"] == "estimated").any()
         )
 
+
         # ================================================================
         # Feature 7: Create transaction timestamps for hourly analysis.
         # ================================================================
         df = add_transaction_datetime(df)
 
-        valid_timestamp_count = int(df["transaction_datetime"].notna().sum())
+        valid_timestamp_count = int(
+            df["transaction_datetime"].notna().sum()
+        )
 
         if valid_timestamp_count > 0:
             st.caption(
@@ -268,6 +301,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
                 "but hourly analysis will be unavailable."
             )
 
+
     # ================================================================
     # Dataset capabilities
     # ================================================================
@@ -280,6 +314,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
         cost_is_assumption=cost_is_assumption,
     )
 
+
     # ================================================================
     # Active Filter Summary
     # ================================================================
@@ -291,6 +326,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
         f"   |   🗂️ {active_group_count} food groups"
         f"   |   🧾 {len(df):,} sales records"
     )
+
 
     # ================================================================
     # Modern Fintech — Collapsible Dataset Capabilities
@@ -335,6 +371,7 @@ def render_data_quality(setup: SetupData) -> QualityData:
                     if separator and reason:
                         st.caption(reason)
 
+
     return QualityData(
         df=df,
         summary=summary,
@@ -344,4 +381,5 @@ def render_data_quality(setup: SetupData) -> QualityData:
         cost_is_assumption=cost_is_assumption,
         start_date=start_date,
         end_date=end_date,
+        financial_preview=financial_preview,
     )
