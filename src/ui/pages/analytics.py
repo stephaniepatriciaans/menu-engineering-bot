@@ -5,6 +5,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from ui.audited_financials import get_audited_financials, render_audited_financials
 from ui.components import render_business_header, render_kpi_cards
 from ui.pages.data_quality import QualityData
 from ui.pages.data_setup import SetupData
@@ -31,6 +32,8 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
     business_name = setup.business_name
     currency = settings.currency
 
+    financials = get_audited_financials(df, quality.financial_preview)
+
     if quality.financial_preview is not None:
         preview = quality.financial_preview
         amount = preview.get("eligible_sales_revenue")
@@ -43,7 +46,11 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
                 "Operator-confirmed sale conventions" if preview.get("conventions_verified")
                 else "Unverified preview. Not net revenue; excludes candidate refunds and cancellations."
             )
-        st.caption("Main KPIs, profitability, elasticity and pricing still use the existing sales-only data pipeline.")
+        st.caption(
+            "This is a preliminary reconciliation preview. The dashboard only unlocks "
+            "audited KPI totals after a separate POS settlement comparison matches. "
+            "Legacy elasticity and pricing analysis remain separate."
+        )
 
     # Calculate Analytics
     # ================================================================
@@ -55,20 +62,47 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
         menu_item_count=df["item"].nunique(),
     )
 
-    # Reusable KPI cards from src/ui/components.py
-    render_kpi_cards(
-        df,
-        currency,
-        has_refund_candidates=not refund_candidates_df.empty,
-    )
+    if financials is None:
+        # Keep the historical pipeline unchanged when an independent POS
+        # settlement audit has not matched.
+        render_kpi_cards(
+            df, currency,
+            has_refund_candidates=not refund_candidates_df.empty,
+        )
+    else:
+        st.success("Independently matched POS accounting is available for this full export.")
+        a, b, c = st.columns(3)
+        a.metric("Full-export audited net sales", f"{currency} {financials.full_export_net_sales:,.2f}")
+        b.metric("Filtered eligible sales", f"{currency} {financials.eligible_sales:,.2f}")
+        c.metric("Filtered eligible contribution estimate", (
+            f"{currency} {financials.contribution_profit:,.2f}"
+            if financials.contribution_profit is not None else "Costs unavailable"
+        ))
+        st.caption(
+            "Net sales are for the entire verified export. Filtered sales and contribution "
+            "exclude refund candidates and cancelled rows; refund costs are not assigned "
+            "to individual menu items."
+        )
+        with st.expander("Original sales-only KPIs (not reconciled)", expanded=False):
+            render_kpi_cards(
+                df, currency,
+                has_refund_candidates=not refund_candidates_df.empty,
+            )
 
     # ================================================================
     # Display Dashboard
     # ================================================================
 
     st.header("Sales Analytics")
+    if financials is not None:
+        st.warning(
+            "The legacy Sales Trends, elasticity, pricing and model-evaluation "
+            "panels have not been independently audited. Use Audited POS Financials "
+            "for reconciled eligible-sales item and time breakdowns."
+        )
     analysis_tabs = st.tabs(
         [
+            "Audited POS Financials",
             "Revenue & Popularity",
             "Elasticity Reliability",
             "Menu Quadrants",
@@ -78,6 +112,9 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
     )
 
     with analysis_tabs[0]:
+        render_audited_financials(financials, currency, cost_is_assumption)
+
+    with analysis_tabs[1]:
         revenue_tabs = st.tabs([
             "Sales Trends",
             "Day Analysis",
@@ -117,28 +154,28 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
     # ================================================================
     # ELASTICITY RELIABILITY TAB
     # ================================================================
-    with analysis_tabs[1]:
+    with analysis_tabs[2]:
         render_elasticity_reliability(summary)
 
 
     # ================================================================
     # MENU ENGINEERING QUADRANTS TAB
     # ================================================================
-    with analysis_tabs[2]:
+    with analysis_tabs[3]:
         render_menu_quadrants(summary, capabilities, cost_is_assumption)
 
 
     # ================================================================
     # MENU ITEM EXPLORER TAB
     # ================================================================
-    with analysis_tabs[3]:
+    with analysis_tabs[4]:
         render_menu_item_explorer(summary, capabilities, currency)
 
 
     # ================================================================
     # MODEL EVALUATION TAB
     # ================================================================
-    with analysis_tabs[4]:
+    with analysis_tabs[5]:
         render_model_evaluation(df)
 
 
@@ -168,6 +205,11 @@ def render_analytics(setup: SetupData, quality: QualityData, settings: SidebarSe
                 key="analytics_max_price_increase",
             )
 
+    if financials is not None:
+        st.info(
+            "Pricing simulation uses historical menu prices, not audited coupon-adjusted "
+            "transaction values. Audited totals are available in Audited POS Financials."
+        )
     moves = render_pricing_recommendations(
         summary=summary,
         capabilities=capabilities,
