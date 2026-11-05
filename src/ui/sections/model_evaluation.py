@@ -12,6 +12,7 @@ from analytics.model_evaluation import (
     build_model_evaluation_report,
     evaluate_historical_average,
 )
+from ui.evaluation_reliability import render_paired_model_reliability
 
 REQUIRED_COLUMNS = {"date", "item", "price", "units_sold"}
 
@@ -256,6 +257,9 @@ def render_model_evaluation(df: pd.DataFrame) -> None:
         
         
     # ============================================================
+    # Report paired out-of-sample reliability; no forecast recalculation.
+    render_paired_model_reliability(item_df)
+
     # ITEM-LEVEL RESULTS
     # ============================================================
     st.subheader("Item-Level Results")

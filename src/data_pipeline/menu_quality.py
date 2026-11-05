@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 from typing import Any, cast
 
+import numpy as np
 import pandas as pd
 
 
@@ -59,6 +60,36 @@ class MenuQualityReport:
     preview: pd.DataFrame
 
 
+def _map_unique_values(
+    series: pd.Series,
+    transform: Any,
+) -> pd.Series:
+    """Transform distinct values once, preserving source row positions.
+
+    Missing inputs remain missing. Useful when a large POS export
+    repeats the same item names or prices thousands of times.
+    """
+    codes, unique_values = pd.factorize(
+        series,
+        sort=False,
+    )
+
+    transformed = np.asarray(
+        [transform(value) for value in unique_values],
+        dtype=object,
+    )
+
+    result = np.empty(len(series), dtype=object)
+    result[:] = None
+
+    valid = codes >= 0
+
+    if valid.any():
+        result[valid] = transformed[codes[valid]]
+
+    return pd.Series(result, index=series.index, dtype=object)
+
+
 def audit_menu_quality(
     df: pd.DataFrame,
     mapping: dict[str, str | None],
@@ -92,10 +123,21 @@ def audit_menu_quality(
     else:
         normalized_aliases = {}
 
-    names = df[item_col].map(normalized_item_key)
+
+    # Normalize each distinct source item once.
+    # Keep every original source row unchanged.
+    names = _map_unique_values(
+        df[item_col],
+        normalized_item_key,
+    )
+
     display_names = df[item_col].astype("string").str.strip()
+
     suggested_names = names.map(normalized_aliases)
-    suggested_names = suggested_names.where(suggested_names.notna(), display_names)
+    suggested_names = suggested_names.where(
+        suggested_names.notna(),
+        display_names,
+    )
 
     preview = pd.DataFrame(
         {
@@ -106,32 +148,68 @@ def audit_menu_quality(
         index=df.index,
     )
 
-    # Only show spelling differences, not automatic merges of source data.
+    # Build the grouping only once and reuse it for
+    # spelling consistency and multiple-price analysis.
+    item_groups = names.groupby(
+        names,
+        dropna=True,
+    ).indices
+
     alias_rows: list[dict[str, object]] = []
     repeated_groups = 0
-    for key, positions in names.groupby(names, dropna=True).indices.items():
-        spellings = sorted({str(display_names.iloc[pos]) for pos in positions})
+
+    for key, positions in item_groups.items():
+        row_positions = np.asarray(positions, dtype=np.intp)
+
+        spellings = sorted({
+            str(value)
+            for value in display_names.iloc[row_positions]
+        })
+
         if len(spellings) > 1:
             repeated_groups += 1
-            alias_rows.append(
-                {"item_key": str(key), "source_spellings": " | ".join(spellings),
-                 "suggested_label": normalized_aliases.get(str(key), spellings[0]),
-                 "transaction_rows": len(positions)}
-            )
+            alias_rows.append({
+                "item_key": str(key),
+                "source_spellings": " | ".join(spellings),
+                "suggested_label": normalized_aliases.get(
+                    str(key),
+                    spellings[0],
+                ),
+                "transaction_rows": len(positions),
+            })
 
     price_col = _column(mapping, "price", df)
     multi_prices: list[dict[str, object]] = []
+
     if price_col:
-        price_values = df[price_col].map(_cents)
+        # Convert distinct source prices to Decimal once.
+        # Preserve existing half-up cent rounding.
+        price_values = _map_unique_values(
+            df[price_col],
+            _cents,
+        )
+
         preview["listed_price"] = df[price_col]
-        for key, positions in names.groupby(names, dropna=True).indices.items():
-            amounts = sorted({price_values.iloc[p] for p in positions if price_values.iloc[p] is not None})
+
+        for key, positions in item_groups.items():
+            row_positions = np.asarray(positions, dtype=np.intp)
+            group_prices = price_values.iloc[row_positions]
+
+            # Unique valid prices, without repeatedly
+            # accessing each row through Python-level iloc.
+            valid_prices = group_prices.dropna()
+            amounts = sorted(
+                valid_prices.unique().tolist()
+            )
+
             if len(amounts) > 1:
-                multi_prices.append(
-                    {"item_key": str(key), "distinct_prices": len(amounts),
-                     "lowest_price": str(amounts[0]), "highest_price": str(amounts[-1]),
-                     "transaction_rows": len(positions)}
-                )
+                multi_prices.append({
+                    "item_key": str(key),
+                    "distinct_prices": len(amounts),
+                    "lowest_price": str(amounts[0]),
+                    "highest_price": str(amounts[-1]),
+                    "transaction_rows": len(positions),
+                })
     else:
         price_values = None
 

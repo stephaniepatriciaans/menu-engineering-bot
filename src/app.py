@@ -9,10 +9,12 @@ from __future__ import annotations
 import streamlit as st
 from dotenv import load_dotenv
 
+from core.performance import PerformanceProfiler
 from ui.pages.analytics import render_analytics
 from ui.pages.data_quality import render_data_quality
 from ui.pages.data_setup import render_data_setup
 from ui.pages.reports import render_reports
+from ui.performance_dashboard import render_performance_summary
 from ui.sidebar import render_sidebar
 from ui.styles import apply_dashboard_styles
 
@@ -31,20 +33,22 @@ def main() -> None:
         "Universal menu/POS data adapter + deterministic pricing analytics + AI explanation. "
         "The numerical engine never delegates calculations to the LLM."
     )
+    profiler = PerformanceProfiler()
     settings = render_sidebar()
     data_tab, quality_tab, analytics_tab, reports_tab = st.tabs(
         ["1. Data Setup", "2. Data Quality", "3. Analytics", "4. Reports"]
     )
     # All tabs execute on each Streamlit rerun, so dependent context is
     # computed in order even when a later tab is currently selected.
-    with data_tab:
+    with data_tab, profiler.measure('Data Setup'):
         setup = render_data_setup(settings)
-    with quality_tab:
+    with quality_tab, profiler.measure('Data Quality'):
         quality = render_data_quality(setup)
-    with analytics_tab:
+    with analytics_tab, profiler.measure('Analytics'):
         moves = render_analytics(setup, quality, settings)
-    with reports_tab:
+    with reports_tab, profiler.measure('Reports'):
         render_reports(setup, quality, settings, moves)
+    render_performance_summary(profiler)
 
 
 if __name__ == "__main__":

@@ -231,7 +231,7 @@ def render_pos_accounting_summary(
 
                     
 
-def load_uploaded_sales(
+def _load_uploaded_sales_uncached(
     uploaded,
     encoding: str = "utf-8-sig",
     sheet_name: str | None = None,
@@ -326,3 +326,39 @@ def render_pos_classification_summary(
             "No records are removed or financial adjustments "
             "made by this preview."
         )
+
+def load_uploaded_sales(
+    uploaded,
+    encoding: str = "utf-8-sig",
+    sheet_name: str | None = None,
+) -> tuple[pd.DataFrame, list[str]]:
+    """Load CSV with caching and Excel with worksheet selection.
+
+    CSV uploads use a content-based cache.
+    Excel uploads use the existing worksheet-aware reader.
+    Original transaction data and parser behavior are preserved.
+    """
+    filename = getattr(uploaded, "name", None)
+    getvalue = getattr(uploaded, "getvalue", None)
+
+    if (
+        isinstance(filename, str)
+        and filename.lower().endswith(".csv")
+        and callable(getvalue)
+    ):
+        file_bytes = getvalue()
+
+        if isinstance(file_bytes, bytes):
+            from ui.cached_upload import cached_uploaded_sales
+
+            return cached_uploaded_sales(
+                filename,
+                file_bytes,
+                encoding,
+            )
+
+    return _load_uploaded_sales_uncached(
+        uploaded,
+        encoding=encoding,
+        sheet_name=sheet_name,
+    )
