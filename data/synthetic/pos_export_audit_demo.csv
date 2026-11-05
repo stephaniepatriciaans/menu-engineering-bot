@@ -1,0 +1,5 @@
+event_id,price,units_sold,status,signed_amount
+s1,10.00,2,completed,20.00
+s2,5.00,1,completed,5.00
+r1,10.00,-1,refunded,-10.00
+c1,20.00,1,cancelled,20.00
