@@ -45,4 +45,7 @@ jobs:
         run: python -m compileall -q src
 
       - name: Unit and regression tests
+        env:
+          ENABLE_LIVE_AI: "true"
         run: python -m pytest -q
+        
