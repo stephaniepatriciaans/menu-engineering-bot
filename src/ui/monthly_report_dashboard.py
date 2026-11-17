@@ -10,12 +10,14 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from analytics.monthly_business_insights import build_monthly_business_insights
 from data_pipeline.monthly_report import (
     category_performance,
     item_performance,
     load_monthly_reports,
     monthly_overview,
 )
+from reporting.monthly_business_insights_pdf import build_monthly_business_insights_pdf
 
 ITEM_IDENTITY = [
     "Menu Code",
@@ -72,7 +74,7 @@ def _downloads(overview: pd.DataFrame, items: pd.DataFrame,
                     file_name=filename,
                     mime="text/csv",
                     key=f"monthly_export_{filename}",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
 
@@ -130,8 +132,8 @@ def render_monthly_report_dashboard() -> None:
         help="Change from the previous uploaded month; only meaningful when months are consecutive.",
     )
 
-    overview_tab, popularity_tab, category_tab, audit_tab = st.tabs(
-        ["Overview", "Most Ordered", "Categories & Channels", "Data Quality"]
+    overview_tab, popularity_tab, category_tab, insights_tab, audit_tab = st.tabs(
+        ["Overview", "Most Ordered", "Categories & Channels", "Business Insights", "Data Quality"]
     )
 
     with overview_tab:
@@ -155,7 +157,7 @@ def render_monthly_report_dashboard() -> None:
             )
             .properties(height=320)
         )
-        st.altair_chart(monthly_chart, use_container_width=True)
+        st.altair_chart(monthly_chart, width="stretch")
 
         monthly_table = overview.copy()
         monthly_table["Month"] = monthly_table["period_start"].map(_month_label)
@@ -168,45 +170,19 @@ def render_monthly_report_dashboard() -> None:
             "summary_rows": "Source rows",
         })
         st.dataframe(
-            monthly_table[
-                [
-                    "Month",
-                    "Source rows",
-                    "Units sold",
-                    "Net sales (IDR)",
-                    "Grand total (IDR)",
-                    "Menu discounts (IDR)",
-                    "Bill discounts (IDR)",
-                ]
-            ],
+            monthly_table[[
+                "Month", "Source rows", "Units sold", "Net sales (IDR)",
+                "Grand total (IDR)", "Menu discounts (IDR)", "Bill discounts (IDR)",
+            ]],
             hide_index=True,
-            use_container_width=True,
+            width="stretch",
             column_config={
-                "Month": st.column_config.TextColumn("Month"),
-                "Source rows": st.column_config.NumberColumn(
-                    "Source rows",
-                    format="%d",
-                ),
-                "Units sold": st.column_config.NumberColumn(
-                    "Units sold",
-                    format="%d",
-                ),
-                "Net sales (IDR)": st.column_config.NumberColumn(
-                    "Net sales (IDR)",
-                    format="Rp %,.0f",
-                ),
-                "Grand total (IDR)": st.column_config.NumberColumn(
-                    "Grand total (IDR)",
-                    format="Rp %,.0f",
-                ),
-                "Menu discounts (IDR)": st.column_config.NumberColumn(
-                    "Menu discounts (IDR)",
-                    format="Rp %,.0f",
-                ),
-                "Bill discounts (IDR)": st.column_config.NumberColumn(
-                    "Bill discounts (IDR)",
-                    format="Rp %,.0f",
-                ),
+                "Source rows": st.column_config.NumberColumn(format="%d"),
+                "Units sold": st.column_config.NumberColumn(format="%d"),
+                "Net sales (IDR)": st.column_config.NumberColumn(format="Rp %,.0f"),
+                "Grand total (IDR)": st.column_config.NumberColumn(format="Rp %,.0f"),
+                "Menu discounts (IDR)": st.column_config.NumberColumn(format="Rp %,.0f"),
+                "Bill discounts (IDR)": st.column_config.NumberColumn(format="Rp %,.0f"),
             },
         )
 
@@ -304,7 +280,7 @@ def render_monthly_report_dashboard() -> None:
                 )
                 .properties(height=max(340, min(1050, len(chart) * 34)))
             )
-            st.altair_chart(ranking_chart, use_container_width=True)
+            st.altair_chart(ranking_chart, width="stretch")
             display = most.rename(columns={
                 "Menu": "Menu item", "Menu Code": "Menu code",
                 "Menu Category": "Category", "Menu Category Detail": "Subcategory",
@@ -316,10 +292,10 @@ def render_monthly_report_dashboard() -> None:
                     "Units sold", "Net sales (IDR)",
                 ]],
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
                 column_config={
                     "Units sold": st.column_config.NumberColumn(format="%d"),
-                    "Net sales (IDR)": st.column_config.NumberColumn(format="%.0f"),
+                    "Net sales (IDR)": st.column_config.NumberColumn(format="Rp %,.0f"),
                 },
             )
 
@@ -332,7 +308,7 @@ def render_monthly_report_dashboard() -> None:
                 st.dataframe(
                     least[["Menu", "Menu Code", "Menu Category", "units_sold"]],
                     hide_index=True,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     with category_tab:
@@ -358,14 +334,14 @@ def render_monthly_report_dashboard() -> None:
             )
             .properties(height=max(320, min(750, len(category_totals) * 34)))
         )
-        st.altair_chart(category_chart, use_container_width=True)
+        st.altair_chart(category_chart, width="stretch")
         st.dataframe(
             categories.rename(columns={
                 "period_start": "Month", "units_sold": "Units sold",
                 "reported_net_sales": "Net sales (IDR)",
             }),
             hide_index=True,
-            use_container_width=True,
+            width="stretch",
         )
 
         st.markdown("#### POS vs MO&P")
@@ -374,11 +350,63 @@ def render_monthly_report_dashboard() -> None:
             .agg(units_sold=("Qty", "sum"),
                  reported_net_sales=("Net Sales Total", "sum"))
         )
-        st.dataframe(channel_totals, hide_index=True, use_container_width=True)
+        st.dataframe(channel_totals, hide_index=True, width="stretch")
+
+    with insights_tab:
+        st.markdown("#### Business Insights")
+        st.caption(
+            "Deterministic, data-grounded explanations. No AI-generated causes "
+            "or recommendations are presented as facts."
+        )
+        language_option = st.selectbox(
+            "Insight language",
+            options=["English", "Bahasa Indonesia"],
+            key="monthly_insights_language",
+        )
+        language = "id" if language_option == "Bahasa Indonesia" else "en"
+        insights = build_monthly_business_insights(report.rows, language=language)
+        for insight in insights:
+            st.markdown(f"**{insight.heading}**")
+            st.write(insight.observation)
+            if insight.kind == "caution":
+                st.caption(
+                    ("Perlu ditinjau: " if language == "id" else "Review: ")
+                    + insight.next_step
+                )
+            else:
+                st.caption(
+                    ("Langkah selanjutnya: " if language == "id" else "Next check: ")
+                    + insight.next_step
+                )
+            st.divider()
+        text_report = "\n\n".join(
+            f"{insight.heading}\n{insight.observation}\n{insight.next_step}"
+            for insight in insights
+        )
+        download_col, pdf_col = st.columns(2)
+        with download_col:
+            st.download_button(
+                "Download business insights (.txt)",
+                data=text_report.encode("utf-8-sig"),
+                file_name="monthly_business_insights.txt",
+                mime="text/plain",
+                key="monthly_insights_text_download",
+                width="stretch",
+            )
+        with pdf_col:
+            pdf_data = build_monthly_business_insights_pdf(report.rows, language=language)
+            st.download_button(
+                "Download business insights (.pdf)",
+                data=pdf_data,
+                file_name=f"monthly_business_insights_{language}.pdf",
+                mime="application/pdf",
+                key="monthly_insights_pdf_download",
+                width="stretch",
+            )
 
     with audit_tab:
         st.markdown("#### Source validation")
-        st.dataframe(report.audit, hide_index=True, use_container_width=True)
+        st.dataframe(report.audit, hide_index=True, width="stretch")
         st.warning(
             "All financial amounts are source-reported. Matching accounting "
             "identities does not independently prove accuracy. 'Unit Price' is "
