@@ -427,12 +427,56 @@ def render_model_evaluation(df: pd.DataFrame) -> None:
                 "Baseline Prediction": predicted.to_numpy(),
             })
 
-            st.line_chart(
-                chart_df.set_index("Date"),
-                height=350,
-            )
 
-            test_days = len(test_dates)
+            test_days = len(chart_df)
+
+            # Display the most useful visualization for the
+            # available number of held-out observations.
+            if test_days == 1:
+                st.info(
+                    "Only one held-out date is available for this "
+                    "item. A comparison table is more informative "
+                    "than a single-point line chart."
+                )
+
+                st.dataframe(
+                    chart_df,
+                    hide_index=True,
+                    width="stretch",
+                    column_config={
+                        "Date": st.column_config.DateColumn(
+                            "Test Date",
+                            format="YYYY-MM-DD",
+                        ),
+                        "Actual Demand": (
+                            st.column_config.NumberColumn(
+                                "Actual Units Sold",
+                                format="%.2f",
+                            )
+                        ),
+                        "Baseline Prediction": (
+                            st.column_config.NumberColumn(
+                                "Predicted Units Sold",
+                                format="%.2f",
+                            )
+                        ),
+                    },
+                )
+
+            elif chart_df[
+                ["Actual Demand", "Baseline Prediction"]
+            ].isna().any().any():
+                st.warning(
+                    "The forecast contains missing numerical "
+                    "values, so the comparison chart cannot "
+                    "be displayed reliably."
+                )
+
+            else:
+                st.line_chart(
+                    chart_df.set_index("Date"),
+                    height=350,
+                )
 
             st.caption(
                 f"Showing {test_days} held-out recorded dates "
@@ -440,6 +484,7 @@ def render_model_evaluation(df: pd.DataFrame) -> None:
                 "Missing transaction dates are not treated "
                 "as zero sales."
             )
+
 
         except (ValueError, TypeError, KeyError, OverflowError) as exc:
             st.warning(

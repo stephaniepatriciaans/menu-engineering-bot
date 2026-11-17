@@ -1,0 +1,5 @@
+Business Date,Menu Item,Menu Category,Unit Price,Qty,Order Status,Line Discount,Signed Pre-tax Amount,Event ID,Order ID
+2026-10-01,Latte,Coffee,10.00,2,completed,1.00,19.00,sale-001,order-001
+2026-10-01,Croissant,Bakery,5.00,1,completed,0.00,5.00,sale-002,order-001
+2026-10-02,Latte,Coffee,10.00,-1,refunded,0.00,-10.00,refund-001,order-001
+2026-10-02,Sandwich,Food,20.00,1,cancelled,0.00,20.00,cancel-001,order-002

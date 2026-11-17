@@ -360,3 +360,8 @@ def apply_dashboard_styles() -> None:
         """,
         unsafe_allow_html=True,
     )
+
+    # Part 7.4: additive, theme-aware polish.
+    from ui.part7_polish import apply_part7_polish
+
+    apply_part7_polish()

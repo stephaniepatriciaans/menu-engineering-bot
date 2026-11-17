@@ -55,3 +55,9 @@ outputs/
 menu-engineering-*.zip
 # Local POS datasets
 data/Online Retail.xlsx
+
+# Local real-world coffee shop sales data
+data/Indo_CoffeeShop/
+
+# Local datasets and installer backups
+*.part7_4.bak
